@@ -1,5 +1,7 @@
 # acontext
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/unional/acontext.svg)](https://greenkeeper.io/)
+
 Async context for functional programming.
 
 ```ts
