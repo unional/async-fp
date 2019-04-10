@@ -1,0 +1,46 @@
+{
+  "name": "acontext",
+  "version": "0.0.0-development",
+  "description": "Async Context for functional programming style",
+  "homepage": "https://github.com/unional/acontext",
+  "bugs": {
+    "url": "https://github.com/unional/acontext/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unional/acontext.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Homa Wong (unional)",
+    "email": "homawong@gmail.com"
+  },
+  "files": [
+    "lib",
+    "libm"
+  ],
+  "main": "lib/index.js",
+  "module": "libm/index.js",
+  "jsnext:main": "libm/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.es5.json && tsc -p tsconfig.esnext.json",
+    "clean": "rimraf lib libm *.tsbuildinfo",
+    "dc": "yarn dependency-check",
+    "dependency-check": "dependency-check . --unused --no-dev -i @komondor-lab/plugin && dependency-check . --missing --no-dev",
+    "test": "jest --reporters=default",
+    "verify": "yarn build && yarn dc && jest --coverage --reporters=default",
+    "watch": "jest --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
+    "@unional/devpkg-node": "^1.2.5",
+    "codecov": "^3.3.0",
+    "jest-junit": "^6.3.0",
+    "semantic-release": "^15.13.3"
+  },
+  "engines": {
+    "node": ">= 6"
+  }
+}
