@@ -30,7 +30,8 @@
     "dependency-check": "dependency-check . --unused --no-dev -i @komondor-lab/plugin && dependency-check . --missing --no-dev",
     "test": "jest --reporters=default",
     "verify": "yarn build && yarn dc && jest --coverage --reporters=default",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {},
   "devDependencies": {
@@ -41,6 +42,6 @@
     "semantic-release": "^15.13.3"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 8"
   }
 }

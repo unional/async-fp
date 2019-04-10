@@ -2,6 +2,8 @@
 
 Async context for functional programming.
 
+## Usage example
+
 ```ts
 import { createContext, Context } from 'acontext'
 
@@ -21,6 +23,7 @@ async function someOtherFunc(
   msg: string
 ) {
   const { io, ui } = await context.get()
-  const name = io.read()
-  ui.info(name, msg)
+  const data = io.read()
+  ui.info(data, msg)
 }
+```
