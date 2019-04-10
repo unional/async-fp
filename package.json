@@ -1,14 +1,14 @@
 {
-  "name": "acontext",
+  "name": "async-fp",
   "version": "0.0.0-development",
   "description": "Async Context for functional programming style",
-  "homepage": "https://github.com/unional/acontext",
+  "homepage": "https://github.com/unional/async-fp",
   "bugs": {
-    "url": "https://github.com/unional/acontext/issues"
+    "url": "https://github.com/unional/async-fp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/unional/acontext.git"
+    "url": "https://github.com/unional/async-fp.git"
   },
   "license": "MIT",
   "author": {

@@ -1,4 +1,4 @@
-# acontext
+# async-fp
 
 ![unstable][unstable-image]
 [![NPM version][npm-image]][npm-url]
@@ -15,12 +15,31 @@
 [![Visual Studio Code][vscode-image]][vscode-url]
 [![Wallaby.js][wallaby-image]][wallaby-url]
 
-Async context for functional programming.
+Support library for async functional programming.
 
-## Usage example
+## Installation
+
+```sh
+npm install async-fp
+// or
+yarn add async-fp
+```
+
+## Context
+
+It is common to pass in a context object containing dependencies used by the function.
+In some cases, the dependencies needs to be loaded asynchronously.
+
+- code is imported and loaded dynamically
+- some async work needs to be done before the dependency is available
+
+When your code is invoked by other code where you cannot control its timing,
+you need a mechanism to wait for the dependencies.
+
+`createContext()` provides this mechanism.
 
 ```ts
-import { createContext, Context } from 'acontext'
+import { createContext, Context } from 'async-fp'
 
 const ctx = createContext(async() => ({ io: await createIO(), ... }))
 
@@ -43,22 +62,25 @@ async function someOtherFunc(
 }
 ```
 
-[circleci-image]: https://circleci.com/gh/unional/acontext/tree/master.svg?style=shield
-[circleci-url]: https://circleci.com/gh/unional/acontext/tree/master
-[codecov-image]: https://codecov.io/gh/unional/acontext/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/unional/acontext
-[coveralls-image]: https://coveralls.io/repos/github/unional/acontext/badge.svg
-[coveralls-url]: https://coveralls.io/github/unional/acontext
-[downloads-image]: https://img.shields.io/npm/dm/acontext.svg?style=flat
-[downloads-url]: https://npmjs.org/package/acontext
-[greenkeeper-image]: https://badges.greenkeeper.io/unional/acontext.svg
+- `createContext(context)`: Create a new async context object. The input can be an object (sync) or a `Promise` returning function (async).
+- `Context.merge(context)`: Merge new context input to create a new async context object.
+
+[circleci-image]: https://circleci.com/gh/unional/async-fp/tree/master.svg?style=shield
+[circleci-url]: https://circleci.com/gh/unional/async-fp/tree/master
+[codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/unional/async-fp
+[coveralls-image]: https://coveralls.io/repos/github/unional/async-fp/badge.svg
+[coveralls-url]: https://coveralls.io/github/unional/async-fp
+[downloads-image]: https://img.shields.io/npm/dm/async-fp.svg?style=flat
+[downloads-url]: https://npmjs.org/package/async-fp
+[greenkeeper-image]: https://badges.greenkeeper.io/unional/async-fp.svg
 [greenkeeper-url]: https://greenkeeper.io/
-[npm-image]: https://img.shields.io/npm/v/acontext.svg?style=flat
-[npm-url]: https://npmjs.org/package/acontext
+[npm-image]: https://img.shields.io/npm/v/async-fp.svg?style=flat
+[npm-url]: https://npmjs.org/package/async-fp
 [semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
-[travis-image]: https://img.shields.io/travis/unional/acontext/master.svg?style=flat
-[travis-url]: https://travis-ci.com/unional/acontext?branch=master
+[travis-image]: https://img.shields.io/travis/unional/async-fp/master.svg?style=flat
+[travis-url]: https://travis-ci.com/unional/async-fp?branch=master
 [unstable-image]: https://img.shields.io/badge/stability-unstable-yellow.svg
 [vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode-url]: https://code.visualstudio.com/
