@@ -7,9 +7,6 @@ workflows:
       - node10:
           requires:
             - node-latest
-      - node9:
-          requires:
-            - node-latest
       - node8:
           requires:
             - node-latest
@@ -20,7 +17,6 @@ workflows:
           requires:
             - node-latest
             - node10
-            - node9
             - node8
 jobs:
   local:
@@ -57,16 +53,6 @@ jobs:
       - store_test_results:
           path: .reports/junit
   node10:
-    docker:
-      - image: 'circleci/node:9'
-    steps:
-      - checkout
-      - attach_workspace:
-          at: '.'
-      - run: yarn verify
-      - store_test_results:
-          path: .reports/junit
-  node9:
     docker:
       - image: 'circleci/node:9'
     steps:
