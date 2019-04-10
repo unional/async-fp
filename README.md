@@ -1,6 +1,5 @@
 # async-fp
 
-![unstable][unstable-image]
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 
@@ -81,7 +80,6 @@ async function someOtherFunc(
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
 [travis-image]: https://img.shields.io/travis/unional/async-fp/master.svg?style=flat
 [travis-url]: https://travis-ci.com/unional/async-fp?branch=master
-[unstable-image]: https://img.shields.io/badge/stability-unstable-yellow.svg
 [vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode-url]: https://code.visualstudio.com/
 [wallaby-image]: https://img.shields.io/badge/wallaby.js-configured-green.svg
