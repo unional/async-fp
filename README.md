@@ -78,7 +78,7 @@ async function someOtherFunc(
 [npm-url]: https://npmjs.org/package/async-fp
 [semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
-[travis-image]: https://img.shields.io/travis/unional/async-fp/master.svg?style=flat
+[travis-image]: https://travis-ci.com/unional/async-fp.svg?branch=master
 [travis-url]: https://travis-ci.com/unional/async-fp?branch=master
 [vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode-url]: https://code.visualstudio.com/
