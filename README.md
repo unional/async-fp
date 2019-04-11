@@ -7,6 +7,7 @@
 [![Travis CI][travis-image]][travis-url]
 [![Codecov][codecov-image]][codecov-url]
 [![Coveralls Status][coveralls-image]][coveralls-url]
+[![Codacy Badge][codacy-image]][codacy-url]
 
 [![Greenkeeper][greenkeeper-image]][greenkeeper-url]
 [![Semantic Release][semantic-release-image]][semantic-release-url]
@@ -67,6 +68,8 @@ async function someOtherFunc(
 
 [circleci-image]: https://circleci.com/gh/unional/async-fp/tree/master.svg?style=shield
 [circleci-url]: https://circleci.com/gh/unional/async-fp/tree/master
+[codacy-image]: https://api.codacy.com/project/badge/Grade/569e678c65cf4481a172aaeb83b41aef
+[codacy-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
 [codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/unional/async-fp
 [coveralls-image]: https://coveralls.io/repos/github/unional/async-fp/badge.svg
