@@ -28,3 +28,19 @@ test('sync context merge', async () => {
 
   expect(await actual.get()).toEqual({ a: 1, b: 'b' })
 })
+
+test('async context set', async () => {
+  const ctx = createContext<{ a: number }>()
+
+  ctx.set(async () => ({ a: 1 }))
+
+  expect(await ctx.get()).toEqual({ a: 1 })
+})
+
+test('sync context set', async () => {
+  const ctx = createContext<{ a: number }>()
+
+  ctx.set({ a: 1 })
+
+  expect(await ctx.get()).toEqual({ a: 1 })
+})
