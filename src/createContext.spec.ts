@@ -52,6 +52,6 @@ test('get() rejects if context does not exist', async () => {
 
   const err = a.throws(() => ctx.get(), ModuleError)
   a.satisfies(err, {
-    type: 'ContextNotSet'
+    name: 'ContextNotSet'
   })
 })
