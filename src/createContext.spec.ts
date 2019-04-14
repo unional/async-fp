@@ -1,5 +1,5 @@
 import a from 'assertron';
-import { ModuleError } from 'iso-error';
+import { IsoError } from 'iso-error';
 import { createContext } from '.';
 
 test('async context creation', async () => {
@@ -50,7 +50,7 @@ test('sync context set', async () => {
 test('get() rejects if context does not exist', async () => {
   const ctx = createContext()
 
-  const err = a.throws(() => ctx.get(), ModuleError)
+  const err = a.throws(() => ctx.get(), IsoError)
   a.satisfies(err, {
     name: 'ContextNotSet'
   })
