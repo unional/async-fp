@@ -55,3 +55,14 @@ test('get() rejects if context does not exist', async () => {
     name: 'ContextNotSet'
   })
 })
+
+test('clear() reverts context to unset state. This is used for testing', async () => {
+  const ctx = createContext({})
+
+  ctx.clear()
+
+  const err = a.throws(() => ctx.get(), IsoError)
+  a.satisfies(err, {
+    name: 'ContextNotSet'
+  })
+})

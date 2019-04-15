@@ -3,6 +3,7 @@ import { ContextNotSet } from './errors'
 export type Context<T> = {
   get(): Promise<T>,
   set(context: T | (() => Promise<T>)): void
+  clear(): void
   merge<R>(context: R | (() => Promise<R>)): Context<T & R>
 }
 
@@ -19,6 +20,9 @@ export function createContext<T extends Record<string | symbol, any>>(context?: 
     },
     set(context: (() => Promise<T>) | T) {
       ready = typeof context === 'function' ? (context as any)() : Promise.resolve(context)
+    },
+    clear() {
+      ready = undefined
     },
     merge(context) {
       return createContext(async () => {
