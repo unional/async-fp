@@ -63,8 +63,9 @@ async function someOtherFunc(
 ```
 
 - `createContext(context)`: Create a new async context object. The input can be an object (sync) or a `Promise` returning function (async).
-- `Context.merge(context)`: Merge new context input to create a new async context object.
 - `Context.set(context)`: Set context to a new value. This is used when `createContext()` is made by the producer while `set()` is called by consumer.
+- `Context.merge(context)`: Merge new context input to create a new async context object.
+- `Context.clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
 
 [circleci-image]: https://circleci.com/gh/unional/async-fp/tree/master.svg?style=shield
 [circleci-url]: https://circleci.com/gh/unional/async-fp/tree/master
