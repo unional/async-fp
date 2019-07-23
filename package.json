@@ -42,7 +42,7 @@
     "@unional/devpkg-node": "^1.2.5",
     "assertron": "^7.0.1",
     "codecov": "^3.3.0",
-    "jest-junit": "^6.3.0",
+    "jest-junit": "^7.0.0",
     "semantic-release": "^15.13.3"
   },
   "engines": {
