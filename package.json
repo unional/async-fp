@@ -35,7 +35,7 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "iso-error": "2.4.0"
+    "iso-error": "3.0.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.2",
