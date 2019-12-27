@@ -1,4 +1,4 @@
-import { ContextNotSet } from './errors'
+import { ContextNotSet, ContextAlreadySet } from './errors'
 
 export type Context<T> = {
   get(): Promise<T>,
@@ -9,7 +9,7 @@ export type Context<T> = {
 
 export function createContext<T extends Record<string | symbol, any>>(context?: (() => Promise<T>) | T): Context<T> {
   let ready = typeof context === 'function' ?
-    (context as any)() :
+    (context as () => Promise<T>)() :
     context ?
       Promise.resolve(context) :
       undefined
@@ -18,8 +18,9 @@ export function createContext<T extends Record<string | symbol, any>>(context?: 
       if (!ready) throw new ContextNotSet()
       return ready
     },
-    set(context: (() => Promise<T>) | T) {
-      ready = typeof context === 'function' ? (context as any)() : Promise.resolve(context)
+    set(context: T | (() => Promise<T>)) {
+      if (ready) throw new ContextAlreadySet()
+      ready = typeof context === 'function' ? (context as () => Promise<T>)() : Promise.resolve(context)
     },
     clear() {
       ready = undefined

@@ -1,6 +1,5 @@
 import a from 'assertron'
-import { IsoError } from 'iso-error'
-import { createContext } from '.'
+import { ContextNotSet, createContext, ContextAlreadySet } from '.'
 
 test('async context creation', async () => {
   const ctx = createContext(async () => ({ a: 1 }))
@@ -50,10 +49,7 @@ test('sync context set', async () => {
 test('get() rejects if context does not exist', async () => {
   const ctx = createContext()
 
-  const err = a.throws(() => ctx.get(), IsoError)
-  a.satisfies(err, {
-    name: 'ContextNotSet'
-  })
+  a.throws(() => ctx.get(), ContextNotSet)
 })
 
 test('clear() reverts context to unset state. This is used for testing', async () => {
@@ -61,8 +57,24 @@ test('clear() reverts context to unset state. This is used for testing', async (
 
   ctx.clear()
 
-  const err = a.throws(() => ctx.get(), IsoError)
-  a.satisfies(err, {
-    name: 'ContextNotSet'
-  })
+  a.throws(() => ctx.get(), ContextNotSet)
+})
+
+test('define context shape in type param', async () => {
+  const ctx = createContext<{ a: 1 }>()
+  ctx.set({ a: 1 })
+
+  const value = await ctx.get()
+  expect(value.a).toBe(1)
+})
+
+
+test('already set context cannot be set again', async () => {
+  a.throws(() => createContext({}).set({}), ContextAlreadySet)
+  a.throws(() => createContext(() => Promise.resolve({})).set({}), ContextAlreadySet)
+  a.throws(() => {
+    const ctx = createContext()
+    ctx.set({})
+    ctx.set({})
+  }, ContextAlreadySet)
 })
