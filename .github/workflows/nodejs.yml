@@ -11,6 +11,9 @@ jobs:
   node-latest:
     runs-on: ubuntu-latest
     steps:
+    - name: Get yarn cache
+      id: yarn-cache
+      run: echo "::set-output name=dir::$(yarn cache dir)"
     - uses: actions/checkout@v1
     - name: Cache yarn
       uses: actions/cache@v1
@@ -37,6 +40,9 @@ jobs:
       matrix:
         node-version: [8.x, 10.x, 12.x]
     steps:
+    - name: Get yarn cache
+      id: yarn-cache
+      run: echo "::set-output name=dir::$(yarn cache dir)"
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
