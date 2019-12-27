@@ -22,7 +22,8 @@ jobs:
     - run: yarn
     - name: ls
       uses: jdickey/bash@master
-        - ls ~ -l
+      with:
+        args: ls ~ -l
     - run: yarn commitlint-circle
     - run: yarn lint
     - run: yarn build
