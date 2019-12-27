@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Cache node modules
+    - name: Cache yarn
       uses: actions/cache@v1
       with:
-        path: ~/.config/yarn/global
+        path: ${{ steps.yarn-cache.outputs.dir }}
         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-node-
@@ -42,10 +42,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Cache node modules
+    - name: Cache yarn
       uses: actions/cache@v1
       with:
-        path: ~/.config/yarn/global
+        path: ${{ steps.yarn-cache.outputs.dir }}
         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-node-
