@@ -25,10 +25,10 @@ npm install async-fp
 yarn add async-fp
 ```
 
-## Context
+## createContext
 
 It is common to pass in a context object containing dependencies used by the function.
-In some cases, the dependencies needs to be loaded asynchronously.
+In some cases, the dependencies needs to be loaded asynchronously. For example,
 
 - code is imported and loaded dynamically
 - some async work needs to be done before the dependency is available
@@ -63,7 +63,7 @@ async function someOtherFunc(
 ```
 
 - `createContext(context)`: Create a new async context object. The input can be an object (sync) or a `Promise` returning function (async).
-- `Context.set(context)`: Set context to a new value. This is used when `createContext()` is made by the producer while `set()` is called by consumer.
+- `Context.set(context)`: Set context tvalue. This is used when the context is created the producer while `set()` is called by consumer.
 - `Context.merge(context)`: Merge new context input to create a new async context object.
 - `Context.clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
 
