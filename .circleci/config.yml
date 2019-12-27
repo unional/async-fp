@@ -4,6 +4,9 @@ workflows:
   all:
     jobs:
       - node-latest
+      - node12:
+          requires:
+            - node-latest
       - node10:
           requires:
             - node-latest
