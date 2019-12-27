@@ -21,9 +21,8 @@ jobs:
           ${{ runner.os }}-node-
     - run: yarn
     - name: ls
-      uses: jdickey/bash@master
-      with:
-        args: ls ~ -l
+      run: |
+        ls ~ -l
     - run: yarn commitlint-circle
     - run: yarn lint
     - run: yarn build
