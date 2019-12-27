@@ -2,8 +2,8 @@ import { ContextNotSet } from './errors'
 
 export type Context<T> = {
   get(): Promise<T>,
-  set(context: T | (() => Promise<T>)): void
-  clear(): void
+  set(context: T | (() => Promise<T>)): void,
+  clear(): void,
   merge<R>(context: R | (() => Promise<R>)): Context<T & R>
 }
 

@@ -1,4 +1,4 @@
-import { ModuleError } from 'iso-error';
+import { ModuleError } from 'iso-error'
 
 export class ContextNotSet extends ModuleError {
   constructor() {

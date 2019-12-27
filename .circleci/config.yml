@@ -4,6 +4,9 @@ workflows:
   all:
     jobs:
       - node-latest
+      - node12:
+          requires:
+            - node-latest
       - node10:
           requires:
             - node-latest
@@ -16,6 +19,7 @@ workflows:
               only: master
           requires:
             - node-latest
+            - node12
             - node10
             - node8
 jobs:
@@ -27,7 +31,7 @@ jobs:
       - run: yarn verify
   node-latest:
     docker:
-      - image: circleci/node:11
+      - image: circleci/node:13
     steps:
       - checkout
       - restore_cache:
@@ -48,18 +52,31 @@ jobs:
           root: '.'
           paths:
             - node_modules
-      - run: yarn verify
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn dependency-check
+      - run: yarn coverage --maxWorkers=2
       - run: yarn codecov
       - store_test_results:
           path: .reports/junit
-  node10:
+  node12:
     docker:
-      - image: 'circleci/node:9'
+      - image: 'circleci/node:12'
     steps:
       - checkout
       - attach_workspace:
           at: '.'
-      - run: yarn verify
+      - run: yarn coverage --maxWorkers=2
+      - store_test_results:
+          path: .reports/junit
+  node10:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '.'
+      - run: yarn coverage --maxWorkers=2
       - store_test_results:
           path: .reports/junit
   node8:
@@ -69,12 +86,12 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - run: yarn verify
+      - run: yarn coverage --maxWorkers=2
       - store_test_results:
           path: .reports/junit
   release:
     docker:
-      - image: circleci/node:11
+      - image: circleci/node:13
     steps:
       - checkout
       - attach_workspace:

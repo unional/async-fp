@@ -1,6 +1,6 @@
-import a from 'assertron';
-import { IsoError } from 'iso-error';
-import { createContext } from '.';
+import a from 'assertron'
+import { IsoError } from 'iso-error'
+import { createContext } from '.'
 
 test('async context creation', async () => {
   const ctx = createContext(async () => ({ a: 1 }))
