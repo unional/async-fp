@@ -43,7 +43,7 @@
     }
   },
   "dependencies": {
-    "iso-error": "3.1.1"
+    "iso-error": "3.1.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
