@@ -3,8 +3,7 @@
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 
-[![Circle CI][circleci-image]][circleci-url]
-[![Travis CI][travis-image]][travis-url]
+[![Github NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
 [![Coveralls Status][coveralls-image]][coveralls-url]
 [![Codacy Badge][codacy-image]][codacy-url]
@@ -41,7 +40,7 @@ you need a mechanism to wait for the dependencies.
 ```ts
 import { createContext, Context } from 'async-fp'
 
-const ctx = createContext(async() => ({ io: await createIO(), ... }))
+const ctx = createContext(async () => ({ io: await createIO(), ... }))
 
 someFunc(ctx, 'hello world')
 
@@ -62,13 +61,11 @@ async function someOtherFunc(
 }
 ```
 
-- `createContext(context)`: Create a new async context object. The input can be an object (sync) or a `Promise` returning function (async).
-- `Context.set(context)`: Set context tvalue. This is used when the context is created the producer while `set()` is called by consumer.
-- `Context.merge(context)`: Merge new context input to create a new async context object.
+- `createContext<T>(context?: T | (() => T | Promise<T>))`: Create a new async context object.
+- `Context.set(context: T | (() => T | Promise<T>)`: Set context value. This is used when the context is created the producer while `set()` is called by consumer.
+- `Context.merge(context: T | (() => T | Promise<T>)`: Merge new context input to create a new async context object.
 - `Context.clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
 
-[circleci-image]: https://circleci.com/gh/unional/async-fp/tree/master.svg?style=shield
-[circleci-url]: https://circleci.com/gh/unional/async-fp/tree/master
 [codacy-image]: https://api.codacy.com/project/badge/Grade/569e678c65cf4481a172aaeb83b41aef
 [codacy-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
 [codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
@@ -77,14 +74,14 @@ async function someOtherFunc(
 [coveralls-url]: https://coveralls.io/github/unional/async-fp
 [downloads-image]: https://img.shields.io/npm/dm/async-fp.svg?style=flat
 [downloads-url]: https://npmjs.org/package/async-fp
+[github-nodejs]: https://github.com/unional/async-fp/workflows/Node%20CI/badge.svg
+[github-action-url]: https://github.com/unional/async-fp/actions
 [greenkeeper-image]: https://badges.greenkeeper.io/unional/async-fp.svg
 [greenkeeper-url]: https://greenkeeper.io/
 [npm-image]: https://img.shields.io/npm/v/async-fp.svg?style=flat
 [npm-url]: https://npmjs.org/package/async-fp
 [semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
-[travis-image]: https://travis-ci.com/unional/async-fp.svg?branch=master
-[travis-url]: https://travis-ci.com/unional/async-fp?branch=master
 [vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode-url]: https://code.visualstudio.com/
 [wallaby-image]: https://img.shields.io/badge/wallaby.js-configured-green.svg
