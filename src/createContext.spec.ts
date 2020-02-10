@@ -1,21 +1,7 @@
 import a from 'assertron'
-import { ContextNotSet, createContext, ContextAlreadySet } from '.'
+import { ContextAlreadySet, createContext } from '.'
 
-test('async context creation', async () => {
-  const ctx = createContext(async () => ({ a: 1 }))
-  const { a } = await ctx.get()
-
-  expect(a).toBe(1)
-})
-
-test('async context merge', async () => {
-  const ctx = createContext(async () => ({ a: 1 }))
-  const actual = ctx.merge(async () => ({ b: 'b' }))
-
-  expect(await actual.get()).toEqual({ a: 1, b: 'b' })
-})
-
-test('sync context creation', async () => {
+test('create context with context object', async () => {
   const ctx = createContext({ a: 1 })
 
   const { a } = await ctx.get()
@@ -23,22 +9,21 @@ test('sync context creation', async () => {
   expect(a).toBe(1)
 })
 
-test('sync context merge', async () => {
-  const ctx = createContext({ a: 1 })
-  const actual = ctx.merge({ b: 'b' })
+test('create context with initialize function', async () => {
+  const ctx = createContext(() => ({ a: 1 }))
+  const { a } = await ctx.get()
 
-  expect(await actual.get()).toEqual({ a: 1, b: 'b' })
+  expect(a).toBe(1)
 })
 
-test('async context set', async () => {
-  const ctx = createContext<{ a: number }>()
+test('create context with async initialize function', async () => {
+  const ctx = createContext(async () => ({ a: 1 }))
+  const { a } = await ctx.get()
 
-  ctx.set(async () => ({ a: 1 }))
-
-  expect(await ctx.get()).toEqual({ a: 1 })
+  expect(a).toBe(1)
 })
 
-test('sync context set', async () => {
+test('set context', async () => {
   const ctx = createContext<{ a: number }>()
 
   ctx.set({ a: 1 })
@@ -46,18 +31,54 @@ test('sync context set', async () => {
   expect(await ctx.get()).toEqual({ a: 1 })
 })
 
-test('get() rejects if context does not exist', async () => {
-  const ctx = createContext()
+test('set context with function', async () => {
+  const ctx = createContext<{ a: number }>()
 
-  a.throws(() => ctx.get(), ContextNotSet)
+  ctx.set(() => ({ a: 1 }))
+
+  expect(await ctx.get()).toEqual({ a: 1 })
 })
 
-test('clear() reverts context to unset state. This is used for testing', async () => {
+test('set context with async function', async () => {
+  const ctx = createContext<{ a: number }>()
+
+  ctx.set(async () => ({ a: 1 }))
+
+  expect(await ctx.get()).toEqual({ a: 1 })
+})
+
+test('merge context', async () => {
+  const ctx = createContext({ a: 1 })
+  const actual = ctx.merge({ b: 'b' })
+
+  expect(await actual.get()).toEqual({ a: 1, b: 'b' })
+})
+
+test('merge context with function', async () => {
+  const ctx = createContext({ a: 1 })
+  const actual = ctx.merge(() => ({ b: 'b' }))
+
+  expect(await actual.get()).toEqual({ a: 1, b: 'b' })
+})
+
+test('merge context with async function', async () => {
+  const ctx = createContext({ a: 1 })
+  const actual = ctx.merge(async () => ({ b: 'b' }))
+
+  expect(await actual.get()).toEqual({ a: 1, b: 'b' })
+})
+
+test('get() waits for set() with no initial context', async () => {
+  const ctx = createContext()
+  setImmediate(() => ctx.set({ a: 2 }))
+  const { a } = await ctx.get()
+  expect(a).toBe(2)
+})
+
+test('clear() reverts context to unset state so it can be set again. This is used for testing', async () => {
   const ctx = createContext({})
-
   ctx.clear()
-
-  a.throws(() => ctx.get(), ContextNotSet)
+  ctx.set({ a: 1 })
 })
 
 test('define context shape in type param', async () => {

@@ -1,29 +1,30 @@
-import { ContextNotSet, ContextAlreadySet } from './errors'
+import { ContextAlreadySet } from './errors'
 
 export type Context<T> = {
   get(): Promise<T>,
-  set(context: T | (() => Promise<T>)): void,
+  set(context: T | (() => T | Promise<T>)): void,
   clear(): void,
-  merge<R>(context: R | (() => Promise<R>)): Context<T & R>
+  merge<R>(context: R | (() => R | Promise<R>)): Context<T & R>
 }
 
-export function createContext<T extends Record<string | symbol, any>>(context?: (() => Promise<T>) | T): Context<T> {
-  let ready = typeof context === 'function' ?
-    (context as () => Promise<T>)() :
-    context ?
+export function createContext<T extends Record<string | symbol, any>>(context?: (() => T | Promise<T>) | T): Context<T> {
+  let accept: ((value?: T | PromiseLike<T> | undefined) => void) | undefined
+  let ready = context ?
+    typeof context === 'function' ?
+      (context as any)() :
       Promise.resolve(context) :
-      undefined
+    new Promise<T>(a => accept = a)
   return {
-    get() {
-      if (!ready) throw new ContextNotSet()
+    async get() {
       return ready
     },
-    set(context: T | (() => Promise<T>)) {
-      if (ready) throw new ContextAlreadySet()
-      ready = typeof context === 'function' ? (context as () => Promise<T>)() : Promise.resolve(context)
+    set(context: T | (() => T | Promise<T>)) {
+      if (accept === undefined) throw new ContextAlreadySet()
+      accept(typeof context === 'function' ? (context as any)() : context)
+      accept = undefined
     },
     clear() {
-      ready = undefined
+      ready = new Promise<T>(a => accept = a)
     },
     merge(context) {
       return createContext(async () => {
