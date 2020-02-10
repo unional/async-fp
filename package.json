@@ -48,7 +48,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/changelog": "^5.0.0",
     "@unional/devpkg-node": "^1.5.0",
     "assertron": "^7.1.2",
     "codecov": "^3.6.5",
@@ -58,6 +58,6 @@
     "semantic-release": "^17.0.2"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 10"
   }
 }
