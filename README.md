@@ -14,7 +14,7 @@
 [![Visual Studio Code][vscode-image]][vscode-url]
 [![Wallaby.js][wallaby-image]][wallaby-url]
 
-Support library for async functional programming.
+async functional programming library.
 
 ## Installation
 
@@ -24,7 +24,7 @@ npm install async-fp
 yarn add async-fp
 ```
 
-## createContext
+## AsyncContext
 
 It is common to pass in a context object containing dependencies used by the function.
 In some cases, the dependencies needs to be loaded asynchronously. For example,
@@ -35,16 +35,15 @@ In some cases, the dependencies needs to be loaded asynchronously. For example,
 When your code is invoked by other code where you cannot control its timing,
 you need a mechanism to wait for the dependencies.
 
-`createContext()` provides this mechanism.
-
 ```ts
-import { createContext, Context } from 'async-fp'
+import { AsyncContext } from 'async-fp'
 
-const ctx = createContext(async () => ({ io: await createIO(), ... }))
+const ctx = new AsyncContext()
 
 someFunc(ctx, 'hello world')
+ctx.set(async () => ({ io: await createIO() }))
 
-async function someFunc(context: Context<{ io: PartOfIO }>, msg: string) {
+async function someFunc(context: AsyncContext<{ io: PartOfIO }>, msg: string) {
   const { io } = await context.get()
   io.write(msg)
 
@@ -61,10 +60,10 @@ async function someOtherFunc(
 }
 ```
 
-- `createContext<T>(context?: T | (() => T | Promise<T>))`: Create a new async context object.
-- `Context.set(context: T | (() => T | Promise<T>)`: Set context value. This is used when the context is created the producer while `set()` is called by consumer.
-- `Context.merge(context: T | (() => T | Promise<T>)`: Merge new context input to create a new async context object.
-- `Context.clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
+- `new AsyncContext<T>(context?: T | (() => T | Promise<T>))`: Create a new async context object.
+- `AsyncContext#set(context: T | (() => T | Promise<T>)`: Set context value. This is used when the context is created the producer while `set()` is called by consumer.
+- `AsyncContext#merge(context: T | (() => T | Promise<T>)`: Merge new context input to create a new async context object.
+- `AsyncContext#clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
 
 [codacy-image]: https://api.codacy.com/project/badge/Grade/569e678c65cf4481a172aaeb83b41aef
 [codacy-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
