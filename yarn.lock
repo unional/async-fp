@@ -771,10 +771,10 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@semantic-release/changelog@^3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-3.0.6.tgz#9d68d68bf732cbba1034c028bb6720091f783b2a"
-  integrity sha512-9TqPL/VarLLj6WkUqbIqFiY3nwPmLuKFHy9fe/LamAW5s4MEW/ig9zW9vzYGOUVtWdErGJ1J62E3Edkamh3xaQ==
+"@semantic-release/changelog@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-5.0.0.tgz#3db43fc15d78267c5b3f3f9dd311ddb2a0f8596b"
+  integrity sha512-A1uKqWtQG4WX9Vh4QI5b2ddhqx1qAJFlbow8szSNiXn+TaJg15LSUA9NVqyu0VxQFy3hKUJYwbBHGRXCxCy2fg==
   dependencies:
     "@semantic-release/error" "^2.1.0"
     aggregate-error "^3.0.0"
@@ -4514,7 +4514,7 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-iso-error@3.2.1, iso-error@^3.2.1:
+iso-error@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/iso-error/-/iso-error-3.2.1.tgz#5ffe6e895e222d7aae376d251582c1dcf3155ee4"
   integrity sha512-+KxhFbakSs120mlo/+RjNfwEm2NpyTbQHDqwmmEV1ahkXZd2WzQx4gdqxNtwh2hTaxIVqjmPZLh/K3QDuvVMaA==
@@ -8758,6 +8758,13 @@ type-plus@^1.31.2, type-plus@^1.31.3:
   version "1.31.3"
   resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-1.31.3.tgz#8a947c91ff631a39625630998a7454cfdfb62911"
   integrity sha512-YIRqkrYaA8O2oPQtgpu/WRbUbevESxllmA+iay3tiKlhBQlti0nuAMHn6hX8Rj66Tcs22VtwHuif4i7EtHDVNg==
+  dependencies:
+    unpartial "^0.6.3"
+
+type-plus@^1.34.0:
+  version "1.34.0"
+  resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-1.34.0.tgz#cdeee61161465b251e02bba65c8c289b7b6b4960"
+  integrity sha512-TPsS3+1/p8fzAzZo0eZQKBESOTsEeHy9ZfLQzAxRUWeR7N4z+2e3lt6rUf87zXKJU7eLp4Eipl1i24v0B0rQXg==
   dependencies:
     unpartial "^0.6.3"
 

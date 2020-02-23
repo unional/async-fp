@@ -1,4 +1,4 @@
-import a from 'assertron'
+import a, { AssertOrder } from 'assertron'
 import { ContextAlreadySet, AsyncContext } from '.'
 
 test('create context with context object', async () => {
@@ -98,4 +98,40 @@ test('already set context cannot be set again', async () => {
     ctx.set({})
     ctx.set({})
   }, ContextAlreadySet)
+})
+
+test('lazy will resolve when invoking get()', async () => {
+  const o = new AssertOrder()
+  const ctx = new AsyncContext(() => {
+    o.once(2)
+    return Promise.resolve({ a: 1 })
+  }, { lazy: true })
+  o.once(1)
+  const actual = await ctx.get()
+  expect(actual).toEqual({ a: 1 })
+})
+
+test('lazy will not resolve context twice', async () => {
+  const o = new AssertOrder()
+  const ctx = new AsyncContext(() => {
+    o.once(2)
+    return Promise.resolve({ a: 1 })
+  }, { lazy: true })
+  o.once(1)
+  await ctx.get()
+  const actual = await ctx.get()
+  expect(actual).toEqual({ a: 1 })
+})
+
+test('lazy merge', async () => {
+  const o = new AssertOrder()
+  const ctx = new AsyncContext({ a: 1 })
+
+  const ctx2 = ctx.merge(() => {
+    o.once(2)
+    return Promise.resolve({ b: 2 })
+  }, { lazy: true })
+  o.once(1)
+  const actual = await ctx2.get()
+  expect(actual).toEqual({ a: 1, b: 2 })
 })
