@@ -33,7 +33,7 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
     this.ready = new Promise<T>(a => this.resolve = a)
   }
   merge<R extends Record<string | symbol, any>>(context: R | (() => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<T & R> {
-    return new AsyncContext(async () => ({ ...await resolveContext(context), ...await this.ready }), options)
+    return new AsyncContext(async () => ({ ...await resolveContext(context), ...await this.get() }), options)
   }
 }
 
