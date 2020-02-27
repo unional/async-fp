@@ -135,3 +135,10 @@ test('lazy merge', async () => {
   const actual = await ctx2.get()
   expect(actual).toEqual({ a: 1, b: 2 })
 })
+
+test('merge lazy context', async () => {
+  const ctx = new AsyncContext(() => ({ a: 1 }), { lazy: true })
+    .merge({ b: 2 })
+
+  expect(await ctx.get()).toEqual({ a: 1, b: 2 })
+})
