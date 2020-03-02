@@ -1,5 +1,6 @@
 import a, { AssertOrder } from 'assertron'
-import { ContextAlreadySet, AsyncContext } from '.'
+import { assertType } from 'type-plus'
+import { AsyncContext, ContextAlreadySet } from '.'
 
 test('create context with context object', async () => {
   const ctx = new AsyncContext({ a: 1 })
@@ -141,4 +142,20 @@ test('merge lazy context', async () => {
     .merge({ b: 2 })
 
   expect(await ctx.get()).toEqual({ a: 1, b: 2 })
+})
+
+test('merge overrides existing value', async () => {
+  const ctx = new AsyncContext({ a: 1 }).merge(() => ({ a: 2 }))
+  expect(await ctx.get()).toEqual({ a: 2 })
+})
+
+test('merge change types of existing property', async () => {
+  type Orig = { type: 'a' | 'b', value: string }
+  const ctx = new AsyncContext<Orig>({ type: 'a', value: '1' })
+    .merge(() => ({ value: 1 }))
+
+  const result = await ctx.get()
+
+  assertType<'a'|'b'>(result.type)
+  assertType.isNumber(result.value)
 })
