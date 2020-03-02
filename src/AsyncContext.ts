@@ -1,4 +1,4 @@
-import { required } from 'type-plus'
+import { required, LeftJoin } from 'type-plus'
 import { ContextAlreadySet } from './errors'
 
 export class AsyncContext<T extends Record<string | symbol, any>> {
@@ -32,8 +32,8 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
   clear() {
     this.ready = new Promise<T>(a => this.resolve = a)
   }
-  merge<R extends Record<string | symbol, any>>(context: R | (() => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<T & R> {
-    return new AsyncContext(async () => ({ ...await resolveContext(context), ...await this.get() }), options)
+  merge<R extends Record<string | symbol, any>>(context: R | (() => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T,R>> {
+    return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context) }), options)
   }
 }
 
