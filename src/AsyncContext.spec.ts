@@ -156,6 +156,16 @@ test('merge change types of existing property', async () => {
 
   const result = await ctx.get()
 
-  assertType<'a'|'b'>(result.type)
+  assertType<'a' | 'b'>(result.type)
   assertType.isNumber(result.value)
+})
+
+test('merge function receives current context for more better merge function reuse', async () => {
+  type Orig = { type: 'a' | 'b', value: number }
+
+  const orig = new AsyncContext<Orig>({ type: 'a', value: 1 })
+  const transform = async (context: AsyncContext<Orig>) => ({ value: String(await (await context.get()).value) })
+
+  const merged = orig.merge(transform)
+  expect(await merged.get()).toEqual({ type: 'a', value: '1' })
 })
