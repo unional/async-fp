@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "iso-error": "^3.2.1",
-    "type-plus": "^1.35.0"
+    "type-plus": "^1.35.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",

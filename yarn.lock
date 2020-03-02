@@ -9413,10 +9413,10 @@ type-plus@^1.31.2, type-plus@^1.31.3:
   dependencies:
     unpartial "^0.6.3"
 
-type-plus@^1.35.0:
-  version "1.35.0"
-  resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-1.35.0.tgz#c03e0a15388f1ba801f021d3112de650f511e39b"
-  integrity sha512-4ZUQ/QJzSz3QViioxDHiD7rA7KlfN27LM/y56Gl1ZfaveWRNAQhF3kEDIYL5Kq4eeYorCXNk9N+1jY55GfjzgA==
+type-plus@^1.35.1:
+  version "1.35.1"
+  resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-1.35.1.tgz#15e39a0922fdf08d8d24cc7d1a5d50d3273434de"
+  integrity sha512-El1yp4aLFVpOwU/emJRxqw7+OsA8gUWILnrS8Ln5rafvHSG5tHopvmQLIBPdkFfRk65ZBcipVlk3XcfkL36jng==
   dependencies:
     unpartial "^0.6.3"
 
