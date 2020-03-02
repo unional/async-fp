@@ -62,7 +62,7 @@ async function someOtherFunc(
 
 - `new AsyncContext<T>(context?: T | (() => T | Promise<T>))`: Create a new async context object.
 - `AsyncContext#set(context: T | (() => T | Promise<T>)`: Set context value. This is used when the context is created the producer while `set()` is called by consumer.
-- `AsyncContext#merge(context: T | (() => T | Promise<T>)`: Merge new context input to create a new async context object.
+- `AsyncContext#merge(context: T | ((currentContext) => T | Promise<T>)`: Merge new context input to create a new async context object.
 - `AsyncContext#clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
 
 [codacy-image]: https://api.codacy.com/project/badge/Grade/569e678c65cf4481a172aaeb83b41aef
