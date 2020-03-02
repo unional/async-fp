@@ -32,8 +32,8 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
   clear() {
     this.ready = new Promise<T>(a => this.resolve = a)
   }
-  merge<R extends Record<string | symbol, any>>(context: R | (() => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T,R>> {
-    return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context) }), options)
+  merge<R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T,R>> {
+    return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context, this) }), options)
   }
 }
 
@@ -46,6 +46,6 @@ export namespace AsyncContext {
   }
 }
 
-function resolveContext<T extends Record<string | symbol, any>>(context: T | (() => T | Promise<T>)) {
-  return typeof context === 'function' ? (context as any)() : context
+function resolveContext<T extends Record<string | symbol, any>, R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>), currentContext?: AsyncContext<T>) {
+  return typeof context === 'function' ? (context as any)(currentContext) : context
 }
