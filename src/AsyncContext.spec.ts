@@ -169,3 +169,13 @@ test('merge function receives current context for more better merge function reu
   const merged = orig.merge(transform)
   expect(await merged.get()).toEqual({ type: 'a', value: '1' })
 })
+
+test('transform creates a new context', async () => {
+  const ctx = new AsyncContext({ a: 1 })
+  const newCtx = ctx.transform(async original => {
+    expect(original).toBe(ctx)
+    const value = await original.get()
+    return { b: value.a + 1 }
+  })
+  expect(await newCtx.get()).toEqual({ b: 2 })
+})

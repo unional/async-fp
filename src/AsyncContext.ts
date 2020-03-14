@@ -32,8 +32,11 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
   clear() {
     this.ready = new Promise<T>(a => this.resolve = a)
   }
-  merge<R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T,R>> {
+  merge<R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T, R>> {
     return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context, this) }), options)
+  }
+  transform<R extends Record<string | symbol, any>>(handler: (context: AsyncContext<T>) => R | Promise<R>, options?: Partial<AsyncContext.Options>): AsyncContext<R> {
+    return new AsyncContext(resolveContext(handler, this), options)
   }
 }
 
