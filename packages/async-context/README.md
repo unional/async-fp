@@ -2,13 +2,11 @@
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
+[![Bundle size][bundlephobia-image]][bundlephobia-url]
 
-[![Github NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
 [![Codacy Grade Badge][codacy-grade]][codacy-grade-url]
 [![Codacy Coverage Badge][codacy-coverage]][codacy-coverage-url]
-
-[![Bundle size][bundlephobia-image]][bundlephobia-url]
 
 Secure, type safe, asynchronous context for functional programming.
 
@@ -26,7 +24,7 @@ you need a mechanism to wait for the dependencies.
 
 ```sh
 npm install @unional/async-context
-// or
+# or
 yarn add @unional/async-context
 ```
 
@@ -35,12 +33,15 @@ yarn add @unional/async-context
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
+const context = new AsyncContext({ config: 'async value' })
+const context = new AsyncContext(Promise.resolve({ config: 'async value' }))
+const context = new AsyncContext(() => ({ config: 'async value' }))
 const context = new AsyncContext(async () => ({ config: 'async value' }))
 
-await context.get() //=> { config: 'async value' }
+await context.get() // => { config: 'async value' }
 ```
 
-All handlers are not executed until the first `context.get()` is called.
+The handler is not executed until the first `context.get()` is called.
 
 ### Initialze
 
@@ -55,15 +56,20 @@ export const context = new AsyncContext<{ key: string }>()
 import { context } from './context'
 
 context.initialize({ key: 'secret key' })
+context.initialize(Promise.resolve({ key: 'secret key' }))
+context.initialize(() => ({ key: 'secret key' }))
+context.initialize(() => Promise.resolve({ key: 'secret key' }))
 ```
+
+The handler is not executed until the first `context.get()` is called.
 
 You can either initialize the context in the constructor,
 or by calling `initialize()` once.
 This prevents the context to be modified.
 
-Note that the data it contains are more frozen.
+Note that the data it contains are not frozen.
 If you want to protect them from tampering,
-use an immutable libraries such as [`immutable`](https://immutable-js.github.io/immutable-js/).
+use an immutable library such as [`immutable`](https://immutable-js.github.io/immutable-js/).
 
 ### Extend
 
@@ -73,7 +79,13 @@ You can extends a new context with new or replaced properties.
 import { AsyncContext } from '@unional/async-context'
 
 const ctx = new AsyncContext({ a: 1, b: 'b' })
-const newCtx = ctx.extend({ b: 2, c: 3 }) //=> { a: 1, b: 2, c: 3 }
+
+const newCtx = ctx.extend({ b: 2, c: 3 })
+const newCtx = ctx.extend(Promise.resolve({ b: 2, c: 3 }))
+const newCtx = ctx.extend(() => ({ b: 2, c: 3 }))
+const newCtx = ctx.extend(async () => ({ b: 2, c: 3 }))
+
+await newCtx.get() // => { a: 1, b: 2, c: 3 }
 ```
 
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
