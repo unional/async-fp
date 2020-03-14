@@ -76,12 +76,6 @@ test('get() waits for set() with no initial context', async () => {
   expect(a).toBe(2)
 })
 
-test('clear() reverts context to unset state so it can be set again. This is used for testing', async () => {
-  const ctx = new AsyncContext({})
-  ctx.clear()
-  ctx.set({ a: 1 })
-})
-
 test('define context shape in type param', async () => {
   const ctx = new AsyncContext<{ a: 1 }>()
   ctx.set({ a: 1 })

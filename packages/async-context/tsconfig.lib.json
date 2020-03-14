@@ -4,5 +4,8 @@
     "module": "commonjs",
     "outDir": "lib",
     "target": "es5"
-  }
+  },
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
 }

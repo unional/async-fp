@@ -7,15 +7,9 @@
     "moduleResolution": "node",
     "newLine": "LF",
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
+    "outDir": ".nowhere",
     "removeComments": false,
     "sourceMap": true,
     "strict": true
-  },
-  "include": [
-    "typings"
-  ],
-  "files": [
-    "src/index.ts"
-  ]
+  }
 }

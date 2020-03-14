@@ -1,0 +1,47 @@
+{
+  "name": "async-fp",
+  "version": "4.3.0",
+  "description": "Utility library for asynchronous functional programming",
+  "keywords": [
+    "async",
+    "context",
+    "dependency",
+    "functional",
+    "typescript"
+  ],
+  "homepage": "https://github.com/unional/async-fp/tree/master/packages/async-fp",
+  "bugs": {
+    "url": "https://github.com/unional/async-fp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unional/async-fp.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Homa Wong (unional)",
+    "email": "homawong@gmail.com"
+  },
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "module": "libm/index.js",
+  "jsnext:main": "libm/index.js",
+  "typings": "libm/index.d.ts",
+  "files": [
+    "lib",
+    "libm",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.libm.json",
+    "clean": "rimraf lib libm .tsbuildinfo",
+    "depcheck": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@unional/async-context": "^0.0.0"
+  },
+  "engines": {
+    "node": ">= 10"
+  }
+}
