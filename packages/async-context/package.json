@@ -1,0 +1,51 @@
+{
+  "name": "@unional/async-context",
+  "version": "0.0.0",
+  "description": "Asynchronous context for functional style programming",
+  "homepage": "https://github.com/unional/async-fp/packages/async-context",
+  "bugs": {
+    "url": "https://github.com/unional/async-fp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unional/async-fp.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Homa Wong (unional)",
+    "email": "homawong@gmail.com"
+  },
+  "keywords": [
+    "async",
+    "context",
+    "dependency",
+    "functional",
+    "typescript"
+  ],
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "module": "libm/index.js",
+  "jsnext:main": "libm/index.js",
+  "typings": "libm/index.d.ts",
+  "files": [
+    "lib",
+    "libm",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.libm.json",
+    "clean": "rimraf lib libm .tsbuildinfo",
+    "depcheck": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "iso-error": "^3.2.1",
+    "type-plus": "^1.35.1"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

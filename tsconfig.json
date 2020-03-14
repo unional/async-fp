@@ -1,11 +1,17 @@
 {
-  "extends": "./tsconfig.esnext.json",
-  "compilerOptions": {
-    "noEmit": true,
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ]
-  }
+  "files": [],
+  "references": [
+    {
+      "path": "packages/async-context/tsconfig.lib.json"
+    },
+    {
+      "path": "packages/async-context/tsconfig.libm.json"
+    },
+    {
+      "path": "packages/async-fp/tsconfig.lib.json"
+    },
+    {
+      "path": "packages/async-fp/tsconfig.libm.json"
+    }
+  ]
 }

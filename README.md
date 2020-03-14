@@ -1,88 +1,57 @@
-# async-fp
-
-[![NPM version][npm-image]][npm-url]
-[![NPM downloads][downloads-image]][downloads-url]
+# async-fp repository
 
 [![Github NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
-[![Coveralls Status][coveralls-image]][coveralls-url]
-[![Codacy Badge][codacy-image]][codacy-url]
+[![Codacy Grade Badge][codacy-grade]][codacy-grade-url]
+[![Codacy Coverage Badge][codacy-coverage]][codacy-coverage-url]
 
-[![Greenkeeper][greenkeeper-image]][greenkeeper-url]
-[![Semantic Release][semantic-release-image]][semantic-release-url]
+Repository for asynchronous function programming utilities.
 
-[![Visual Studio Code][vscode-image]][vscode-url]
-[![Wallaby.js][wallaby-image]][wallaby-url]
+## async-fp
 
-async functional programming library.
+[![NPM version][async-fp-npm-image]][async-fp-npm-url]
+[![NPM downloads][async-fp-downloads-image]][async-fp-downloads-url]
+[![Bundle size][async-fp-bundlephobia-image]][async-fp-bundlephobia-url]
 
-## Installation
+Collection of utilities for asynchronous functional style programming.
 
-```sh
-npm install async-fp
-// or
-yarn add async-fp
-```
+[README](https://github.com/unional/async-fp/tree/master/packages/async-fp)
 
-## AsyncContext
+## @unional/async-context
 
-It is common to pass in a context object containing dependencies used by the function.
-In some cases, the dependencies needs to be loaded asynchronously. For example,
+[![NPM version][async-context-npm-image]][async-context-npm-url]
+[![NPM downloads][async-context-downloads-image]][async-context-downloads-url]
+[![Bundle size][async-context-bundlephobia-image]][async-context-bundlephobia-url]
 
-- code is imported and loaded dynamically
-- some async work needs to be done before the dependency is available
-
-When your code is invoked by other code where you cannot control its timing,
-you need a mechanism to wait for the dependencies.
+Secure, type safe, asynchronous context for functional programming.
 
 ```ts
-import { AsyncContext } from 'async-fp'
+import { AsyncContext } from '@unional/async-context'
 
-const ctx = new AsyncContext()
+const context = new AsyncContext(async () => ({ config: 'async value' }))
 
-someFunc(ctx, 'hello world')
-ctx.set(async () => ({ io: await createIO() }))
-
-async function someFunc(context: AsyncContext<{ io: PartOfIO }>, msg: string) {
-  const { io } = await context.get()
-  io.write(msg)
-
-  someOtherFunc(context.merge(async () => ({ ui: await createUI() }), 'bye world')
-}
-
-async function someOtherFunc(
-  context: Context<{ io: AnotherPartOfIO, ui: SomeUI }>,
-  msg: string
-) {
-  const { io, ui } = await context.get()
-  const data = io.read()
-  ui.info(data, msg)
-}
+await context.get() //=> { config: 'async value' }
 ```
 
-- `new AsyncContext<T>(context?: T | (() => T | Promise<T>))`: Create a new async context object.
-- `AsyncContext.set(context: T | (() => T | Promise<T>)`: Set context value. This is used when the context is created the producer while `set()` is called by consumer.
-- `AsyncContext.transform<R>((currentContext) => R | Promise<R>)`: Transform the current context to a new one.
-- `AsyncContext.merge(context: T | ((currentContext) => T | Promise<T>))`: Merge new context input to create a new async context object.
-- `AsyncContext.clear()`: Clear the context as if the context is created with no context argument during creation or with `set()` method calls. Used mostly for testing.
+[README](https://github.com/unional/async-fp/tree/master/packages/async-context)
 
-[codacy-image]: https://api.codacy.com/project/badge/Grade/569e678c65cf4481a172aaeb83b41aef
-[codacy-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
+[async-context-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
+[async-context-bundlephobia-url]: https://bundlephobia.com/result?p=@unional/async-context
+[async-context-downloads-image]: https://img.shields.io/npm/dm/@unional/async-context.svg?style=flat
+[async-context-downloads-url]: https://npmjs.org/package/@unional/async-context
+[async-context-npm-image]: https://img.shields.io/npm/v/@unional/async-context.svg?style=flat
+[async-context-npm-url]: https://npmjs.org/package/@unional/async-context
+[async-fp-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/async-fp.svg
+[async-fp-bundlephobia-url]: https://bundlephobia.com/result?p=async-fp
+[async-fp-downloads-image]: https://img.shields.io/npm/dm/async-fp.svg?style=flat
+[async-fp-downloads-url]: https://npmjs.org/package/async-fp
+[async-fp-npm-image]: https://img.shields.io/npm/v/async-fp.svg?style=flat
+[async-fp-npm-url]: https://npmjs.org/package/async-fp
+[codacy-grade]: https://api.codacy.com/project/badge/Grade/707f89609508442486050d207ec5bd78
+[codacy-grade-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
+[codacy-coverage]: https://api.codacy.com/project/badge/Coverage/707f89609508442486050d207ec5bd78
+[codacy-coverage-url]: https://www.codacy.com/manual/homawong/async-fp?utm_source=github.com&utm_medium=referral&utm_content=unional/async-fp&utm_campaign=Badge_Coverage
 [codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/unional/async-fp
-[coveralls-image]: https://coveralls.io/repos/github/unional/async-fp/badge.svg
-[coveralls-url]: https://coveralls.io/github/unional/async-fp
-[downloads-image]: https://img.shields.io/npm/dm/async-fp.svg?style=flat
-[downloads-url]: https://npmjs.org/package/async-fp
-[github-nodejs]: https://github.com/unional/async-fp/workflows/Node%20CI/badge.svg
+[github-nodejs]: https://github.com/unional/async-fp/workflows/nodejs/badge.svg
 [github-action-url]: https://github.com/unional/async-fp/actions
-[greenkeeper-image]: https://badges.greenkeeper.io/unional/async-fp.svg
-[greenkeeper-url]: https://greenkeeper.io/
-[npm-image]: https://img.shields.io/npm/v/async-fp.svg?style=flat
-[npm-url]: https://npmjs.org/package/async-fp
-[semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
-[semantic-release-url]: https://github.com/semantic-release/semantic-release
-[vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
-[vscode-url]: https://code.visualstudio.com/
-[wallaby-image]: https://img.shields.io/badge/wallaby.js-configured-green.svg
-[wallaby-url]: https://wallabyjs.com

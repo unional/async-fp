@@ -29,9 +29,6 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
     this.resolve(resolveContext(context))
     this.resolve = undefined
   }
-  clear() {
-    this.ready = new Promise<T>(a => this.resolve = a)
-  }
   merge<R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>), options?: Partial<AsyncContext.Options>): AsyncContext<LeftJoin<T, R>> {
     return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context, this) }), options)
   }

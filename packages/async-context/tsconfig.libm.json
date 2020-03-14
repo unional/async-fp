@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
     "module": "esnext",
     "outDir": "libm",
-    "target": "esnext"
-  }
+    "target": "es2017"
+  },
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
 }

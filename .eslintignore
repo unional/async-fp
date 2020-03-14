@@ -1,5 +1,2 @@
+lib*
 node_modules
-dist*
-lib
-libm
-out*
