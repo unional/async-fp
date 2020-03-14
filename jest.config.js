@@ -4,7 +4,7 @@ module.exports = {
     '!<rootDir>/src/bin.[jt]s',
     '!<rootDir>/src/**/*.spec.*'
   ],
-  projects: ['<rootDir>/packages/*/jest.config.js'],
+  projects: ['packages/*/jest.config.js'],
   reporters: [
     'default',
     'jest-progress-tracker',
