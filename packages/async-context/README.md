@@ -17,9 +17,9 @@ it is common to pass in a context object containing dependencies used by the fun
 
 This is useful in many cases. For example,
 
-- [asynchronous code loading](#asynchronous-code-loading)
-- [asynchronous dependency replacement](#asynchronous-dependency-replacement)
-- [configuration injection](#configuration-injection)
+- [Just-in-time Dependency Loading](#just-in-time-dependency-loading)
+- [Chained Dependency Loading](#chained-dependency-loading)
+- [Configuration Injection](#configuration-injection)
 
 ## Installation
 
@@ -34,19 +34,29 @@ yarn add @unional/async-context
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
-const context = new AsyncContext({ config: 'async value' })
-const context = new AsyncContext(Promise.resolve({ config: 'async value' }))
-const context = new AsyncContext(() => ({ config: 'async value' }))
-const context = new AsyncContext(async () => ({ config: 'async value' }))
+const context = new AsyncContext({ key: 'secret key' })
+const context = new AsyncContext(Promise.resolve({ key: 'secret key' }))
+const context = new AsyncContext(() => ({ key: 'secret key' }))
+const context = new AsyncContext(async () => ({ key: 'secret key' }))
 
-await context.get() // => { config: 'async value' }
+await context.get() // => { key: 'secret key' }
 ```
 
-The handler is not executed until the first `context.get()` is called.
+The context value must be an object (`Record`).
+This allows the context to be [extended](#extend).
 
-### Initialze
+If you provide a handler,
+it will not be executed until the first `context.get()` is called.
+It allows you to wait for user input and change the value/dependency loaded.
+
+If you want to start loading the dependencies immediately,
+starts the loading and pass in a `Promise`.
+
+### Initialize
 
 You can create an `AsyncContext` and initialize it later.
+This allows you to create a context in one part of your system,
+and initialize it in another part.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
@@ -62,19 +72,17 @@ context.initialize(() => ({ key: 'secret key' }))
 context.initialize(() => Promise.resolve({ key: 'secret key' }))
 ```
 
-The handler is not executed until the first `context.get()` is called.
-
-You can either initialize the context in the constructor,
-or by calling `initialize()` once.
-This prevents the context to be modified.
+`initialize()` can only be called when you create the `AsyncContext` with empty constructor.
+And it can only be called once.
+This prevents the context to be replaced.
 
 Note that the data it contains are not frozen.
 If you want to protect them from tampering,
-use an immutable library such as [`immutable`](https://immutable-js.github.io/immutable-js/).
+you can use [`Object.freeze()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze) or immutable library such as [`immutable`](https://immutable-js.github.io/immutable-js/).
 
 ### Extend
 
-You can extends a new context with new or replaced properties.
+You can extends a new context with new or override properties.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
@@ -91,54 +99,68 @@ await newCtx.get() // => { a: 1, b: 2, c: 3 }
 
 ## Use Cases
 
-### Asynchronous Code Loading
+### Just-in-time Dependency Loading
+
+Since the handlers are delay executed,
+you can declare the dependencies you need,
+and load them only when the function is invoked.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
-const ctx = new AsyncContext(async () => ({
-  databaseClient: import(isBrowser ? './browserDb.js' : './nodeDb.js')
-}))
+function createSettingRoute(context: AsyncContext<IO>) {
+  return async (request, response) => {
+    const { io } = await context.get()
+    response(io.loadSetting())
+  }
+}
+
+addRoute('/setting', createSettingRoute(new AsyncContext(() => ({ io: createIO() }))))
 ```
 
-### Asynchronous Dependency Replacement
+### Chained Dependency Loading
+
+You can use `extend()` to chain asynchronous dependency loading.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
-const ctx = new AsyncContext({ io: createIO() })
+const ctx = new AsyncContext(() => ({ io: createIO() }))
 
-ctx.extends(async ctx => {
+ctx.extend(loadConfig).extend(loadPlugins)
+
+async function loadConfig(ctx: AsyncContext<{ io: IO }>) {
   const { io } = await ctx.get()
   return { config: await io.getConfig() }
-})
+}
+
+async function loadPlugins(ctx: AsyncContext<{ config: Config, io: IO }>) {
+  const { config, io } = await ctx.get()
+  return { plugins: await Promise.all(config.plugins.map(p => loadPlugin(io, p)) }
+}
 ```
 
 ### Configuration Injection
 
+You can wait for user input.
+
 ```ts
 import { AsyncContext } from '@unional/async-context'
-import { store } from './store'
 
-const ctx = new AsyncContext()
+let configure: (value: any | PromiseLike<any>) => void
+const configuring = new Promise(a => configure = a)
 
-ctx.initialize(() => ({
-  config: store.value.config
-}))
-
-function config(options) {
-  store.value.config = options
-}
+const ctx = new AsyncContext(configuring)
 
 async function doWork(ctx: AsyncContext) {
-  const { config } = await ctx.get() // will wait and get the config once user calls `config()`
+  const { config } = await ctx.get() // will wait for `configure()`
   ...
 }
 
 doWork(ctx)
 
 // call by user after application starts
-config({ ... })
+configure({ ... })
 ```
 
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
