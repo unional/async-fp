@@ -35,7 +35,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.libm.json",
     "clean": "rimraf lib libm .tsbuildinfo",
-    "depcheck": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
+    "depcheck": "dependency-check . --unused --no-dev -i type-plus && dependency-check . --missing --no-dev",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
