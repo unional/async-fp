@@ -8,13 +8,13 @@
 [![Codacy Grade Badge][codacy-grade]][codacy-grade-url]
 [![Codacy Coverage Badge][codacy-coverage]][codacy-coverage-url]
 
-Collection of utilities for asynchronous functional style programming.
+Collection of utilities for asynchronous functional programming.
 
 ## Installation
 
 ```sh
 npm install async-fp
-// or
+# or
 yarn add async-fp
 ```
 
@@ -23,9 +23,9 @@ yarn add async-fp
 ```ts
 import { AsyncContext } from 'async-fp'
 
-const context = new AsyncContext(async () => ({ config: 'async value' })
+const context = new AsyncContext(async () => ({ config: 'async value' }))
 
-await context.get() //=> { config: 'async value' }
+await context.get() // => { config: 'async value' }
 ```
 
 From: [`@unional/async-context`](https://github.com/unional/async-fp/tree/master/packages/async-context)
