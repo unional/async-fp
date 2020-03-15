@@ -85,13 +85,15 @@ jobs:
       - test
     steps:
       - uses: actions/checkout@v2
-      # - name: Git Identity
-      #   run: |
-      #     git config --global user.name $GITHUB_ACTOR
-      #     git config --global user.email 'homawong@gmail.com'
-      #     git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: git remote
+        run: git remote -v
+      - name: Git Identity
+        run: |
+          git config --global user.name $GITHUB_ACTOR
+          git config --global user.email 'homawong@gmail.com'
+          git remote set-url origin ssh://git@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: setup yarn-cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
