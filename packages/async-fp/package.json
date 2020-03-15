@@ -1,6 +1,6 @@
 {
   "name": "async-fp",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Utility library for asynchronous functional programming",
   "keywords": [
     "async",
@@ -39,7 +39,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@unional/async-context": "^1.0.0"
+    "@unional/async-context": "^1.0.1"
   },
   "engines": {
     "node": ">= 10"
