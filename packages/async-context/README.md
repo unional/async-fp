@@ -10,15 +10,16 @@
 
 Secure, type safe, asynchronous context for functional programming.
 
-It is common to pass in a context object containing dependencies used by the function.
-In some cases, the dependencies need to be loaded asynchronously. For example,
+In functional programming,
+it is common to pass in a context object containing dependencies used by the function.
 
-- code is imported and loaded dynamically
-- some async work needs to be done before the dependency is available
-- need to wait for user configuration
+`AsyncContext` allow these dependencies to be loaded asynchronously.
 
-When your code is invoked by other code where you cannot control its timing,
-you need a mechanism to wait for the dependencies.
+This is useful in many cases. For example,
+
+- [asynchronous code loading](#asynchronous-code-loading)
+- [asynchronous dependency replacement](#asynchronous-dependency-replacement)
+- [configuration injection](#configuration-injection)
 
 ## Installation
 
@@ -86,6 +87,58 @@ const newCtx = ctx.extend(() => ({ b: 2, c: 3 }))
 const newCtx = ctx.extend(async () => ({ b: 2, c: 3 }))
 
 await newCtx.get() // => { a: 1, b: 2, c: 3 }
+```
+
+## Use Cases
+
+### Asynchronous Code Loading
+
+```ts
+import { AsyncContext } from '@unional/async-context'
+
+const ctx = new AsyncContext(async () => ({
+  databaseClient: import(isBrowser ? './browserDb.js' : './nodeDb.js')
+}))
+```
+
+### Asynchronous Dependency Replacement
+
+```ts
+import { AsyncContext } from '@unional/async-context'
+
+const ctx = new AsyncContext({ io: createIO() })
+
+ctx.extends(async ctx => {
+  const { io } = await ctx.get()
+  return { config: await io.getConfig() }
+})
+```
+
+### Configuration Injection
+
+```ts
+import { AsyncContext } from '@unional/async-context'
+import { store } from './store'
+
+const ctx = new AsyncContext()
+
+ctx.initialize(() => ({
+  config: store.value.config
+}))
+
+function config(options) {
+  store.value.config = options
+}
+
+async function doWork(ctx: AsyncContext) {
+  const { config } = await ctx.get() // will wait and get the config once user calls `config()`
+  ...
+}
+
+doWork(ctx)
+
+// call by user after application starts
+config({ ... })
 ```
 
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
