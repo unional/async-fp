@@ -35,6 +35,19 @@ await context.get() //=> { config: 'async value' }
 
 [learn more here](https://github.com/unional/async-fp/tree/master/packages/async-context)
 
+## Release management
+
+Using <https://github.com/atlassian/changesets>.
+
+Will fill out more details when I flush out the workflow.
+
+Current assumption:
+
+When submitting PR, run `yarn changeset` to indicate what are the proper version bumps.
+After the PR is accepted, a release PR will be created or updated.
+
+When ready to release, accept the release PR.
+
 [async-context-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
 [async-context-bundlephobia-url]: https://bundlephobia.com/result?p=@unional/async-context
 [async-context-downloads-image]: https://img.shields.io/npm/dm/@unional/async-context.svg?style=flat
