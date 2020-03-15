@@ -13,9 +13,9 @@ Repository for asynchronous function programming utilities.
 [![NPM downloads][async-fp-downloads-image]][async-fp-downloads-url]
 [![Bundle size][async-fp-bundlephobia-image]][async-fp-bundlephobia-url]
 
-Collection of utilities for asynchronous functional style programming.
+Collection of utilities for asynchronous functional programming.
 
-[README](https://github.com/unional/async-fp/tree/master/packages/async-fp)
+[learn more here](https://github.com/unional/async-fp/tree/master/packages/async-fp)
 
 ## @unional/async-context
 
@@ -33,7 +33,7 @@ const context = new AsyncContext(async () => ({ config: 'async value' }))
 await context.get() //=> { config: 'async value' }
 ```
 
-[README](https://github.com/unional/async-fp/tree/master/packages/async-context)
+[learn more here](https://github.com/unional/async-fp/tree/master/packages/async-context)
 
 [async-context-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
 [async-context-bundlephobia-url]: https://bundlephobia.com/result?p=@unional/async-context
