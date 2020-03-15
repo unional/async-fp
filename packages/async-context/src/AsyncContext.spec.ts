@@ -1,7 +1,6 @@
 import a, { AssertOrder } from 'assertron'
 import { assertType, assignability } from 'type-plus'
-import { AsyncContext } from './AsyncContext'
-import { ContextAlreadyInitialized } from './errors'
+import { AsyncContext, ContextAlreadyInitialized } from '.'
 
 describe('constructor', () => {
   test('with object', async () => {
