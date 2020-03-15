@@ -14,7 +14,7 @@ export class AsyncContext<T extends Record<string | symbol, any>> {
     this.context = context
     if (this.resolve) this.resolve(resolveContext(context))
   }
-  extend<R extends Record<string | symbol, any>>(context: R | ((context: AsyncContext<T>) => R | Promise<R>)): AsyncContext<LeftJoin<T, R>> {
+  extend<R extends Record<string | symbol, any>>(context: R | Promise<R> | ((context: AsyncContext<T>) => R | Promise<R>)): AsyncContext<LeftJoin<T, R>> {
     return new AsyncContext(async () => ({ ...await this.get(), ...await resolveContext(context, this) }))
   }
 }

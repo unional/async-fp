@@ -131,6 +131,13 @@ describe('extend()', () => {
     expect(await actual.get()).toEqual({ a: 1, b: 'b' })
   })
 
+  test('with promise', async () => {
+    const ctx = new AsyncContext({ a: 1 })
+    const actual = ctx.extend(Promise.resolve({ b: 'b' }))
+
+    expect(await actual.get()).toEqual({ a: 1, b: 'b' })
+  })
+
   test('with function', async () => {
     const ctx = new AsyncContext({ a: 1 })
     const actual = ctx.extend(() => ({ b: 'b' }))
@@ -149,6 +156,7 @@ describe('extend()', () => {
     const ctx = new AsyncContext({ a: 1 }).extend(() => ({ a: 2 }))
     expect(await ctx.get()).toEqual({ a: 2 })
   })
+
   test('change types of existing property', async () => {
     type Orig = { type: 'a' | 'b', value: string }
     const ctx = new AsyncContext<Orig>({ type: 'a', value: '1' })
