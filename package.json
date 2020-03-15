@@ -15,7 +15,7 @@
     "lint": "eslint --ext=ts .",
     "ncu": "echo npm-check-updates && ncu -u && lerna exec ncu -- -u",
     "nuke": "yarn clean && yarn lerna clean -y && rimraf node_modules",
-    "release": "lerna publish --amend",
+    "release": "yarn build && yarn changeset publish",
     "test": "jest --maxWorkers=60%",
     "test:watch": "jest --watch --maxWorkers=60%",
     "verify": "yarn lint && yarn build && yarn depcheck && yarn coverage",

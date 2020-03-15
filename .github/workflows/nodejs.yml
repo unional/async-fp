@@ -85,15 +85,8 @@ jobs:
       - test
     steps:
       - uses: actions/checkout@v2
-        # with:
-        #   ref: master
-      - name: Git Identity
-        run: |
-          git config --global user.name 'unional'
-          git config --global user.email 'homawong@gmail.com'
-          git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          fetch-depth: 0
       - name: setup yarn-cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -110,17 +103,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn
-      - run: yarn build
-      - name: Authenticate with Registry
-        run: |
-            yarn logout
-            echo "registry=http://registry.npmjs.org/" >> .npmrc
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
-            npm whoami
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@master
+        with:
+          # this expects you to have a script called release which does a build for your packages and calls changeset publish
+          publish: yarn release
         env:
-            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn lerna publish --yes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
