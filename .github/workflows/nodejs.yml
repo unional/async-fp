@@ -117,7 +117,7 @@ jobs:
             npm whoami
         env:
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn lerna publish --git-remote
+      - run: yarn lerna publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
