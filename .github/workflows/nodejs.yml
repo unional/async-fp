@@ -94,6 +94,8 @@ jobs:
           git remote set-url origin ssh://git@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: git remote
+        run: git remote -v
       - name: setup yarn-cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
