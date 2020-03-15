@@ -1,6 +1,6 @@
 {
   "name": "@unional/async-context",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Asynchronous context for functional style programming",
   "homepage": "https://github.com/unional/async-fp/packages/async-context",
   "bugs": {
