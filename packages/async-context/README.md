@@ -17,6 +17,7 @@ it is common to pass in a context object containing dependencies used by the fun
 
 This is useful in many cases. For example,
 
+<!-- no toc -->
 - [Just-in-time Dependency Loading](#just-in-time-dependency-loading)
 - [Chained Dependency Loading](#chained-dependency-loading)
 - [Configuration Injection](#configuration-injection)
