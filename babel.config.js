@@ -8,7 +8,9 @@ module.exports = {
         },
       },
     ],
-    '@babel/preset-typescript',
+    ['@babel/preset-typescript', {
+      'allow-namespace': true
+    }],
   ],
   plugins: [
     '@babel/plugin-proposal-optional-chaining',

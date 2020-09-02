@@ -39,7 +39,7 @@
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "iso-error": "^3.2.1",
+    "iso-error": "^3.2.5",
     "type-plus": "^1.35.1"
   },
   "engines": {
