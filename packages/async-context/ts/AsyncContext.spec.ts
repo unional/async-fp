@@ -1,5 +1,5 @@
 import a, { AssertOrder } from 'assertron'
-import { assertType, assignability } from 'type-plus'
+import { assertType, canAssign, isType } from 'type-plus'
 import { AsyncContext, ContextAlreadyInitialized } from '.'
 
 describe('constructor', () => {
@@ -27,7 +27,7 @@ describe('constructor', () => {
   })
 
   test('with async initialize function', async () => {
-    const ctx = new AsyncContext(async () => ({ a: 1 }))
+    const ctx = new AsyncContext(async () => Promise.resolve({ a: 1 }))
     const { a } = await ctx.get()
 
     expect(a).toBe(1)
@@ -46,7 +46,7 @@ describe('constructor', () => {
     o.end()
   })
 
-  test('intialize function is not called until first get()', async () => {
+  test('initialize function is not called until first get()', () => {
     new AsyncContext(() => { throw new Error('should not reach') })
   })
 })
@@ -57,7 +57,7 @@ describe('initialize()', () => {
     ctx.initialize({ a: 'a' })
     const { a } = await ctx.get()
 
-    assertType.isTrue(assignability<string>()(a))
+    isType.t(canAssign<string>()(a))
     expect(a).toBe('a')
   })
 
@@ -91,7 +91,7 @@ describe('initialize()', () => {
   test('with async initialize function', async () => {
     const ctx = new AsyncContext()
 
-    ctx.initialize(async () => ({ a: 1 }))
+    ctx.initialize(async () => Promise.resolve({ a: 1 }))
     const { a } = await ctx.get()
 
     expect(a).toBe(1)
@@ -117,7 +117,7 @@ describe('initialize()', () => {
     a.throws(() => ctx.initialize({ a: 2 }), ContextAlreadyInitialized)
   })
 
-  test('intialize function is not called until first get()', async () => {
+  test('initialize function is not called until first get()', () => {
     const ctx = new AsyncContext()
     ctx.initialize(() => { throw new Error('should not reach') })
   })
@@ -147,7 +147,7 @@ describe('extend()', () => {
 
   test('with async function', async () => {
     const ctx = new AsyncContext({ a: 1 })
-    const actual = ctx.extend(async () => ({ b: 'b' }))
+    const actual = ctx.extend(async () => Promise.resolve({ b: 'b' }))
 
     expect(await actual.get()).toEqual({ a: 1, b: 'b' })
   })
@@ -172,7 +172,7 @@ describe('extend()', () => {
     type Orig = { type: 'a' | 'b', value: number }
 
     const orig = new AsyncContext<Orig>({ type: 'a', value: 1 })
-    const transform = async (context: AsyncContext<Orig>) => ({ value: String(await (await context.get()).value) })
+    const transform = async (context: AsyncContext<Orig>) => ({ value: String((await context.get()).value) })
 
     const merged = orig.extend(transform)
     expect(await merged.get()).toEqual({ type: 'a', value: '1' })

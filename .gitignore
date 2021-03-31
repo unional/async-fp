@@ -44,6 +44,6 @@ node_modules
 
 # project folders
 .nowhere
-.tsbuildInfo
+*.tsbuildInfo
 cjs
 esm

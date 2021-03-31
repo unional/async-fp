@@ -5,11 +5,6 @@ module.exports = {
     '!<rootDir>/ts/**/*.spec.*'
   ],
   projects: ['packages/*'],
-  reporters: [
-    'default',
-    'jest-progress-tracker',
-    ['jest-audio-reporter', { volume: 0.3 }],
-  ],
   watchPlugins: [
     'jest-watch-suspend',
     'jest-watch-repeat',
