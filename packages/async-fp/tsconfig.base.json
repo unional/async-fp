@@ -1,8 +1,7 @@
 {
   "extends": "../../.typescript/tsconfig.setting.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "rootDir": "ts"
   },
   "references": [
     {
@@ -10,7 +9,7 @@
     }
   ],
   "include": [
-    "src",
+    "ts",
     "typings"
   ]
 }

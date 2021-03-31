@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        node-version: [10, 12]
+        node-version: [10, 12, 14]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -67,15 +67,15 @@ jobs:
       - run: yarn
       - run: yarn test --coverage --maxWorkers=2
       - name: codecov
-        if: matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
+        if: matrix.node-version == 14 && matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: codacy
-        if: matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
-        run: cat coverage/lcov.info | yarn codacy-coverage
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        if: matrix.node-version == 14 && matrix.os == 'ubuntu-latest' && github.repository == 'unional/async-fp'
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
   release:
     name: release
     runs-on: ubuntu-latest
