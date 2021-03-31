@@ -2,10 +2,11 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
-    "outDir": "lib",
-    "target": "es5"
+    "outDir": "cjs",
+    "target": "es5",
+    "tsBuildInfoFile": ".tsbuildinfo"
   },
   "exclude": [
-    "src/**/*.spec.ts"
+    "ts/**/*.spec.ts"
   ]
 }

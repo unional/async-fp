@@ -1,8 +1,8 @@
 module.exports = {
   moduleNameMapper: {
-    '^@unional/async-context': '<rootDir>/../async-context/src',
+    '^@unional/async-context': '<rootDir>/../async-context/ts',
   },
   roots: [
-    '<rootDir>/src'
+    '<rootDir>/ts'
   ],
 }

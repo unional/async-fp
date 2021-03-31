@@ -5,5 +5,14 @@
     "**/bower_components": true,
     "**/*.code-search": true,
     "**/.tsbuildinfo": true
-  }
+  },
+  "cSpell.words": [
+    "depcheck",
+    "lerna",
+    "macos",
+    "npmjs",
+    "npmrc",
+    "testname",
+    "whoami"
+  ]
 }

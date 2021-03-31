@@ -23,18 +23,18 @@
     "email": "homawong@gmail.com"
   },
   "sideEffects": false,
-  "main": "lib/index.js",
-  "module": "libm/index.js",
-  "jsnext:main": "libm/index.js",
-  "typings": "libm/index.d.ts",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "jsnext:main": "esm/index.js",
+  "typings": "esm/index.d.ts",
   "files": [
-    "lib",
-    "libm",
-    "src"
+    "cjs",
+    "esm",
+    "ts"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.libm.json",
-    "clean": "rimraf lib libm .tsbuildinfo",
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "clean": "rimraf cjs esm .tsbuildinfo",
     "depcheck": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
     "prepublishOnly": "yarn build"
   },
