@@ -34,12 +34,13 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
-    "clean": "rimraf cjs esm .tsbuildinfo",
+    "clean": "rimraf cjs esm tsconfig.*.tsbuildinfo",
     "depcheck": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "@unional/async-context": "^1.0.3"
+    "@unional/async-context": "^1.0.3",
+    "type-plus": "^3.11.0"
   },
   "engines": {
     "node": ">= 10"

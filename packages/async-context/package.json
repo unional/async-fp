@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
-    "clean": "rimraf cjs esm .tsbuildinfo",
+    "clean": "rimraf cjs esm tsconfig.*.tsbuildinfo",
     "depcheck": "dependency-check . --unused --no-dev -i type-plus && dependency-check . --missing --no-dev",
     "prepublishOnly": "yarn build"
   },
