@@ -1,6 +1,9 @@
 {
-  "extends": "../../.typescript/tsconfig.setting.json",
+  "extends": "../../.config/tsconfig.setting.json",
   "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "Node",
+    "outDir": "esm",
     "rootDir": "ts"
   },
   "references": [

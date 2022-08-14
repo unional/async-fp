@@ -1,0 +1,6 @@
+ignores:
+  - '@size-limit/preset-small-lib'
+  - '@types/node'
+  - '@typescript-eslint/parser'
+  - ts-jest
+  - tslib

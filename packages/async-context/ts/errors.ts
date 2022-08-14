@@ -1,7 +1,7 @@
-import { ModuleError } from 'iso-error'
+import { IsoError, ModuleError } from 'iso-error'
 
 export class ContextAlreadyInitialized extends ModuleError {
-  constructor() {
-    super('@unional/async-context', 'context can only be initialized once.')
+  constructor(options?: IsoError.Options) {
+    super('@unional/async-context', 'context can only be initialized once.', options)
   }
 }

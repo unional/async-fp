@@ -1,4 +1,4 @@
-import a, { AssertOrder } from 'assertron'
+import { a, AssertOrder } from 'assertron'
 import { assertType, canAssign, isType } from 'type-plus'
 import { AsyncContext, ContextAlreadyInitialized } from '.'
 
