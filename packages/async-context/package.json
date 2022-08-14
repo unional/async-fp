@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "iso-error": "^3.2.5",
-    "type-plus": "^3.11.0"
+    "type-plus": "^4.11.1"
   },
   "engines": {
     "node": ">= 10"
