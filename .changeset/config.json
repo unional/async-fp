@@ -1,8 +1,13 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@1.0.0/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config@2.1.1/schema.json",
   "changelog": "@changesets/cli/changelog",
-  "commit": false,
+  "commit": [
+    "./commit.cjs",
+    {
+      "skipCI": "version"
+    }
+  ],
   "linked": [],
-  "access": "restricted",
-  "baseBranch": "master"
+  "access": "public",
+  "baseBranch": "main"
 }
