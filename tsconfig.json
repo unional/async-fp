@@ -2,16 +2,10 @@
   "files": [],
   "references": [
     {
-      "path": "packages/async-context/tsconfig.cjs.json"
+      "path": "packages/async-context"
     },
     {
-      "path": "packages/async-context/tsconfig.esm.json"
-    },
-    {
-      "path": "packages/async-fp/tsconfig.cjs.json"
-    },
-    {
-      "path": "packages/async-fp/tsconfig.esm.json"
+      "path": "packages/async-fp"
     }
   ]
 }

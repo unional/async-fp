@@ -1,7 +1,7 @@
-const base = require('./jest.config.base')
+import ts from './jest.base.mjs'
 
-module.exports = {
-  ...base,
+export default {
+  ...ts,
   testEnvironment: 'node',
   testMatch: ['**/?*.(spec|test|integrate|accept|system|unit).[jt]s?(x)'],
 }
