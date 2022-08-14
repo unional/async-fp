@@ -12,6 +12,7 @@
     "build:watch": "tsc -b -w",
     "clean": "turbo run clean && rimraf .progress .report coverage",
     "coverage": "jest --coverage --maxWorkers=60%",
+    "cs": "changeset",
     "depcheck": "turbo run depcheck",
     "lint": "eslint",
     "ncu": "echo npm-check-updates && ncu -u && lerna exec ncu -- -u",
@@ -19,11 +20,12 @@
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
     "prepare": "husky install",
-    "release": "pnpm build && pnpm changeset publish",
+    "publish": "pnpm publish -r && changeset tag",
     "size": "turbo run size",
     "test": "jest --maxWorkers=60%",
     "test:watch": "jest --watch --maxWorkers=60%",
     "verify": "turbo run lint build coverage depcheck",
+    "version": "changeset version",
     "watch": "pnpm test:watch"
   },
   "husky": {
