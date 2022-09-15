@@ -5,8 +5,6 @@
 [![Bundle size][bundlephobia-image]][bundlephobia-url]
 
 [![Codecov][codecov-image]][codecov-url]
-[![Codacy Grade Badge][codacy-grade]][codacy-grade-url]
-[![Codacy Coverage Badge][codacy-coverage]][codacy-coverage-url]
 
 Secure, type safe, asynchronous context for functional programming.
 
@@ -24,10 +22,24 @@ This is useful in many cases. For example,
 
 ## Installation
 
+This is part of [`async-fp`](../async-fp/README.md).
+
+Typically, you will install that instead of installing `@unional/async-context` directly.
+
+But if you want, you can:
+
 ```sh
+# npm
 npm install @unional/async-context
-# or
+
+# yarn
 yarn add @unional/async-context
+
+# pnpm
+pnpm install @unional/async-context
+
+#rush
+rush add -p @unional/async-context
 ```
 
 ## Usage
@@ -35,9 +47,9 @@ yarn add @unional/async-context
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
-const context = new AsyncContext({ key: 'secret key' })
-const context = new AsyncContext(Promise.resolve({ key: 'secret key' }))
-const context = new AsyncContext(() => ({ key: 'secret key' }))
+const context = new AsyncContext({ key: 'secret key' }) // or
+const context = new AsyncContext(Promise.resolve({ key: 'secret key' })) // or
+const context = new AsyncContext(() => ({ key: 'secret key' })) // or
 const context = new AsyncContext(async () => ({ key: 'secret key' }))
 
 await context.get() // => { key: 'secret key' }
@@ -48,16 +60,16 @@ This allows the context to be [extended](#extend).
 
 If you provide a handler,
 it will not be executed until the first `context.get()` is called.
-It allows you to wait for user input and change the value/dependency loaded.
+It allows you to wait for user input and change the values/dependencies loaded.
 
 If you want to start loading the dependencies immediately,
-starts the loading and pass in a `Promise`.
+starts the loading and pass in the resulting `Promise`.
 
 ### Initialize
 
-You can create an `AsyncContext` and initialize it later.
+You can create a `AsyncContext` and initialize it later.
 This allows you to create a context in one part of your system,
-and initialize it in another part.
+and initialize it in another.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
@@ -67,9 +79,9 @@ export const context = new AsyncContext<{ key: string }>()
 // in another file
 import { context } from './context'
 
-context.initialize({ key: 'secret key' })
-context.initialize(Promise.resolve({ key: 'secret key' }))
-context.initialize(() => ({ key: 'secret key' }))
+context.initialize({ key: 'secret key' }) // or
+context.initialize(Promise.resolve({ key: 'secret key' })) // or
+context.initialize(() => ({ key: 'secret key' })) // or
 context.initialize(() => Promise.resolve({ key: 'secret key' }))
 ```
 
@@ -83,7 +95,7 @@ you can use [`Object.freeze()`](https://developer.mozilla.org/en-US/docs/Web/Jav
 
 ### Extend
 
-You can extends a new context with new or override properties.
+You can extend a new context with new or override properties.
 
 ```ts
 import { AsyncContext } from '@unional/async-context'
@@ -166,15 +178,9 @@ configure({ ... })
 
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
 [bundlephobia-url]: https://bundlephobia.com/result?p=@unional/async-context
-[codacy-grade]: https://api.codacy.com/project/badge/Grade/707f89609508442486050d207ec5bd78
-[codacy-grade-url]: https://www.codacy.com/app/homawong/async-fp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=unional/async-fp&amp;utm_campaign=Badge_Grade
-[codacy-coverage]: https://api.codacy.com/project/badge/Coverage/707f89609508442486050d207ec5bd78
-[codacy-coverage-url]: https://www.codacy.com/manual/homawong/async-fp?utm_source=github.com&utm_medium=referral&utm_content=unional/async-fp&utm_campaign=Badge_Coverage
 [codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/unional/async-fp
 [downloads-image]: https://img.shields.io/npm/dm/@unional/async-context.svg?style=flat
 [downloads-url]: https://npmjs.org/package/@unional/async-context
-[github-nodejs]: https://github.com/unional/async-fp/workflows/Node%20CI/badge.svg
-[github-action-url]: https://github.com/unional/async-fp/actions
 [npm-image]: https://img.shields.io/npm/v/@unional/async-context.svg?style=flat
 [npm-url]: https://npmjs.org/package/@unional/async-context
