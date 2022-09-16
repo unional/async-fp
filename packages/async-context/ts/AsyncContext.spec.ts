@@ -1,36 +1,41 @@
 import { a, AssertOrder } from 'assertron'
-import { assertType, canAssign, isType } from 'type-plus'
+import { assertType } from 'type-plus'
 import { AsyncContext, ContextAlreadyInitialized } from '.'
 
 describe('constructor', () => {
   test('with object', async () => {
     const ctx = new AsyncContext({ a: 1 })
 
-    const { a } = await ctx.get()
+    const a = await ctx.get()
 
-    expect(a).toBe(1)
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
   })
 
   test('with Promise', async () => {
     const ctx = new AsyncContext(Promise.resolve({ a: 1 }))
 
-    const { a } = await ctx.get()
+    const a = await ctx.get()
 
-    expect(a).toBe(1)
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
   })
 
   test('with initialize function', async () => {
     const ctx = new AsyncContext(() => ({ a: 1 }))
-    const { a } = await ctx.get()
 
-    expect(a).toBe(1)
+    const a = await ctx.get()
+
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
   })
 
   test('with async initialize function', async () => {
     const ctx = new AsyncContext(async () => Promise.resolve({ a: 1 }))
-    const { a } = await ctx.get()
+    const a = await ctx.get()
 
-    expect(a).toBe(1)
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
   })
 
   test('constructor initialize function is only called once', async () => {
@@ -40,9 +45,11 @@ describe('constructor', () => {
       return { a: 1 }
     })
     await ctx.get()
-    const { a } = await ctx.get()
 
-    expect(a).toBe(1)
+    const a = await ctx.get()
+
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
     o.end()
   })
 
@@ -52,22 +59,42 @@ describe('constructor', () => {
 })
 
 describe('initialize()', () => {
-  test('specify type through generics', async () => {
-    const ctx = new AsyncContext<{ a: string }>()
-    ctx.initialize({ a: 'a' })
-    const { a } = await ctx.get()
+  it('defaults the Init type to Record', async () => {
+    const ctx = new AsyncContext()
 
-    isType.t(canAssign<string>()(a))
-    expect(a).toBe('a')
+    ctx.initialize({ a: 1 })
+    const a = await ctx.get()
+
+    expect(a).toEqual({ a: 1 })
+    assertType<Record<string | symbol, any>>(a)
+  })
+
+  it('can specify type through generics in the constructor (recommended)', async () => {
+    const ctx = new AsyncContext<{ a: string }>()
+
+    ctx.initialize({ a: 'a' })
+    const a = await ctx.get()
+
+    expect(a).toEqual({ a: 'a' })
+    assertType<{ a: string }>(a)
+  })
+
+  it('returns itself with adjusted Init type', async () => {
+    const ctx = new AsyncContext().initialize({ a: 1 })
+
+    const a = await ctx.get()
+
+    expect(a).toEqual({ a: 1 })
+    assertType<{ a: number }>(a)
   })
 
   test('with object', async () => {
     const ctx = new AsyncContext()
 
     ctx.initialize({ a: 1 })
-    const { a } = await ctx.get()
+    const a = await ctx.get()
 
-    expect(a).toBe(1)
+    expect(a).toEqual({ a: 1 })
   })
 
   test('with promise', async () => {
@@ -121,6 +148,13 @@ describe('initialize()', () => {
     const ctx = new AsyncContext()
     ctx.initialize(() => { throw new Error('should not reach') })
   })
+
+  it('throws ContextAlreadyInitialized if initialize() is called twice', () => {
+    const ctx = new AsyncContext()
+    ctx.initialize({ a: 1 })
+
+    a.throws(() => ctx.initialize({ a: 2 }), ContextAlreadyInitialized)
+  })
 })
 
 describe('extend()', () => {
@@ -157,36 +191,121 @@ describe('extend()', () => {
     expect(await ctx.get()).toEqual({ a: 2 })
   })
 
-  test('change types of existing property', async () => {
+  it('changes types of existing property', async () => {
     type Orig = { type: 'a' | 'b', value: string }
     const ctx = new AsyncContext<Orig>({ type: 'a', value: '1' })
       .extend(() => ({ value: 1 }))
 
     const result = await ctx.get()
 
-    assertType<'a' | 'b'>(result.type)
-    assertType.isNumber(result.value)
+    assertType<{ type: 'a' | 'b', value: number }>(result)
+    expect(result).toEqual({ type: 'a', value: 1 })
+  })
+
+  it('changes types of extended property', async () => {
+    type Orig = { type: 'a' | 'b', value: string }
+    const ctx = new AsyncContext<Orig>({ type: 'a', value: '1' })
+      .extend(() => ({ value: 1 }))
+      .extend(() => Promise.resolve({ value: true }))
+
+    const result = await ctx.get()
+
+    assertType<{ type: 'a' | 'b', value: boolean }>(result)
+    expect(result).toEqual({ type: 'a', value: true })
   })
 
   test('handler receives current context for more better merge function reuse', async () => {
     type Orig = { type: 'a' | 'b', value: number }
 
     const orig = new AsyncContext<Orig>({ type: 'a', value: 1 })
-    const transform = async (context: AsyncContext<Orig>) => ({ value: String((await context.get()).value) })
+    const transform = (context: Orig) => Promise.resolve({ value: String(context.value) })
 
     const merged = orig.extend(transform)
     expect(await merged.get()).toEqual({ type: 'a', value: '1' })
   })
 })
 
-test('get() waits for initialize() with no initial context', async () => {
-  const ctx = new AsyncContext()
-  setImmediate(() => ctx.initialize({ a: 2 }))
-  const { a } = await ctx.get()
-  expect(a).toBe(2)
+describe('calling initialize() out of band', () => {
+  test('basic', async () => {
+    const ctx = new AsyncContext()
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { a } = await ctx.get()
+    expect(a).toBe(2)
+  })
+
+  test('with extend(obj)', async () => {
+    const ctx = new AsyncContext<{ a: number }>().extend({ b: 3 })
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  test('with extend(promise)', async () => {
+    const ctx = new AsyncContext<{ a: number }>().extend(Promise.resolve({ b: 3 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  test('with extend(fn)', async () => {
+    const ctx = new AsyncContext<{ a: number }>().extend(() => ({ b: 3 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  test('with extend(async fn)', async () => {
+    const ctx = new AsyncContext<{ a: number }>().extend(() => Promise.resolve({ b: 3 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  it('provides init value to extend fn', async () => {
+    const ctx = new AsyncContext<{ a: number }, { a: number }>()
+      .extend((ctx) => ({ b: ctx.a + 1 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  it('provides init value to extend async fn', async () => {
+    const ctx = new AsyncContext<{ a: number }, { a: number }>()
+      .extend((ctx) => Promise.resolve({ b: ctx.a + 1 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const { b } = await ctx.get()
+    expect(b).toBe(3)
+  })
+
+  it('extends multiple parts of the context', async () => {
+    const ctx = new AsyncContext<{ a: number }, { a: number }>()
+      .extend((ctx) => Promise.resolve({ b: ctx.a + 1 }))
+      .extend((ctx) => Promise.resolve({ c: ctx.a + 2 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
+    const result = await ctx.get()
+    expect(result).toEqual({ a: 2, b: 3, c: 4 })
+  })
 })
 
-it.todo('extends with late initialize call')
-it.todo('get init value')
-it.todo('get init value while waiting for intialize')
-it.todo('use init value in extend')
+describe('get()', () => {
+  it('can override the context type', async () => {
+    const ctx = new AsyncContext({ a: 1 }).extend({ b: 2 })
+    const a = await ctx.get<{ a: 1 }>()
+
+    expect(a).toEqual({ a: 1, b: 2 })
+    assertType<{ a: 1 }>(a)
+  })
+  it('can override the context type when the ctx is not reassigned', async () => {
+    const ctx = new AsyncContext()
+
+    ctx.initialize({ a: 1 }).extend({ b: 2 })
+
+    const g = await ctx.get()
+    assertType<Record<string | symbol, any>>(g)
+    expect(g).toEqual({ a: 1, b: 2 })
+
+    const a = await ctx.get<{ a: number, b: number }>()
+    assertType<{ a: number, b: number }>(a)
+    expect(a).toEqual({ a: 1, b: 2 })
+  })
+})

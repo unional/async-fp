@@ -5,17 +5,5 @@
     "es6": true,
     "node": true,
     "jest": true
-  },
-  "overrides": [
-    {
-      "extends": "plugin:harmony/ts-recommended-type-check",
-      "files": [
-        "*.ts",
-        "*.tsx"
-      ],
-      "parserOptions": {
-        "project": "packages/*/tsconfig.json"
-      }
-    }
-  ]
+  }
 }
