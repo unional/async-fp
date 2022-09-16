@@ -185,3 +185,8 @@ test('get() waits for initialize() with no initial context', async () => {
   const { a } = await ctx.get()
   expect(a).toBe(2)
 })
+
+it.todo('extends with late initialize call')
+it.todo('get init value')
+it.todo('get init value while waiting for intialize')
+it.todo('use init value in extend')
