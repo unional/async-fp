@@ -8,17 +8,6 @@ export class AsyncContext<
   private resolving: Promise<LeftJoin<Context, Init>> | undefined
   private transformer?: (context: AsyncContext<any, Init>) => Promise<any>
   private resolve: undefined | ((value: any) => void) = undefined
-  private static create<
-    Init extends Record<string | symbol, any>,
-    CurrentContext,
-    AdditionalContext
-  >(
-    input: Init | Promise<Init> | AsyncContext.Initializer<Init> | undefined,
-    transformer: () => Promise<LeftJoin<CurrentContext, AdditionalContext>>) {
-    const c = new AsyncContext<LeftJoin<CurrentContext, AdditionalContext>, Init>(input)
-    c.transformer = transformer
-    return c
-  }
   private initializing: Promise<Init> | undefined
   constructor(private init?: Init | Promise<Init> | AsyncContext.Initializer<Init>) { }
   initialize(init: Init | Promise<Init> | AsyncContext.Initializer<Init>) {
@@ -30,11 +19,13 @@ export class AsyncContext<
   extend<R extends Record<string | symbol, any>>(
     context: R | Promise<R> | AsyncContext.Transformer<Init, Context, R>
   ): AsyncContext<LeftJoin<Context, R>, Init> {
-    return AsyncContext.create<Init, Context, R>(this.init, async () => {
+    const c = new AsyncContext<LeftJoin<Context, R>, Init>(this.init)
+    c.transformer = async () => {
       const currentResult = await this.get()
       const next = await transformContext<Init, Context, R>(context, this)
       return { ...currentResult, ...next } as LeftJoin<Context, R>
-    })
+    }
+    return c
   }
   async getInitValue() {
     return this.initializing = this.initializing ?? (this.init ? resolveInput(this.init) : undefined)
