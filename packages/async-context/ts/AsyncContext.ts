@@ -6,7 +6,7 @@ export class AsyncContext<
   Init extends Record<string | symbol, any> = {}>
 {
   private resolving: Promise<LeftJoin<Context, Init>> | undefined
-  private transformer?: (context: AsyncContext<any, Init>) => Promise<any>
+  private transformer?: () => Promise<any>
   private resolve: undefined | ((value: any) => void) = undefined
   private initializing: Promise<Init> | undefined
   constructor(private init?: Init | Promise<Init> | AsyncContext.Initializer<Init>) { }
@@ -14,7 +14,7 @@ export class AsyncContext<
     if (this.init) throw new ContextAlreadyInitialized()
     this.init = init
 
-    if (this.resolve) this.resolve(this.transformer ? this.transformer(this) : this.init)
+    if (this.resolve) this.resolve(this.transformer ? this.transformer() : this.init)
   }
   extend<R extends Record<string | symbol, any>>(
     context: R | Promise<R> | AsyncContext.Transformer<Init, Context, R>
@@ -22,7 +22,8 @@ export class AsyncContext<
     const c = new AsyncContext<LeftJoin<Context, R>, Init>(this.init)
     c.transformer = async () => {
       const currentResult = await this.get()
-      const next = await transformContext<Init, Context, R>(context, this)
+      const init = (await this.getInitValue())!
+      const next = await transformContext<Init, Context, R>(context, this, init)
       return { ...currentResult, ...next } as LeftJoin<Context, R>
     }
     return c
@@ -33,7 +34,7 @@ export class AsyncContext<
   async get(): Promise<LeftJoin<Context, Init>> {
     if (this.resolving) return this.resolving
     return this.resolving = this.init
-      ? Promise.resolve(this.transformer ? this.transformer(this) : this.getInitValue())
+      ? Promise.resolve(this.transformer ? this.transformer() : this.getInitValue())
       : new Promise<any>(a => this.resolve = a)
   }
 }
@@ -43,7 +44,7 @@ export namespace AsyncContext {
     Init,
     CurrentContext,
     AdditionalContext
-    > = (context: AsyncContext<CurrentContext, Init>) => AdditionalContext | Promise<AdditionalContext>
+    > = (context: AsyncContext<CurrentContext, Init>, init: Init) => AdditionalContext | Promise<AdditionalContext>
 }
 
 async function resolveInput<
@@ -58,8 +59,9 @@ function transformContext<
   AdditionalContext extends Record<string | symbol, any>
 >(
   context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<Init, CurrentContext, AdditionalContext>,
-  currentContext: AsyncContext<CurrentContext, Init>): AdditionalContext | Promise<AdditionalContext> {
-  return isTransformer<Init, CurrentContext, AdditionalContext>(context) ? context(currentContext) : context
+  currentContext: AsyncContext<CurrentContext, Init>,
+  init: Init): AdditionalContext | Promise<AdditionalContext> {
+  return isTransformer<Init, CurrentContext, AdditionalContext>(context) ? context(currentContext, init) : context
 }
 
 function isTransformer<
