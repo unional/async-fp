@@ -1,5 +1,6 @@
 ---
 "@unional/async-context": major
+"async-fp": major
 ---
 
 The generic types of `AsyncContext` have changed.
