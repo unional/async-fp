@@ -56,6 +56,13 @@ describe('constructor', () => {
   test('initialize function is not called until first get()', () => {
     new AsyncContext(() => { throw new Error('should not reach') })
   })
+
+  it('can specify the final context type', async () => {
+    const ctx = new AsyncContext<{ a: number }, { a: string, b: string }>()
+    const a = await ctx.initialize({ a: 1 }).extend({ b: 'b' }).get()
+
+    assertType<{ a: number, b: string }>(a)
+  })
 })
 
 describe('initialize()', () => {
