@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.0.1
+
+### Patch Changes
+
+- ba8202e: The `CurrentContext` in `extend<CurrentContext, AdditionalContext>()` can now be overridden.
+
 ## 3.0.0
 
 ### Major Changes
