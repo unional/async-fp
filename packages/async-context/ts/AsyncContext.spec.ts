@@ -230,6 +230,22 @@ describe('extend()', () => {
     const merged = orig.extend(transform)
     expect(await merged.get()).toEqual({ type: 'a', value: '1' })
   })
+
+  it('can override the CurrentContext as needed', async () => {
+    const ctx = new AsyncContext<{ a: number }>()
+    ctx.initialize({ a: 1 })
+
+    ctx.extend(({ a }) => ({ b: a + 1 }))
+    ctx.extend(({ a }) => ({ a: String(a) }))
+    const newctx = ctx.extend(({ a, b }: { a: string, b: number }) => ({ c: a + b }))
+
+    const a = await ctx.get<{ a: string, b: number, c: string }>()
+    expect(a).toEqual({ a: '1', b: 2, c: '12' })
+
+    const b = await newctx.get()
+    expect(b).toEqual({ a: '1', b: 2, c: '12' })
+    assertType<{ a: string, b: number, c: string }>(b)
+  })
 })
 
 describe('calling initialize() out of band', () => {

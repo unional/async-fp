@@ -16,11 +16,14 @@ export class AsyncContext<
     if (this.resolve) this.resolve(this.#buildContext())
     return this as AsyncContext<I>
   }
-  extend<R extends Record<string | symbol, any>>(
-    context: R | Promise<R> | AsyncContext.Transformer<Context, R>
-  ): AsyncContext<Init, LeftJoin<Context, R>> {
+  extend<
+    CurrentContext extends Record<string | symbol, any> = Context,
+    AdditionalContext extends Record<string | symbol, any> = Record<string | symbol, any>
+  >(
+    context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<CurrentContext, AdditionalContext>
+  ): AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>> {
     this.transformers.push(isTransformer(context) ? context : () => context)
-    return this as AsyncContext<Init, LeftJoin<Context, R>>
+    return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>
   }
   async get<C = Context>(): Promise<C> {
     if (this.resolving) return this.resolving
