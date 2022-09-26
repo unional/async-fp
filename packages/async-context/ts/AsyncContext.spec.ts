@@ -318,6 +318,7 @@ describe('get()', () => {
     expect(a).toEqual({ a: 1, b: 2 })
     assertType<{ a: 1 }>(a)
   })
+
   it('can override the context type when the ctx is not reassigned', async () => {
     const ctx = new AsyncContext()
 
@@ -330,5 +331,41 @@ describe('get()', () => {
     const a = await ctx.get<{ a: number, b: number }>()
     assertType<{ a: number, b: number }>(a)
     expect(a).toEqual({ a: 1, b: 2 })
+  })
+})
+
+describe('clone()', () => {
+  it('will create a cloned context with the same value', async () => {
+    const ctx = new AsyncContext({ a: 1 })
+    const next = ctx.clone()
+    const a = await next.get()
+    expect(a).toEqual({ a: 1 })
+  })
+
+  it('works with delay init and extened context', async () => {
+    const ctx = new AsyncContext().extend(async () => ({ b: 2 }))
+    const next = ctx.clone()
+    ctx.initialize(async () => ({ a: 1 }))
+
+    const a = await next.get()
+    expect(a).toEqual({ a: 1, b: 2 })
+  })
+
+  it('does not extend the original', async () => {
+    const ctx = new AsyncContext({ a: 1 })
+    const next = ctx.clone().extend({ b: 2 })
+    const a = await next.get()
+    const o = await ctx.get()
+    expect(a).toEqual({ a: 1, b: 2 })
+    expect(o).toEqual({ a: 1 })
+  })
+
+  it('does not override the original', async () => {
+    const ctx = new AsyncContext({ a: 1 })
+    const next = ctx.clone().extend({ a: 2 })
+    const a = await next.get()
+    const o = await ctx.get()
+    expect(a).toEqual({ a: 2 })
+    expect(o).toEqual({ a: 1 })
   })
 })
