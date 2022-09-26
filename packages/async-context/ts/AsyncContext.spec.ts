@@ -246,6 +246,20 @@ describe('extend()', () => {
     expect(b).toEqual({ a: '1', b: 2, c: '12' })
     assertType<{ a: string, b: number, c: string }>(b)
   })
+
+  it('affects subsequent get() calls', async () => {
+    const ctx = new AsyncContext()
+    const gettingOriginal = ctx.get()
+    // make sure `gettingOriginal` is triggered,
+    // and also `extend()` and `gettingNew` are called before resolving
+    ctx.initialize(() => new Promise(a => setTimeout(() => a({ a: 1 }), 100)))
+
+    ctx.extend(async () => ({ b: 2 }))
+    const gettingNew = ctx.get()
+
+    expect(await gettingOriginal).toEqual({ a: 1 })
+    expect(await gettingNew).toEqual({ a: 1, b: 2 })
+  })
 })
 
 describe('calling initialize() out of band', () => {
