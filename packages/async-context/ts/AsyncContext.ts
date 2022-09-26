@@ -25,6 +25,9 @@ export class AsyncContext<
     this.transformers.push(isTransformer(context) ? context : () => context)
     return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>
   }
+  clone() {
+    return new AsyncContext(() => this.get())
+  }
   async get<C = Context>(): Promise<C> {
     if (this.resolving) return this.resolving
     return this.resolving = this.init ? this.#buildContext() : new Promise<any>(a => this.resolve = a)
