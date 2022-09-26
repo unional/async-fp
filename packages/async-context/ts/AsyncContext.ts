@@ -7,13 +7,13 @@ export class AsyncContext<
   > {
   private transformers: Array<AsyncContext.Transformer<any, any>> = []
   private resolving: Promise<any> | undefined
-  private resolve: ((value: Promise<Context>) => void) | undefined = undefined
+  private resolvers: Array<((value: Promise<Context>) => void)> = []
   constructor(private init?: Init | Promise<Init> | AsyncContext.Initializer<Init>) { }
   initialize<I extends Init = Init>(init: I | Promise<I> | AsyncContext.Initializer<I>): AsyncContext<I> {
     if (this.init) throw new ContextAlreadyInitialized()
     this.init = init
 
-    if (this.resolve) this.resolve(this.#buildContext())
+    if (this.resolvers.length > 0) this.resolvers.forEach(r => r(this.#buildContext()))
     return this as AsyncContext<I>
   }
   extend<
@@ -23,6 +23,7 @@ export class AsyncContext<
     context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<CurrentContext, AdditionalContext>
   ): AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>> {
     this.transformers.push(isTransformer(context) ? context : () => context)
+    this.resolving = undefined
     return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>
   }
   clone() {
@@ -30,7 +31,7 @@ export class AsyncContext<
   }
   async get<C = Context>(): Promise<C> {
     if (this.resolving) return this.resolving
-    return this.resolving = this.init ? this.#buildContext() : new Promise<any>(a => this.resolve = a)
+    return this.resolving = this.init ? this.#buildContext() : new Promise<any>(a => this.resolvers.push(a))
   }
   async #buildContext(): Promise<Context> {
     return this.transformers.reduce(async (p, t) => {
