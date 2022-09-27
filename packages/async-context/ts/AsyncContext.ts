@@ -1,6 +1,8 @@
 import { LeftJoin } from 'type-plus'
 import { BlockingGetDetected, ContextAlreadyInitialized } from './errors'
 
+// let counter = 0
+
 export class AsyncContext<
   Init extends Record<string | symbol, any>,
   Context extends Record<string | symbol, any> = Init
@@ -10,10 +12,15 @@ export class AsyncContext<
   #resolvers: Array<((value: Promise<Context>) => void)> = []
   #transforming = false
   #init: Init | Promise<Init> | AsyncContext.Initializer<Init> | undefined
+  // #counter: number
+  #original: AsyncContext<any, any> | undefined
   constructor(init?: Init | Promise<Init> | AsyncContext.Initializer<Init>) {
+    // this.#counter = ++counter
+    // console.info(`construct:${this.#counter}`, init)
     this.#init = init
   }
   initialize<I extends Init = Init>(init: I | Promise<I> | AsyncContext.Initializer<I>): AsyncContext<I> {
+    // console.info(`init:${this.#counter}`)
     if (this.#init) throw new ContextAlreadyInitialized({ ssf: this.initialize })
     this.#init = init
 
@@ -26,13 +33,23 @@ export class AsyncContext<
   >(
     context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<CurrentContext, AdditionalContext>
   ): AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>> {
-
-    this.#transformers.push(isTransformer(context) ? context : () => context)
-    this.#resolving = undefined
-    return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>
-  }
-  clone() {
-    return new AsyncContext(() => this.get())
+    const newctx = new AsyncContext(async () => {
+      try {
+        const value = await this.get()
+        newctx.#transforming = true
+        const newValue = await (isTransformer<any, any>(context) ? context(value) : context)
+        return { ...value, ...newValue }
+      }
+      finally {
+        newctx.#transforming = false
+      }
+    })
+    const ctx = this.#original ?? this
+    newctx.initialize = newctx.initialize.bind(ctx)
+    return newctx
+    // this.#transformers.push(isTransformer < (context) ? context : () => context)
+    // this.#resolving = undefined
+    // return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>
   }
   async get<C = Context>(): Promise<C> {
     if (this.#transforming) throw new BlockingGetDetected({ ssf: this.get })
