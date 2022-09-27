@@ -1,5 +1,12 @@
 # Change Log
 
+## 7.0.4
+
+### Patch Changes
+
+- Updated dependencies [66b9fc8]
+  - @unional/async-context@3.2.0
+
 ## 7.0.3
 
 ### Patch Changes
