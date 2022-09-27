@@ -1,6 +1,6 @@
 import { a, AssertOrder } from 'assertron'
 import { assertType } from 'type-plus'
-import { AsyncContext, ContextAlreadyInitialized } from '.'
+import { AsyncContext, BlockingGetDetected, ContextAlreadyInitialized } from '.'
 
 describe('constructor', () => {
   test('with object', async () => {
@@ -345,6 +345,16 @@ describe('get()', () => {
     const a = await ctx.get<{ a: number, b: number }>()
     assertType<{ a: number, b: number }>(a)
     expect(a).toEqual({ a: 1, b: 2 })
+  })
+
+  it('should detect blocking get call within transformation', async () => {
+    const ctx = new AsyncContext({ a: 1 })
+    ctx.extend(async () => {
+      const { a } = await ctx.get()
+      return { b: a + 1 }
+    })
+
+    await a.throws(() => ctx.get(), BlockingGetDetected)
   })
 })
 
