@@ -1,5 +1,5 @@
 import { a, AssertOrder } from 'assertron'
-import { assertType } from 'type-plus'
+import { assertType, isType } from 'type-plus'
 import { AsyncContext, BlockingGetDetected, ContextAlreadyInitialized } from '.'
 
 describe('constructor', () => {
@@ -57,6 +57,7 @@ describe('constructor', () => {
     new AsyncContext(() => { throw new Error('should not reach') })
   })
 
+  // TODO: will likely keep, for some edge use cases.
   it('can specify the final context type', async () => {
     const ctx = new AsyncContext<{ a: number }, { a: string, b: string }>()
     const a = await ctx.initialize({ a: 1 }).extend({ b: 'b' }).get()
@@ -235,16 +236,14 @@ describe('extend()', () => {
     const ctx = new AsyncContext<{ a: number }>()
     ctx.initialize({ a: 1 })
 
-    ctx.extend(({ a }) => ({ b: a + 1 }))
-    ctx.extend(({ a }) => ({ a: String(a) }))
-    const newctx = ctx.extend(({ a, b }: { a: string, b: number }) => ({ c: a + b }))
+    const newctx = ctx.extend(({ a }) => ({ b: a + 1 }))
+      .extend(({ a }) => ({ a: String(a) }))
+      .extend(({ a, b }: { a: string, b: number }) => ({ c: a + b as any }))
 
-    const a = await ctx.get<{ a: string, b: number, c: string }>()
+    const a = await newctx.get<{ a: string, b: number, c: string }>()
     expect(a).toEqual({ a: '1', b: 2, c: '12' })
 
-    const b = await newctx.get()
-    expect(b).toEqual({ a: '1', b: 2, c: '12' })
-    assertType<{ a: string, b: number, c: string }>(b)
+    isType.equal<true, { a: string, b: number, c: string }, typeof a>()
   })
 
   it('affects subsequent get() calls', async () => {
@@ -254,8 +253,7 @@ describe('extend()', () => {
     // and also `extend()` and `gettingNew` are called before resolving
     ctx.initialize(() => new Promise(a => setTimeout(() => a({ a: 1 }), 100)))
 
-    ctx.extend(async () => ({ b: 2 }))
-    const gettingNew = ctx.get()
+    const gettingNew = ctx.extend(async () => ({ b: 2 })).get()
 
     expect(await gettingOriginal).toEqual({ a: 1 })
     expect(await gettingNew).toEqual({ a: 1, b: 2 })
@@ -314,11 +312,13 @@ describe('calling initialize() out of band', () => {
     expect(b).toBe(3)
   })
 
+  // TODO: need to convert to closure and keep the initial async context for invoking initialize
   it('extends multiple parts of the context', async () => {
-    const ctx = new AsyncContext<{ a: number }, { a: number }>()
-      .extend((ctx) => Promise.resolve({ b: ctx.a + 1 }))
-      .extend((ctx) => Promise.resolve({ c: ctx.a + 2 }))
-    setImmediate(() => ctx.initialize({ a: 2 }))
+    const orig = new AsyncContext<{ a: number }, { a: number }>()
+    const ctx = orig
+      .extend(({ a }) => Promise.resolve({ b: a + 1 }))
+      .extend(({ a }) => Promise.resolve({ c: a + 2 }))
+    setImmediate(() => orig.initialize({ a: 2 }))
     const result = await ctx.get()
     expect(result).toEqual({ a: 2, b: 3, c: 4 })
   })
@@ -333,64 +333,13 @@ describe('get()', () => {
     assertType<{ a: 1 }>(a)
   })
 
-  it('can override the context type when the ctx is not reassigned', async () => {
-    const ctx = new AsyncContext()
-
-    ctx.initialize({ a: 1 }).extend({ b: 2 })
-
-    const g = await ctx.get()
-    assertType<Record<string | symbol, any>>(g)
-    expect(g).toEqual({ a: 1, b: 2 })
-
-    const a = await ctx.get<{ a: number, b: number }>()
-    assertType<{ a: number, b: number }>(a)
-    expect(a).toEqual({ a: 1, b: 2 })
-  })
-
   it('should detect blocking get call within transformation', async () => {
     const ctx = new AsyncContext({ a: 1 })
-    ctx.extend(async () => {
-      const { a } = await ctx.get()
-      return { b: a + 1 }
-    })
+      .extend(async () => {
+        const { a } = await ctx.get()
+        return { b: a + 1 }
+      }) as AsyncContext<{ a: number, b: number }>
 
-    const e = await a.throws(() => ctx.get(), BlockingGetDetected)
-    console.info(e)
-  })
-})
-
-describe('clone()', () => {
-  it('will create a cloned context with the same value', async () => {
-    const ctx = new AsyncContext({ a: 1 })
-    const next = ctx.clone()
-    const a = await next.get()
-    expect(a).toEqual({ a: 1 })
-  })
-
-  it('works with delay init and extened context', async () => {
-    const ctx = new AsyncContext().extend(async () => ({ b: 2 }))
-    const next = ctx.clone()
-    ctx.initialize(async () => ({ a: 1 }))
-
-    const a = await next.get()
-    expect(a).toEqual({ a: 1, b: 2 })
-  })
-
-  it('does not extend the original', async () => {
-    const ctx = new AsyncContext({ a: 1 })
-    const next = ctx.clone().extend({ b: 2 })
-    const a = await next.get()
-    const o = await ctx.get()
-    expect(a).toEqual({ a: 1, b: 2 })
-    expect(o).toEqual({ a: 1 })
-  })
-
-  it('does not override the original', async () => {
-    const ctx = new AsyncContext({ a: 1 })
-    const next = ctx.clone().extend({ a: 2 })
-    const a = await next.get()
-    const o = await ctx.get()
-    expect(a).toEqual({ a: 2 })
-    expect(o).toEqual({ a: 1 })
+    await a.throws(() => ctx.get(), BlockingGetDetected)
   })
 })
