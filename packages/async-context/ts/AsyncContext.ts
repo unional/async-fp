@@ -14,7 +14,7 @@ export class AsyncContext<
     this.#init = init
   }
   initialize<I extends Init = Init>(init: I | Promise<I> | AsyncContext.Initializer<I>): AsyncContext<I> {
-    if (this.#init) throw new ContextAlreadyInitialized()
+    if (this.#init) throw new ContextAlreadyInitialized({ ssf: this.initialize })
     this.#init = init
 
     if (this.#resolvers.length > 0) this.#resolvers.forEach(r => r(this.#buildContext()))
@@ -26,6 +26,7 @@ export class AsyncContext<
   >(
     context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<CurrentContext, AdditionalContext>
   ): AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>> {
+
     this.#transformers.push(isTransformer(context) ? context : () => context)
     this.#resolving = undefined
     return this as AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>>

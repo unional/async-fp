@@ -354,7 +354,8 @@ describe('get()', () => {
       return { b: a + 1 }
     })
 
-    await a.throws(() => ctx.get(), BlockingGetDetected)
+    const e = await a.throws(() => ctx.get(), BlockingGetDetected)
+    console.info(e)
   })
 })
 
