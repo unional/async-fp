@@ -312,13 +312,11 @@ describe('calling initialize() out of band', () => {
     expect(b).toBe(3)
   })
 
-  // TODO: need to convert to closure and keep the initial async context for invoking initialize
   it('extends multiple parts of the context', async () => {
-    const orig = new AsyncContext<{ a: number }, { a: number }>()
-    const ctx = orig
+    const ctx = new AsyncContext<{ a: number }, { a: number }>()
       .extend(({ a }) => Promise.resolve({ b: a + 1 }))
       .extend(({ a }) => Promise.resolve({ c: a + 2 }))
-    setImmediate(() => orig.initialize({ a: 2 }))
+    setImmediate(() => ctx.initialize({ a: 2 }))
     const result = await ctx.get()
     expect(result).toEqual({ a: 2, b: 3, c: 4 })
   })
