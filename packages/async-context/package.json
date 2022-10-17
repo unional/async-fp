@@ -37,7 +37,7 @@
     "build": "run-p build:cjs build:esm",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc",
-    "clean": "rimraf cjs esm .tsbuildinfo",
+    "clean": "rimraf cjs esm coverage *.tsbuildinfo",
     "coverage": "jest --coverage",
     "depcheck": "depcheck",
     "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
@@ -48,8 +48,8 @@
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
   "dependencies": {
-    "iso-error": "^4.3.6",
-    "type-plus": "^4.11.1"
+    "iso-error": "^4.4.0",
+    "type-plus": "^4.14.1"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.0.1",

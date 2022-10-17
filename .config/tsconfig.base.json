@@ -8,7 +8,6 @@
     "newLine": "LF",
     "noUnusedLocals": true,
     "outDir": ".nowhere",
-    "removeComments": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,

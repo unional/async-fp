@@ -4,7 +4,7 @@ import { BlockingGetDetected, ContextAlreadyInitialized } from './errors'
 export class AsyncContext<
   Init extends Record<string | symbol, any>,
   Context extends Record<string | symbol, any> = Init
-  > {
+> {
   #resolving: Promise<any> | undefined
   #resolvers: Array<((value: Promise<Context>) => void)> = []
   #transforming = false
@@ -18,7 +18,7 @@ export class AsyncContext<
     this.#init = init
 
     if (this.#resolvers.length > 0) this.#resolvers.forEach(r => r(this.#buildContext()))
-    return this as AsyncContext<I>
+    return this as any as AsyncContext<I>
   }
   extend<
     CurrentContext extends Record<string | symbol, any> = Context,
@@ -48,7 +48,7 @@ export class AsyncContext<
     return this.#resolving = this.#init ? this.#buildContext() : new Promise<any>(a => this.#resolvers.push(a))
   }
   async #buildContext(): Promise<Context> {
-    return resolveInit(this.#init!) as Promise<Context>
+    return resolveInit(this.#init!) as any as Promise<Context>
   }
 }
 export namespace AsyncContext {
@@ -56,12 +56,12 @@ export namespace AsyncContext {
   export type Transformer<
     CurrentContext,
     AdditionalContext
-    > = (context: CurrentContext) => AdditionalContext | Promise<AdditionalContext>
+  > = (context: CurrentContext) => AdditionalContext | Promise<AdditionalContext>
 }
 
 async function resolveInit<
   Init extends Record<string | symbol, any>,
-  >(init: Init | Promise<Init> | AsyncContext.Initializer<Init>): Promise<Init> {
+>(init: Init | Promise<Init> | AsyncContext.Initializer<Init>): Promise<Init> {
   return isInitializer<Init>(init) ? init() : init
 }
 

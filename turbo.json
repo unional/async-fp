@@ -58,7 +58,7 @@
       ]
     },
     "verify": {
-      "cache": false
+      "dependsOn": ["lint", "build", "coverage", "depcheck", "size"]
     },
     "watch": {
       "dependsOn": [
