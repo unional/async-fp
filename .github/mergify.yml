@@ -6,10 +6,10 @@ pull_request_rules:
     actions:
       merge:
         method: squash
-  - name: automatic merge for Renovate pull requests
+  - name: automatic merge for Renovate pull requests (except major)
     conditions:
       - author=renovate[bot]
-      - title~=^chore
+      - head~=^(?!major-)
     actions:
       merge:
         method: squash
