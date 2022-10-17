@@ -24,7 +24,7 @@ export class AsyncContext<
     CurrentContext extends Record<string | symbol, any> = Context,
     AdditionalContext extends Record<string | symbol, any> = Record<string | symbol, any>
   >(
-    context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<CurrentContext, AdditionalContext>
+    context: AdditionalContext | Promise<AdditionalContext> | AsyncContext.Transformer<Context, AdditionalContext>
   ): AsyncContext<Init, LeftJoin<CurrentContext, AdditionalContext>> {
     const newctx = new AsyncContext(async () => {
       try {

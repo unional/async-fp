@@ -222,14 +222,16 @@ describe('extend()', () => {
     expect(result).toEqual({ type: 'a', value: true })
   })
 
-  test('handler receives current context for more better merge function reuse', async () => {
+  it('pass current context to `extend(handler)`', async () => {
     type Orig = { type: 'a' | 'b', value: number }
 
     const orig = new AsyncContext<Orig>({ type: 'a', value: 1 })
-    const transform = (context: Orig) => Promise.resolve({ value: String(context.value) })
 
-    const merged = orig.extend(transform)
-    expect(await merged.get()).toEqual({ type: 'a', value: '1' })
+    const merged = orig.extend((context) => Promise.resolve({ value: String(context.value) }))
+    const value = await merged.get()
+    expect(value).toEqual({ type: 'a', value: '1' })
+
+    isType.equal<true, { type: 'a' | 'b', value: string }, typeof value>()
   })
 
   it('can override the CurrentContext as needed', async () => {
@@ -257,6 +259,18 @@ describe('extend()', () => {
 
     expect(await gettingOriginal).toEqual({ a: 1 })
     expect(await gettingNew).toEqual({ a: 1, b: 2 })
+  })
+
+  it('overrides CurrentContext with Union', async () => {
+    const ctx = new AsyncContext<{ a: number } & { b: number } & { c: number }>({ a: 1, b: 1, c: 1 })
+      .extend(({ a }: { a: number }) => ({ b: String(a) }))
+    const r = await ctx.get()
+
+    expect(r.a).toBe(1)
+    expect(r.b).toBe('1')
+    expect(r.c).toBe(1)
+
+    isType.equal<true, { a: number, b: string, c: number }, typeof r>()
   })
 })
 
