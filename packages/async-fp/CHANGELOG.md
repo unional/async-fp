@@ -1,5 +1,13 @@
 # Change Log
 
+## 8.0.1
+
+### Patch Changes
+
+- 51517d9: Fix `workspace:*` -> `workspace:^` reference
+- Updated dependencies [9c1ecfb]
+  - @unional/async-context@8.0.1
+
 ## 8.0.0
 
 ### Major Changes
