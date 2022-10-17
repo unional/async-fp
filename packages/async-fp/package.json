@@ -48,7 +48,7 @@
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
   "dependencies": {
-    "@unional/async-context": "workspace:*"
+    "@unional/async-context": "workspace:^"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.0.1",
