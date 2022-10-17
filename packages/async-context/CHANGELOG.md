@@ -1,5 +1,21 @@
 # Change Log
 
+## 8.0.2
+
+### Patch Changes
+
+- 5ac78c2: Fix `extend()` to work with union types.
+
+  The problem is this type:
+
+  ```ts
+  extend(context: AsyncContext.Transformer<CurrentContext, AdditionalContext>)
+  ```
+
+  The `CurrentContext` here overrides the generic resolution,
+  making the `CurrentContext` becomes whatever the transformer request,
+  instead of the real current context.
+
 ## 8.0.1
 
 ### Patch Changes
