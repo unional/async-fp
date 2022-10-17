@@ -1,5 +1,11 @@
 # Change Log
 
+## 8.0.1
+
+### Patch Changes
+
+- 9c1ecfb: Update `type-plus` and `iso-error`
+
 ## 8.0.0
 
 ### Major Changes
