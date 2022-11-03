@@ -19,6 +19,8 @@ A collection of utilities for asynchronous functional programming.
 
 Secure, type safe, asynchronous context for functional programming.
 
+[Introduction Video][introduction_video]
+
 ```ts
 import { AsyncContext } from '@unional/async-context'
 
@@ -45,3 +47,4 @@ await context.get() //=> { config: 'async value' }
 [codecov-url]: https://codecov.io/gh/unional/async-fp
 [github-action-url]: https://github.com/unional/async-fp/actions
 [github-nodejs]: https://github.com/unional/async-fp/workflows/release/badge.svg
+[introduction_video]: https://youtu.be/9EnrSJdvP48

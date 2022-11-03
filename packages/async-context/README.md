@@ -44,6 +44,8 @@ rush add -p @unional/async-context
 
 ## Usage
 
+[Introduction Video][introduction_video]
+
 You can provide the initial context when calling the constructor.
 The context value must be an object (`Record`).
 You can extend and augment the context with the [`extend()`](#extend) later.
@@ -122,8 +124,8 @@ If you want to use the `ctx` directly, you can use `get<T>()` to assert the cont
 
 ```ts
 const ctx = new AsyncContext({ a: 1, b: 'b' })
+  .extend({ b: 2, c: 3 })
 
-ctx.extend({ b: 2, c: 3 })
 await ctx.get<{ a: number, b: number, c: number }>()
 
 // it is really the same as this, but less verbose
@@ -137,7 +139,7 @@ As you can guess, the `initialize()` and `extend()` functions can be chained:
 ```ts
 const ctx = new AsyncContext()
 
-ctx.initialize({ a: 1 }).extend({ b: 2 }).extend({ c: 3 })
+const newCtx = ctx.initialize({ a: 1 }).extend({ b: 2 }).extend({ c: 3 })
 ```
 
 ## Use Cases
@@ -169,8 +171,8 @@ You can use `extend()` to chain asynchronous dependency loading.
 import { AsyncContext } from '@unional/async-context'
 
 const ctx = new AsyncContext(() => ({ io: createIO() }))
-
-ctx.extend(loadConfig).extend(loadPlugins)
+  .extend(loadConfig)
+  .extend(loadPlugins)
 
 async function loadConfig(ctx: AsyncContext<{ io: IO }>) {
   const { io } = await ctx.get()
@@ -212,5 +214,6 @@ configure({ ... })
 [codecov-url]: https://codecov.io/gh/unional/async-fp
 [downloads-image]: https://img.shields.io/npm/dm/@unional/async-context.svg?style=flat
 [downloads-url]: https://npmjs.org/package/@unional/async-context
+[introduction_video]: https://youtu.be/9EnrSJdvP48
 [npm-image]: https://img.shields.io/npm/v/@unional/async-context.svg?style=flat
 [npm-url]: https://npmjs.org/package/@unional/async-context
