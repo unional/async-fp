@@ -80,7 +80,7 @@ importers:
       eslint: ^8.22.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-harmony: ^7.1.0
-      iso-error: ^4.4.0
+      iso-error: ^5.0.0
       jest: ^28.1.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -89,7 +89,7 @@ importers:
       type-plus: ^4.14.1
       typescript: ^4.7.4
     dependencies:
-      iso-error: 4.4.0
+      iso-error: 5.0.0
       type-plus: 4.14.1
     devDependencies:
       '@size-limit/preset-small-lib': 8.0.1_size-limit@8.0.1
@@ -5418,6 +5418,12 @@ packages:
   /iso-error/4.4.0:
     resolution: {integrity: sha512-DRPiLihxUYhz4rMbfdzvm+l8ihd+d1QXClNa/SJk5HMrX93T5y7A7S+rwNOS+x2Tlzfc/IE0OrJhz/RyQ6s28Q==}
     engines: {node: '>= 10'}
+    dev: true
+
+  /iso-error/5.0.0:
+    resolution: {integrity: sha512-+AhfqtuERYVT+weWCewUQNA0wqcL66OSfPcX5ojnrOSa/V051QFLHK3XlxTyH/fyk1k6TMfE4QDkESAnnvihOw==}
+    engines: {node: '>= 10'}
+    dev: false
 
   /isobject/2.1.0:
     resolution: {integrity: sha512-+OUdGJlgjOBZDfxnDjYYG6zp487z0JGNQq3cYQYg5f5hKR+syHMsaztzGeml/4kGG55CSpKSpWTY+jYGgsHLgA==}
