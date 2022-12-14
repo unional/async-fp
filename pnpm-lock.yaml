@@ -86,11 +86,11 @@ importers:
       rimraf: ^3.0.2
       size-limit: ^8.0.1
       ts-jest: ^28.0.7
-      type-plus: ^4.14.1
+      type-plus: ^5.0.0
       typescript: ^4.7.4
     dependencies:
       iso-error: 5.0.0
-      type-plus: 4.14.1
+      type-plus: 5.0.0
     devDependencies:
       '@size-limit/preset-small-lib': 8.0.1_size-limit@8.0.1
       '@types/node': 18.7.3
@@ -2692,6 +2692,13 @@ packages:
     resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+    dev: true
+
+  /acorn/8.8.1:
+    resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+    dev: false
 
   /agent-base/6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -2905,7 +2912,7 @@ packages:
       path-equal: 1.2.2
       satisfier: 5.2.2
       tersify: 3.10.2
-      type-plus: 4.14.1
+      type-plus: 4.18.1
     dev: true
 
   /assign-symbols/1.0.0:
@@ -8250,6 +8257,15 @@ packages:
       acorn: 8.8.0
       is-buffer: 2.0.5
       unpartial: 0.7.5
+    dev: true
+
+  /tersify/3.11.1:
+    resolution: {integrity: sha512-W/Kv1z+cgDRsI10p9CyCZJ+gopPUVOz1/h7OPntr6D52iIHQTbsg40MBUoaG82q8IgD/GKoWhoujg/rOxQW7SA==}
+    dependencies:
+      acorn: 8.8.1
+      is-buffer: 2.0.5
+      unpartial: 1.0.4
+    dev: false
 
   /test-exclude/6.0.0:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
@@ -8609,11 +8625,19 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /type-plus/4.14.1:
-    resolution: {integrity: sha512-Xk6qb+HILmW+03NNMMk7UiUQYroEu9ta36JOZNZX003AYRhWf8+sdE2HPf/p1DIK0/FpjzHWfRNZsIEI0+oJIA==}
+  /type-plus/4.18.1:
+    resolution: {integrity: sha512-/Dq0K/TUedajerhr2JuXhw44V2tiAniGvyZJL23PqxjUzxrXeASWvfi01Bo8o6mudRXJL/sfBD+KZiHSzrhZ9g==}
     dependencies:
       tersify: 3.10.2
       unpartial: 1.0.4
+    dev: true
+
+  /type-plus/5.0.0:
+    resolution: {integrity: sha512-nKp5pOQDldmR9BdEjLplLFwiXTVhOK2kReBSgVJ65URDLXCqENYzVDCONaExADIIc1CAGzvzTkB0TUgMAWR2qQ==}
+    dependencies:
+      tersify: 3.11.1
+      unpartial: 1.0.4
+    dev: false
 
   /typedarray-to-buffer/3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
@@ -8711,6 +8735,7 @@ packages:
   /unpartial/0.7.5:
     resolution: {integrity: sha512-02G/AkbF7MkgaEOAJmCe7P0UYzJVkMkAIU5YEJsO5QmDX7vkqyNctVi1gPm8YLVlGo5T/Qe/hYA66AuliEKBag==}
     engines: {node: '>=6'}
+    dev: true
 
   /unpartial/1.0.4:
     resolution: {integrity: sha512-xY8319WOQcRDRVFWvTty2YJXKvM8XRPehqWZUd7k/BatpbuitI4Jd+2xlwjTZbZScSvT75TnUsUmy5uwFa3o0g==}
