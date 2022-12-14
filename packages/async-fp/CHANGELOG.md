@@ -1,5 +1,12 @@
 # Change Log
 
+## 8.0.3
+
+### Patch Changes
+
+- Updated dependencies [593f104]
+  - @unional/async-context@8.0.3
+
 ## 8.0.2
 
 ### Patch Changes

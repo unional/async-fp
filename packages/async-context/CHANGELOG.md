@@ -1,5 +1,11 @@
 # Change Log
 
+## 8.0.3
+
+### Patch Changes
+
+- 593f104: Update `type-plus`
+
 ## 8.0.2
 
 ### Patch Changes
