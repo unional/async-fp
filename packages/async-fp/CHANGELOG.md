@@ -1,5 +1,15 @@
 # Change Log
 
+## 8.1.0
+
+### Minor Changes
+
+- dfdb419: Add `asyncAssert()`.
+
+### Patch Changes
+
+- @unional/async-context@8.1.0
+
 ## 8.0.3
 
 ### Patch Changes
