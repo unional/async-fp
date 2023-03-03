@@ -1,6 +1,6 @@
 {
   "name": "async-fp",
-  "version": "8.0.3",
+  "version": "8.1.0",
   "description": "Utility library for asynchronous functional programming",
   "keywords": [
     "async",
