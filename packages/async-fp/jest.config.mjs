@@ -1,6 +1,8 @@
-import base from '../../.config/jest.nodejs.mjs'
+import base from '../../.config/jest.base.mjs'
 
+/** @type {import('jest').Config} */
 export default {
-  ...base,
-  displayName: 'async-fp'
+  displayName: 'async-fp',
+  preset: '@repobuddy/jest/presets/ts-watch',
+  moduleNameMapper: base.moduleNameMapper
 }

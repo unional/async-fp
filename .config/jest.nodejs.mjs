@@ -1,7 +1,7 @@
-import ts from './jest.base.mjs'
+import base from '../.config/jest.base.mjs'
 
+/** @type {import('jest').Config} */
 export default {
-  ...ts,
-  testEnvironment: 'node',
-  testMatch: ['**/?*.(spec|test|integrate|accept|system|unit).[jt]s?(x)'],
+  preset: '@repobuddy/jest/presets/ts-watch',
+  moduleNameMapper: base.moduleNameMapper
 }
