@@ -11,11 +11,14 @@
   },
   "overrides": [
     {
-      "extends": "plugin:harmony/ts-recommended",
+      "extends": "plugin:harmony/ts-prettier",
       "files": [
         "*.ts",
         "*.tsx"
-      ]
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
     }
   ]
 }
