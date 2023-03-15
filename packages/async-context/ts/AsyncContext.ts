@@ -1,4 +1,4 @@
-import { LeftJoin } from 'type-plus'
+import type { LeftJoin } from 'type-plus'
 import { BlockingGetDetected, ContextAlreadyInitialized } from './errors'
 
 export class AsyncContext<
