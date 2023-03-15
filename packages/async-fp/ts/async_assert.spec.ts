@@ -4,7 +4,7 @@ import { asyncAssert } from './async_assert'
 
 it('throws as the asserter throws', () => {
 	a.throws(
-		asyncAssert(Promise.resolve({}), v => {
+		asyncAssert(Promise.resolve({}), () => {
 			throw new Error('failed')
 		}),
 		e => e.message === 'failed'
