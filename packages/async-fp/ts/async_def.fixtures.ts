@@ -15,8 +15,8 @@ export const leafDef = asyncDef({
 		}
 	}
 })
-leafDef.name
-export type LeafDef = asyncDef.infer<typeof leafDef>
+
+export type LeafDef = asyncDef.Infer<typeof leafDef>
 
 export const leafTupleDef = asyncDef({
 	name: 'leaf',
@@ -32,6 +32,8 @@ export const leafTupleDef = asyncDef({
 		]
 	}
 })
+
+export type LeafTupleDef = asyncDef.Infer<typeof leafTupleDef>
 
 export const leafWithStartDef = asyncDef({
 	name: 'leaf',
@@ -49,6 +51,8 @@ export const leafWithStartDef = asyncDef({
 	}
 })
 
+export type LeafWithStartDef = asyncDef.Infer<typeof leafWithStartDef>
+
 export const leafDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
 	async define() {
@@ -61,6 +65,8 @@ export const leafDefFn = asyncDef((value: number) => ({
 		}
 	}
 }))
+
+export type LeafDefFn = asyncDef.Infer<typeof leafDefFn>
 
 export const leafTupleDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
@@ -77,6 +83,8 @@ export const leafTupleDefFn = asyncDef((value: number) => ({
 	}
 }))
 
+export type LeafTupleDefFn = asyncDef.Infer<typeof leafTupleDefFn>
+
 export const leafWithStartDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
 	define: async () => [
@@ -90,6 +98,8 @@ export const leafWithStartDefFn = asyncDef((value: number) => ({
 		() => Promise.resolve()
 	]
 }))
+
+export type LeafWithStartDefFn = asyncDef.Infer<typeof leafWithStartDefFn>
 
 // export const leafStaticDef = asyncDef({
 // 	name: 'leaf',
