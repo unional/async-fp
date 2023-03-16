@@ -116,7 +116,7 @@ export type PluginContext<P extends Def.DefConstructor<any, any, any>> = Def.Uni
 export namespace AsyncDef {
 	export type AllAsyncDef<
 		Static extends AllAsyncDef<any, any, any> | void,
-		Dynamic extends Record<string, AllAsyncDef<any, any, any>> | void,
+		Dynamic extends Record<string, Record<string | symbol, any>> | void,
 		Params extends any[] = any[],
 		RequiredPlugins extends Array<AllAsyncDef<any, any, any>> = [],
 		Name extends string = string,
@@ -126,34 +126,35 @@ export namespace AsyncDef {
 	> = SimpleAsyncDef<Static, Dynamic, Name, Result>
 
 	export type SimpleAsyncDef<
-		Static extends AllAsyncDef<any, any, any> | void,
-		Dynamic extends Record<string, AllAsyncDef<any, any, any>> | void,
+		Static extends Record<string | symbol, any> | void,
+		Dynamic extends Record<string, Record<string | symbol, any>> | void,
 		Name extends string,
 		Result extends
 			| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 			| Record<string | symbol, any>
 	> = {
 		readonly name: Name
-		define(ctx: DefineContext<Static, Dynamic>): Promise<Result>
+    readonly static?: Static
+    readonly dynamic?: Dynamic
+		define(ctx: DefineContext<Static, Dynamic, Name>): Promise<Result>
 	}
 
 	export type DefineContext<
-		Static extends AllAsyncDef<any, any, any> | void,
-		Dynamic extends Record<string, AllAsyncDef<any, any, any>> | void
-	> = Dynamic extends Record<string, AllAsyncDef<any, any, any>>
-		? {
-				name: string
-				load<I extends keyof Dynamic>(identifier: I): Promise<AsyncDefResult<Dynamic[I]>>
-		  } & AsyncDefResult<Static>
-		: {
-				name: string
-		  } & AsyncDefResult<Static>
+		Static extends Record<string | symbol, any> | void,
+		Dynamic extends Record<string, Record<string | symbol, any>> | void,
+		Name extends string
+	> = Dynamic extends Record<string, Record<string | symbol, any>>
+		? Static & {
+				name: Name
+				load<I extends keyof Dynamic>(identifier: I): Promise<Dynamic[I]>
+		  }
+		: Static & { name: Name }
 }
 
 export type AsyncDef<
 	ResultContext extends Record<string | symbol, any> = Record<string | symbol, any>,
 	Params extends any[] = any[],
-  Name extends string = string
+	Name extends string = string
 > = AsyncDef.AllAsyncDef<void, void, Params, [], Name, ResultContext>
 
 export type AsyncDefResult<D extends AsyncDef.AllAsyncDef<any, any, any> | void> =
