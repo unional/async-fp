@@ -15,8 +15,10 @@ export const leafDef = asyncDef({
 		}
 	}
 })
+leafDef.name
+export type LeafDef = asyncDef.infer<typeof leafDef>
 
-export const leafArrayDef = asyncDef({
+export const leafTupleDef = asyncDef({
 	name: 'leaf',
 	async define() {
 		return [
@@ -60,7 +62,7 @@ export const leafDefFn = asyncDef((value: number) => ({
 	}
 }))
 
-export const leafArrayDefFn = asyncDef((value: number) => ({
+export const leafTupleDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
 	async define() {
 		return [
@@ -88,6 +90,92 @@ export const leafWithStartDefFn = asyncDef((value: number) => ({
 		() => Promise.resolve()
 	]
 }))
+
+// export const leafStaticDef = asyncDef({
+// 	name: 'leaf',
+// 	async define() {
+// 		return {
+// 			leaf: {
+// 				foo(): number {
+// 					return 1
+// 				}
+// 			}
+// 		}
+// 	}
+// })
+
+// export const leafTupleDef = asyncDef({
+// 	name: 'leaf',
+// 	async define() {
+// 		return [
+// 			{
+// 				leaf: {
+// 					foo(): number {
+// 						return 1
+// 					}
+// 				}
+// 			}
+// 		]
+// 	}
+// })
+
+// export const leafWithStartDef = asyncDef({
+// 	name: 'leaf',
+// 	async define() {
+// 		return [
+// 			{
+// 				leaf: {
+// 					foo(): number {
+// 						return 1
+// 					}
+// 				}
+// 			},
+// 			async () => {}
+// 		]
+// 	}
+// })
+
+// export const leafDefFn = asyncDef((value: number) => ({
+// 	name: 'leaf',
+// 	async define() {
+// 		return {
+// 			leaf: {
+// 				foo() {
+// 					return value
+// 				}
+// 			}
+// 		}
+// 	}
+// }))
+
+// export const leafTupleDefFn = asyncDef((value: number) => ({
+// 	name: 'leaf',
+// 	async define() {
+// 		return [
+// 			{
+// 				leaf: {
+// 					foo(): number {
+// 						return value
+// 					}
+// 				}
+// 			}
+// 		]
+// 	}
+// }))
+
+// export const leafWithStartDefFn = asyncDef((value: number) => ({
+// 	name: 'leaf',
+// 	define: async () => [
+// 		{
+// 			leaf: {
+// 				foo(): number {
+// 					return value
+// 				}
+// 			}
+// 		},
+// 		() => Promise.resolve()
+// 	]
+// }))
 
 export const simplePlugin = asyncDefConstructor(() => ({
 	name: 'simple',
