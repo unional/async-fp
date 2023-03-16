@@ -119,19 +119,21 @@ export namespace AsyncDef {
 		Dynamic extends Record<string, AllAsyncDef<any, any, any>> | void,
 		Params extends any[] = any[],
 		RequiredPlugins extends Array<AllAsyncDef<any, any, any>> = [],
+		Name extends string = string,
 		Result extends
 			| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 			| Record<string | symbol, any> = Record<string | symbol, any>
-	> = SimpleAsyncDef<Static, Dynamic, Result>
+	> = SimpleAsyncDef<Static, Dynamic, Name, Result>
 
 	export type SimpleAsyncDef<
 		Static extends AllAsyncDef<any, any, any> | void,
 		Dynamic extends Record<string, AllAsyncDef<any, any, any>> | void,
+		Name extends string,
 		Result extends
 			| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 			| Record<string | symbol, any>
 	> = {
-		name: string
+		readonly name: Name
 		define(ctx: DefineContext<Static, Dynamic>): Promise<Result>
 	}
 
@@ -150,8 +152,9 @@ export namespace AsyncDef {
 
 export type AsyncDef<
 	ResultContext extends Record<string | symbol, any> = Record<string | symbol, any>,
-	Params extends any[] = any[]
-> = AsyncDef.AllAsyncDef<void, void, Params, [], ResultContext>
+	Params extends any[] = any[],
+  Name extends string = string
+> = AsyncDef.AllAsyncDef<void, void, Params, [], Name, ResultContext>
 
 export type AsyncDefResult<D extends AsyncDef.AllAsyncDef<any, any, any> | void> =
 	D extends AsyncDef.AllAsyncDef<any, any, any>
