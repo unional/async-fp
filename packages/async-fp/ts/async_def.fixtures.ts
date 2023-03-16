@@ -1,6 +1,6 @@
-import { isType } from 'type-plus'
-import type { Simple2Plugin } from './async_def.fixtures.simple2.js'
+import { CanAssign, isType } from 'type-plus'
 import { asyncDef, asyncDefConstructor } from './async_def'
+import type { Simple2Plugin } from './async_def.fixtures.simple2.js'
 import type { Def } from './async_def.types.js'
 
 export const leafDef = asyncDef({
@@ -20,7 +20,9 @@ export type LeafDef = asyncDef.Infer<typeof leafDef>
 
 export const leafTupleDef = asyncDef({
 	name: 'leaf',
-	async define() {
+	static: asyncDef.static<LeafDef>(),
+	async define(ctx) {
+		isType.equal<true, { name: 'leaf' } & LeafDef, typeof ctx>()
 		return [
 			{
 				leaf: {
@@ -37,7 +39,10 @@ export type LeafTupleDef = asyncDef.Infer<typeof leafTupleDef>
 
 export const leafWithStartDef = asyncDef({
 	name: 'leaf',
-	async define() {
+	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
+	async define(ctx) {
+		const d = await ctx.load('leaf')
+		isType.equal<true, LeafDef, typeof d>()
 		return [
 			{
 				leaf: {
@@ -45,8 +50,7 @@ export const leafWithStartDef = asyncDef({
 						return 1
 					}
 				}
-			},
-			async () => {}
+			}
 		]
 	}
 })
@@ -55,6 +59,8 @@ export type LeafWithStartDef = asyncDef.Infer<typeof leafWithStartDef>
 
 export const leafDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
+	static: asyncDef.static<LeafDef>(),
+	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define() {
 		return {
 			leaf: {
@@ -70,7 +76,12 @@ export type LeafDefFn = asyncDef.Infer<typeof leafDefFn>
 
 export const leafTupleDefFn = asyncDef((value: number) => ({
 	name: 'leaf',
-	async define() {
+	static: asyncDef.static<LeafDef>(),
+	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
+	async define(ctx) {
+		isType.t<CanAssign<typeof ctx, LeafDef>>()
+		const d = await ctx.load('leaf')
+		isType.equal<true, LeafDef, typeof d>()
 		return [
 			{
 				leaf: {
@@ -101,91 +112,20 @@ export const leafWithStartDefFn = asyncDef((value: number) => ({
 
 export type LeafWithStartDefFn = asyncDef.Infer<typeof leafWithStartDefFn>
 
-// export const leafStaticDef = asyncDef({
-// 	name: 'leaf',
-// 	async define() {
-// 		return {
-// 			leaf: {
-// 				foo(): number {
-// 					return 1
-// 				}
-// 			}
-// 		}
-// 	}
-// })
-
-// export const leafTupleDef = asyncDef({
-// 	name: 'leaf',
-// 	async define() {
-// 		return [
-// 			{
-// 				leaf: {
-// 					foo(): number {
-// 						return 1
-// 					}
-// 				}
-// 			}
-// 		]
-// 	}
-// })
-
-// export const leafWithStartDef = asyncDef({
-// 	name: 'leaf',
-// 	async define() {
-// 		return [
-// 			{
-// 				leaf: {
-// 					foo(): number {
-// 						return 1
-// 					}
-// 				}
-// 			},
-// 			async () => {}
-// 		]
-// 	}
-// })
-
-// export const leafDefFn = asyncDef((value: number) => ({
-// 	name: 'leaf',
-// 	async define() {
-// 		return {
-// 			leaf: {
-// 				foo() {
-// 					return value
-// 				}
-// 			}
-// 		}
-// 	}
-// }))
-
-// export const leafTupleDefFn = asyncDef((value: number) => ({
-// 	name: 'leaf',
-// 	async define() {
-// 		return [
-// 			{
-// 				leaf: {
-// 					foo(): number {
-// 						return value
-// 					}
-// 				}
-// 			}
-// 		]
-// 	}
-// }))
-
-// export const leafWithStartDefFn = asyncDef((value: number) => ({
-// 	name: 'leaf',
-// 	define: async () => [
-// 		{
-// 			leaf: {
-// 				foo(): number {
-// 					return value
-// 				}
-// 			}
-// 		},
-// 		() => Promise.resolve()
-// 	]
-// }))
+export const leafStaticDef = asyncDef({
+	name: 'leaf',
+	static: asyncDef.static<LeafDef>(),
+	async define(ctx) {
+		isType.equal<true, { name: 'leaf' } & LeafDef, typeof ctx>()
+		return {
+			leaf: {
+				foo(): number {
+					return 1
+				}
+			}
+		}
+	}
+})
 
 export const simplePlugin = asyncDefConstructor(() => ({
 	name: 'simple',
