@@ -1,4 +1,4 @@
-import { CanAssign, isType } from 'type-plus'
+import { isType } from 'type-plus'
 import { asyncDef, asyncDefConstructor } from './async_def'
 import type { Simple2Plugin } from './async_def.fixtures.simple2.js'
 import type { Def } from './async_def.types.js'
@@ -73,7 +73,7 @@ export const leafTupleDefFn = asyncDef((value: number) => ({
 	static: asyncDef.static<LeafDef>().optional(leafTupleDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define(ctx) {
-		isType.t<CanAssign<typeof ctx, LeafDef & Partial<LeafTupleDef>>>()
+		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>()
 		const d = await ctx.load('leaf')
 		isType.equal<true, LeafDef, typeof d>()
 		return [
@@ -129,7 +129,7 @@ export const requireDef = asyncDef({
 	name: 'require',
 	static: asyncDef.static().require(leafTupleDef),
 	async define(ctx) {
-		isType.t<CanAssign<typeof ctx, LeafTupleDef>>()
+		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafTupleDef>()
 		return {
 			require: {
 				foo(): number {
@@ -199,7 +199,7 @@ export const abstractRequireDef = asyncDef({
 	name: 'abstract_require',
 	static: asyncDef.static<LeafDef>().require(leafTupleDef),
 	async define(ctx) {
-		isType.t<CanAssign<typeof ctx, LeafDef & LeafTupleDef>>()
+		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafTupleDef>()
 		return {
 			abstract_require: {
 				foo(): number {
@@ -216,7 +216,7 @@ export const abstractOptionalDef = asyncDef({
 	name: 'abstract_optional',
 	static: asyncDef.static<LeafDef>().optional(leafTupleDef),
 	async define(ctx) {
-		isType.t<CanAssign<typeof ctx, LeafDef & Partial<LeafTupleDef>>>()
+		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>()
 		return {
 			abstract_optional: {
 				foo(): number {
