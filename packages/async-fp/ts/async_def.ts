@@ -1,12 +1,4 @@
-// const def = {
-//   name: '',
-//   required: [],
-//   define() {
-
-//     return [{}, async () => await start()]
-//   }
-// }
-
+import type { UnionOfValues } from 'type-plus'
 import type { Def } from './async_def.types.js'
 
 export function asyncDefConstructor<
@@ -79,7 +71,31 @@ export function asyncDef(plugin: unknown): typeof plugin {
 	return plugin
 }
 
-asyncDef.static = <Static extends Record<string | symbol, any>>() => undefined as unknown as Static
+asyncDef.static = <S extends Record<string | symbol, any> | unknown>() => {
+	const _type: Record<string, any> = {}
+	return {
+		require<Defs extends any[]>(...defs: Defs) {
+			_type.require = defs
+			return {
+				_type,
+				optional<Defs extends any[]>(...defs: Defs) {
+					_type.optional = defs
+					return { _type }
+				}
+			}
+		},
+		optional<Defs extends any[]>(...defs: Defs) {
+			_type.optional = defs
+			return {
+				_type,
+				require<Defs extends any[]>(...defs: Defs) {
+					_type.require = defs
+					return { _type }
+				}
+			}
+		}
+	} as asyncDef.Internal.StaticB<S>
+}
 asyncDef.dynamic = <Dynamic extends Record<string, Record<string | symbol, any>>>() =>
 	undefined as unknown as Dynamic
 
@@ -101,7 +117,7 @@ export namespace asyncDef {
 	export namespace Internal {
 		export type AllAsyncDef<
 			Name extends string = string,
-			Static extends Record<string | symbol, any> | unknown = unknown,
+			Static extends StaticB | StaticR | StaticO | StaticF | unknown = unknown,
 			Dynamic extends Record<string, Record<string | symbol, any>> | unknown = unknown,
 			Params extends any[] = any[],
 			RequiredPlugins extends Array<Record<string | symbol, any>> = [],
@@ -112,7 +128,7 @@ export namespace asyncDef {
 
 		export type SimpleAsyncDef<
 			Name extends string,
-			Static extends Record<string | symbol, any> | unknown,
+			Static extends StaticB | StaticR | StaticO | StaticF | unknown,
 			Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
 			Result extends
 				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
@@ -126,13 +142,78 @@ export namespace asyncDef {
 
 		export type DefineContext<
 			Name extends string,
-			Static extends Record<string | symbol, any> | unknown,
+			Static extends StaticB | StaticR | StaticO | StaticF | unknown,
 			Dynamic extends Record<string, Record<string | symbol, any>> | unknown
 		> = Dynamic extends Record<string, Record<string | symbol, any>>
-			? Static & {
+			? ExtractStatic<Static> & {
 					name: Name
 					load<I extends keyof Dynamic>(identifier: I): Promise<Dynamic[I]>
 			  }
-			: Static & { name: Name }
+			: ExtractStatic<Static> & { name: Name }
+
+		export type StaticB<S = unknown> = {
+			_type: {
+				static: S
+				require: unknown
+				optional: unknown
+			}
+			require<
+				R extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void>
+			>(
+				...defs: R
+			): StaticR<S, InferArray<R>>
+			optional<
+				O extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void>
+			>(
+				...defs: O
+			): StaticO<S, InferArray<O>>
+		}
+
+		export type StaticR<S = unknown, R = unknown> = {
+			_type: {
+				static: S
+				require: R
+				optional: unknown
+			}
+			optional<
+				O extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void>
+			>(
+				...defs: O
+			): StaticF<S, R, InferArray<O>>
+		}
+		export type StaticO<S = unknown, O = unknown> = {
+			_type: {
+				static: S
+				require: unknown
+				optional: Partial<O>
+			}
+			require<
+				R extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void>
+			>(
+				...defs: R
+			): StaticF<S, InferArray<R>, O>
+		}
+		export type StaticF<S = unknown, R = unknown, O = unknown> = {
+			_type: {
+				static: S
+				require: R
+				optional: Partial<O>
+			}
+		}
+
+		export type InferArray<
+			Defs extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void>
+		> = UnionToIntersection<Infer<UnionOfValues<Defs>>>
+
+		export type ExtractStatic<T extends StaticB | StaticR | StaticO | StaticF | unknown> =
+			T extends StaticB | StaticR | StaticO | StaticF
+				? T['_type']['static'] & T['_type']['require'] & T['_type']['optional']
+				: unknown
+
+		export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+			k: infer I
+		) => void
+			? I
+			: never
 	}
 }
