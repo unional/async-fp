@@ -50,15 +50,15 @@ export function asyncDefConstructor(plugin: unknown): typeof plugin {
 }
 
 export function asyncDef<
-	Static extends Record<string | symbol, any> | unknown = unknown,
-	Dynamic extends Record<string, Record<string | symbol, any>> | unknown = unknown,
-	Params extends any[] = [],
-	Name extends string = string,
+	Name extends string,
+	Static extends Record<string | symbol, any> | unknown,
+	Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
+	Params extends any[],
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-		| Record<string | symbol, any> = Record<string | symbol, any>
+		| Record<string | symbol, any>
 >(
-	plugin: (...args: Params) => asyncDef.Internal.SimpleAsyncDef<Static, Dynamic, Name, Result>
+	plugin: (...args: Params) => asyncDef.Internal.SimpleAsyncDef<Name, Static, Dynamic, Result>
 ): typeof plugin
 export function asyncDef<
 	Static extends Def.DefConstructor<any, any, any> | void = void,
@@ -68,13 +68,13 @@ export function asyncDef<
 	Result extends Record<string | symbol, any> = Record<string | symbol, any>
 >(plugin: Def.TypeB<Static, Dynamic, RequiredPlugins, Result>): typeof plugin
 export function asyncDef<
-	Name extends string = string,
-	Static extends Record<string | symbol, any> | unknown = unknown,
-	Dynamic extends Record<string, Record<string | symbol, any>> | unknown = unknown,
+	Name extends string,
+	Static extends Record<string | symbol, any> | unknown,
+	Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-		| Record<string | symbol, any> = Record<string | symbol, any>
->(plugin: asyncDef.Internal.SimpleAsyncDef<Static, Dynamic, Name, Result>): typeof plugin
+		| Record<string | symbol, any>
+>(plugin: asyncDef.Internal.SimpleAsyncDef<Name, Static, Dynamic, Result>): typeof plugin
 export function asyncDef(plugin: unknown): typeof plugin {
 	return plugin
 }
@@ -85,13 +85,10 @@ asyncDef.dynamic = <Dynamic extends Record<string, Record<string | symbol, any>>
 
 export namespace asyncDef {
 	export type Infer<
-		D extends
-			| Internal.AllAsyncDef<any, any, any>
-			| ((...args: any[]) => Internal.AllAsyncDef<any, any, any>)
-			| void
-	> = D extends (...args: any[]) => Internal.AllAsyncDef<any, any, any>
+		D extends Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef) | void
+	> = D extends (...args: any[]) => Internal.AllAsyncDef
 		? Infer<ReturnType<D>>
-		: D extends Internal.AllAsyncDef<any, any, any>
+		: D extends Internal.AllAsyncDef
 		? ReturnType<D['define']> extends infer R
 			? R extends Promise<[infer X, unknown]>
 				? Awaited<X>
@@ -103,20 +100,20 @@ export namespace asyncDef {
 
 	export namespace Internal {
 		export type AllAsyncDef<
-			Static extends Record<string | symbol, any> | unknown,
-			Dynamic extends Record<string, Record<string | symbol, any>> | void,
+			Name extends string = string,
+			Static extends Record<string | symbol, any> | unknown = unknown,
+			Dynamic extends Record<string, Record<string | symbol, any>> | unknown = unknown,
 			Params extends any[] = any[],
 			RequiredPlugins extends Array<Record<string | symbol, any>> = [],
-			Name extends string = string,
 			Result extends
 				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 				| Record<string | symbol, any> = Record<string | symbol, any>
-		> = SimpleAsyncDef<Static, Dynamic, Name, Result>
+		> = SimpleAsyncDef<Name, Static, Dynamic, Result>
 
 		export type SimpleAsyncDef<
+			Name extends string,
 			Static extends Record<string | symbol, any> | unknown,
 			Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
-			Name extends string,
 			Result extends
 				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 				| Record<string | symbol, any>
@@ -124,13 +121,13 @@ export namespace asyncDef {
 			readonly name: Name
 			readonly static?: Static
 			readonly dynamic?: Dynamic
-			define(ctx: DefineContext<Static, Dynamic, Name>): Promise<Result>
+			define(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
 		}
 
 		export type DefineContext<
+			Name extends string,
 			Static extends Record<string | symbol, any> | unknown,
-			Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
-			Name extends string
+			Dynamic extends Record<string, Record<string | symbol, any>> | unknown
 		> = Dynamic extends Record<string, Record<string | symbol, any>>
 			? Static & {
 					name: Name
