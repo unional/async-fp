@@ -57,7 +57,9 @@ export function asyncDef<
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any> = Record<string | symbol, any>
->(plugin: (...args: Params) => AsyncDef.SimpleAsyncDef<Static, Dynamic,Name, Result>): typeof plugin
+>(
+	plugin: (...args: Params) => AsyncDef.SimpleAsyncDef<Static, Dynamic, Name, Result>
+): typeof plugin
 export function asyncDef<
 	Static extends Def.DefConstructor<any, any, any> | void = void,
 	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
@@ -72,20 +74,26 @@ export function asyncDef<
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any> = Record<string | symbol, any>
->(plugin: AsyncDef.SimpleAsyncDef<Static, Dynamic,  Name, Result>): typeof plugin
+>(plugin: AsyncDef.SimpleAsyncDef<Static, Dynamic, Name, Result>): typeof plugin
 export function asyncDef(plugin: unknown): typeof plugin {
 	return plugin
 }
 
 export namespace asyncDef {
-	export type infer<D extends AsyncDef.AllAsyncDef<any, any, any> | void> =
-		D extends AsyncDef.AllAsyncDef<any, any, any>
-			? ReturnType<D['define']> extends infer R
-				? R extends Promise<[infer X, infer S]>
-					? Def.UnionToIntersection<Awaited<X>>
-					: R extends Promise<[infer X]>
-					? Def.UnionToIntersection<Awaited<X>>
-					: Def.UnionToIntersection<Awaited<R>>
-				: never
-			: unknown
+	export type Infer<
+		D extends
+			| AsyncDef.AllAsyncDef<any, any, any>
+			| ((...args: any[]) => AsyncDef.AllAsyncDef<any, any, any>)
+			| void
+	> = D extends (...args: any[]) => AsyncDef.AllAsyncDef<any, any, any>
+		? Infer<ReturnType<D>>
+		: D extends AsyncDef.AllAsyncDef<any, any, any>
+		? ReturnType<D['define']> extends infer R
+			? R extends Promise<[infer X, unknown]>
+				? Def.UnionToIntersection<Awaited<X>>
+				: R extends Promise<[infer X]>
+				? Def.UnionToIntersection<Awaited<X>>
+				: Def.UnionToIntersection<Awaited<R>>
+			: never
+		: unknown
 }
