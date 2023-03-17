@@ -91,11 +91,11 @@ importers:
       rimraf: ^3.0.2
       size-limit: ^8.0.1
       ts-jest: ^29.0.0
-      type-plus: ^5.0.0
+      type-plus: ^6.0.0
       typescript: ^5.0.0
     dependencies:
       iso-error: 6.0.0
-      type-plus: 5.0.0
+      type-plus: 6.0.0
     devDependencies:
       '@repobuddy/jest': 3.1.3_63vy6xp4jzfujynfenxohrisbe
       '@size-limit/preset-small-lib': 8.0.1_size-limit@8.0.1
@@ -141,7 +141,7 @@ importers:
       rimraf: ^3.0.2
       size-limit: ^8.0.1
       ts-jest: ^29.0.0
-      type-plus: ^5.0.0
+      type-plus: ^6.0.0
       typescript: ^5.0.0
     dependencies:
       '@unional/async-context': link:../async-context
@@ -165,7 +165,7 @@ importers:
       rimraf: 3.0.2
       size-limit: 8.0.1
       ts-jest: 29.0.3_pi72spduhmwyhgotm5jagoykm4
-      type-plus: 5.0.0
+      type-plus: 6.0.0
       typescript: 5.0.2
 
 packages:
@@ -3105,12 +3105,12 @@ packages:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: true
 
-  /acorn-jsx/5.3.2_acorn@8.8.0:
+  /acorn-jsx/5.3.2_acorn@8.8.1:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.8.0
+      acorn: 8.8.1
     dev: true
 
   /acorn-node/1.8.2:
@@ -4889,8 +4889,8 @@ packages:
     resolution: {integrity: sha512-ORs1Rt/uQTqUKjDdGCyrtYxbazf5umATSf/K4qxjmZHORR6HJk+2s/2Pqe+Kk49HHINC/xNIrGfgh8sZcll0ng==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.8.0
-      acorn-jsx: 5.3.2_acorn@8.8.0
+      acorn: 8.8.1
+      acorn-jsx: 5.3.2_acorn@8.8.1
       eslint-visitor-keys: 3.3.0
     dev: true
 
@@ -9307,6 +9307,13 @@ packages:
 
   /type-plus/5.0.0:
     resolution: {integrity: sha512-nKp5pOQDldmR9BdEjLplLFwiXTVhOK2kReBSgVJ65URDLXCqENYzVDCONaExADIIc1CAGzvzTkB0TUgMAWR2qQ==}
+    dependencies:
+      tersify: 3.11.1
+      unpartial: 1.0.4
+    dev: true
+
+  /type-plus/6.0.0:
+    resolution: {integrity: sha512-ezkCTr6LGC87w9LHc83XJnJFfaeEa/nPhr4yzBKv2+Pw0y4FXKHgrJ2GWM4H1nSKzcEPv4q/Sfw4MKmi8NTxbg==}
     dependencies:
       tersify: 3.11.1
       unpartial: 1.0.4
