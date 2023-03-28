@@ -29,3 +29,15 @@ it('returns the value from the asserter if provided', async () => {
 	isType.equal<true, number, typeof r>()
 	expect(r).toEqual(1)
 })
+
+it('returns the value if async asserter passes', async () => {
+	const r = await asyncAssert(Promise.resolve({ a: 1 }), async () => {})
+	isType.equal<true, { a: number }, typeof r>()
+	expect(r).toEqual({ a: 1 })
+})
+
+it('returns the value from the async asserter if provided', async () => {
+	const r = await asyncAssert(Promise.resolve({ a: 1 }), async v => v.a)
+	isType.equal<true, number, typeof r>()
+	expect(r).toEqual(1)
+})

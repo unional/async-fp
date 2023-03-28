@@ -10,7 +10,9 @@
 export async function asyncAssert<T, A extends (value: T) => unknown>(
 	input: Promise<T>,
 	asserter: A
-): Promise<A extends (value: T) => infer R ? (R extends void ? T : ReturnType<A>) : void> {
+): Promise<
+	A extends (value: T) => infer R ? (R extends void | Promise<void> ? T : ReturnType<A>) : void
+> {
 	const r = await input
-	return asserter(r) ?? (r as any)
+	return await asserter(r) ?? (r as any)
 }
