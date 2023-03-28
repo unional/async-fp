@@ -61,7 +61,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "npm-check-updates": "^16.0.5",
     "pinst": "^3.0.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.0.0",
     "turbo": "^1.4.3",
     "typescript": "^5.0.0"
   },
