@@ -1,5 +1,11 @@
 # Change Log
 
+## 8.1.1
+
+### Patch Changes
+
+- 41af4c1: Adjust import type syntax
+
 ## 8.1.0
 
 ## 8.0.3

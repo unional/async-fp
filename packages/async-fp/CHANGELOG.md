@@ -1,5 +1,13 @@
 # Change Log
 
+## 8.1.1
+
+### Patch Changes
+
+- f6ee884: Fix support of async asserter
+- Updated dependencies [41af4c1]
+  - @unional/async-context@8.1.1
+
 ## 8.1.0
 
 ### Minor Changes
