@@ -525,3 +525,14 @@ export const implementPlugin = asyncDef(() => ({
 		}
 	}
 }))
+
+export const sideEffectPlugin = asyncDef({
+	name: 'side_effect',
+	async define() {}
+})
+
+export const requireSideEffectPlugin = asyncDef({
+	name: 'require_side_effect',
+	static: asyncDef.static().require(sideEffectPlugin),
+	async define() {}
+})

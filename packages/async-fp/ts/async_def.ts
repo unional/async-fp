@@ -1,6 +1,17 @@
 import type { UnionOfValues } from 'type-plus'
-import type { Def } from './async_def.types.js'
 
+/**
+ * Creates an async definition.
+ */
+export function asyncDef<
+	Name extends string,
+	Static extends Record<string | symbol, any> | unknown,
+	Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
+	Result extends
+		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: asyncDef.Internal.AsyncDef<Name, Static, Dynamic, Result>): typeof plugin
 export function asyncDef<
 	Name extends string,
 	Static extends Record<string | symbol, any> | unknown,
@@ -9,24 +20,10 @@ export function asyncDef<
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any>
+		| void
 >(
-	plugin: (...args: Params) => asyncDef.Internal.SimpleAsyncDef<Name, Static, Dynamic, Result>
+	plugin: (...args: Params) => asyncDef.Internal.AsyncDef<Name, Static, Dynamic, Result>
 ): typeof plugin
-export function asyncDef<
-	Static extends Def.DefConstructor<any, any, any> | void = void,
-	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
-	RequiredPlugins extends any[] = [],
-	Name extends string = string,
-	Result extends Record<string | symbol, any> = Record<string | symbol, any>
->(plugin: Def.TypeB<Static, Dynamic, RequiredPlugins, Result>): typeof plugin
-export function asyncDef<
-	Name extends string,
-	Static extends Record<string | symbol, any> | unknown,
-	Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
-	Result extends
-		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-		| Record<string | symbol, any>
->(plugin: asyncDef.Internal.SimpleAsyncDef<Name, Static, Dynamic, Result>): typeof plugin
 export function asyncDef(plugin: unknown): typeof plugin {
 	return plugin
 }
@@ -60,10 +57,10 @@ asyncDef.dynamic = <Dynamic extends Record<string, Record<string | symbol, any>>
 	undefined as unknown as Dynamic
 
 export namespace asyncDef {
-	export type Infer<D extends Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)> =
-		D extends (...args: any[]) => Internal.AllAsyncDef
+	export type Infer<D extends Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)> =
+		D extends (...args: any[]) => Internal.AsyncDef
 			? Infer<ReturnType<D>>
-			: D extends Internal.AllAsyncDef
+			: D extends Internal.AsyncDef
 			? ReturnType<D['define']> extends infer R
 				? R extends Promise<[infer X, unknown]>
 					? Awaited<X>
@@ -74,24 +71,14 @@ export namespace asyncDef {
 			: unknown
 
 	export namespace Internal {
-		export type AllAsyncDef<
+		export type AsyncDef<
 			Name extends string = string,
 			Static extends StaticB | StaticR | StaticO | StaticF | unknown = unknown,
 			Dynamic extends Record<string, Record<string | symbol, any>> | unknown = unknown,
-			Params extends any[] = any[],
-			RequiredPlugins extends Array<Record<string | symbol, any>> = [],
-			Result extends
-				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-				| Record<string | symbol, any> = Record<string | symbol, any>
-		> = SimpleAsyncDef<Name, Static, Dynamic, Result>
-
-		export type SimpleAsyncDef<
-			Name extends string,
-			Static extends StaticB | StaticR | StaticO | StaticF | unknown,
-			Dynamic extends Record<string, Record<string | symbol, any>> | unknown,
 			Result extends
 				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 				| Record<string | symbol, any>
+				| void = Record<string | symbol, any> | void
 		> = {
 			readonly name: Name
 			readonly static?: Static
@@ -116,10 +103,10 @@ export namespace asyncDef {
 				require: unknown
 				optional: unknown
 			}
-			require<R extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)>>(
+			require<R extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>>(
 				...defs: R
 			): StaticR<S, InferArray<R>>
-			optional<O extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)>>(
+			optional<O extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>>(
 				...defs: O
 			): StaticO<S, InferArray<O>>
 		}
@@ -130,7 +117,7 @@ export namespace asyncDef {
 				require: R
 				optional: unknown
 			}
-			optional<O extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)>>(
+			optional<O extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>>(
 				...defs: O
 			): StaticF<S, R, InferArray<O>>
 		}
@@ -140,7 +127,7 @@ export namespace asyncDef {
 				require: unknown
 				optional: Partial<O>
 			}
-			require<R extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)>>(
+			require<R extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>>(
 				...defs: R
 			): StaticF<S, InferArray<R>, O>
 		}
@@ -153,7 +140,7 @@ export namespace asyncDef {
 		}
 
 		export type InferArray<
-			Defs extends Array<Internal.AllAsyncDef | ((...args: any[]) => Internal.AllAsyncDef)>
+			Defs extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>
 		> = UnionToIntersection<Infer<UnionOfValues<Defs>>>
 
 		export type ExtractStatic<T extends StaticB | StaticR | StaticO | StaticF | unknown> =
