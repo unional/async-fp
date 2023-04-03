@@ -1,5 +1,16 @@
-import { isType } from 'type-plus'
+import { testType } from 'type-plus'
 import {
+	AbstractDef,
+	AbstractDynamicDef,
+	AbstractOptionalDef,
+	AbstractOptionalDynamicDef,
+	AbstractOptionalRequireDef,
+	AbstractOptionalRequireDynamicDef,
+	AbstractRequireDef,
+	AbstractRequireDynamicDef,
+	AbstractRequireOptionalDef,
+	AbstractRequireOptionalDynamicDef,
+	DynamicDef,
 	LeafDef,
 	leafDef,
 	LeafDefFn,
@@ -8,83 +19,70 @@ import {
 	LeafTupleDefFn,
 	LeafWithStartDef,
 	LeafWithStartDefFn,
-	AbstractDef,
-	DynamicDef,
-	AbstractRequireDef,
-	RequireDef,
 	OptionalDef,
-	AbstractRequireDynamicDef,
-	AbstractOptionalDef,
-	RequireOptionalDef,
-	AbstractRequireOptionalDef,
-	OptionalRequireDef,
-	AbstractOptionalRequireDef,
-	AbstractOptionalDynamicDef,
-	RequireDynamicDef,
 	OptionalDynamicDef,
-	AbstractDynamicDef,
-	AbstractRequireOptionalDynamicDef,
-	AbstractOptionalRequireDynamicDef,
-	RequireOptionalDynamicDef,
-	OptionalRequireDynamicDef
+	OptionalRequireDef,
+	OptionalRequireDynamicDef,
+	RequireDef,
+	RequireDynamicDef,
+	RequireOptionalDef,
+	RequireOptionalDynamicDef
 } from './async_def.fixtures'
 
 it('exposes name of the def as const', () => {
 	expect(leafDef.name).toBe('leaf')
-	isType.equal<true, 'leaf', typeof leafDef.name>()
+	testType.equal<'leaf', typeof leafDef.name>(true)
 })
 
 it('exposes name of the def fn as const', () => {
-  const p = leafDefFn(1)
+	const p = leafDefFn(1)
 	expect(p.name).toBe('leaf-fn')
-	isType.equal<true, 'leaf-fn', typeof p.name>()
+	testType.equal<'leaf-fn', typeof p.name>(true)
 })
 
 it(`gets the type of the define result for leaf def`, () => {
-	isType.equal<true, { leaf: { foo(): number } }, LeafDef>()
-	isType.equal<true, { leaf_tuple: { foo(): number } }, LeafTupleDef>()
-	isType.equal<true, { leaf_start: { foo(): number } }, LeafWithStartDef>()
-	isType.equal<true, { leaf_fn: { foo(): number } }, LeafDefFn>()
-	isType.equal<true, { leaf_tuple_fn: { foo(): number } }, LeafTupleDefFn>()
-	isType.equal<true, { leaf_start_fn: { foo(): number } }, LeafWithStartDefFn>()
+	testType.equal<{ leaf: { foo(): number } }, LeafDef>(true)
+	testType.equal<{ leaf_tuple: { foo(): number } }, LeafTupleDef>(true)
+	testType.equal<{ leaf_start: { foo(): number } }, LeafWithStartDef>(true)
+	testType.equal<{ leaf_fn: { foo(): number } }, LeafDefFn>(true)
+	testType.equal<{ leaf_tuple_fn: { foo(): number } }, LeafTupleDefFn>(true)
+	testType.equal<{ leaf_start_fn: { foo(): number } }, LeafWithStartDefFn>(true)
 })
 
 it(`gets the type of the define result for static def`, () => {
-	isType.equal<true, { abstract: { foo(): number } }, AbstractDef>()
-	isType.equal<true, { require: { foo(): number } }, RequireDef>()
-	isType.equal<true, { optional: { foo(): number } }, OptionalDef>()
+	testType.equal<{ abstract: { foo(): number } }, AbstractDef>(true)
+	testType.equal<{ require: { foo(): number } }, RequireDef>(true)
+	testType.equal<{ optional: { foo(): number } }, OptionalDef>(true)
 
-	isType.equal<true, { abstract_require: { foo(): number } }, AbstractRequireDef>()
-	isType.equal<true, { abstract_optional: { foo(): number } }, AbstractOptionalDef>()
-	isType.equal<true, { require_optional: { foo(): number } }, RequireOptionalDef>()
-	isType.equal<true, { optional_require: { foo(): number } }, OptionalRequireDef>()
+	testType.equal<{ abstract_require: { foo(): number } }, AbstractRequireDef>(true)
+	testType.equal<{ abstract_optional: { foo(): number } }, AbstractOptionalDef>(true)
+	testType.equal<{ require_optional: { foo(): number } }, RequireOptionalDef>(true)
+	testType.equal<{ optional_require: { foo(): number } }, OptionalRequireDef>(true)
 
-	isType.equal<true, { abstract_require_optional: { foo(): number } }, AbstractRequireOptionalDef>()
-	isType.equal<true, { abstract_optional_require: { foo(): number } }, AbstractOptionalRequireDef>()
+	testType.equal<{ abstract_require_optional: { foo(): number } }, AbstractRequireOptionalDef>(true)
+	testType.equal<{ abstract_optional_require: { foo(): number } }, AbstractOptionalRequireDef>(true)
 })
 
 it(`gets the type of the define result for dynamic def`, () => {
-	isType.equal<true, { dynamic: { foo(): number } }, DynamicDef>()
+	testType.equal<{ dynamic: { foo(): number } }, DynamicDef>(true)
 })
 
 it(`gets the type of the define result for mix def`, () => {
-	isType.equal<true, { abstract_dynamic: { foo(): number } }, AbstractDynamicDef>()
-	isType.equal<true, { require_dynamic: { foo(): number } }, RequireDynamicDef>()
-	isType.equal<true, { optional_dynamic: { foo(): number } }, OptionalDynamicDef>()
+	testType.equal<{ abstract_dynamic: { foo(): number } }, AbstractDynamicDef>(true)
+	testType.equal<{ require_dynamic: { foo(): number } }, RequireDynamicDef>(true)
+	testType.equal<{ optional_dynamic: { foo(): number } }, OptionalDynamicDef>(true)
 
-	isType.equal<true, { abstract_require_dynamic: { foo(): number } }, AbstractRequireDynamicDef>()
-	isType.equal<true, { abstract_optional_dynamic: { foo(): number } }, AbstractOptionalDynamicDef>()
-	isType.equal<true, { require_optional_dynamic: { foo(): number } }, RequireOptionalDynamicDef>()
-	isType.equal<true, { optional_require_dynamic: { foo(): number } }, OptionalRequireDynamicDef>()
+	testType.equal<{ abstract_require_dynamic: { foo(): number } }, AbstractRequireDynamicDef>(true)
+	testType.equal<{ abstract_optional_dynamic: { foo(): number } }, AbstractOptionalDynamicDef>(true)
+	testType.equal<{ require_optional_dynamic: { foo(): number } }, RequireOptionalDynamicDef>(true)
+	testType.equal<{ optional_require_dynamic: { foo(): number } }, OptionalRequireDynamicDef>(true)
 
-	isType.equal<
-		true,
+	testType.equal<
 		{ abstract_require_optional_dynamic: { foo(): number } },
 		AbstractRequireOptionalDynamicDef
-	>()
-	isType.equal<
-		true,
+	>(true)
+	testType.equal<
 		{ abstract_optional_require_dynamic: { foo(): number } },
 		AbstractOptionalRequireDynamicDef
-	>()
+	>(true)
 })

@@ -1,5 +1,5 @@
 import { a } from 'assertron'
-import { isType } from 'type-plus'
+import { testType } from 'type-plus'
 import { asyncAssert } from './async_assert'
 
 it('throws as the asserter throws', () => {
@@ -20,13 +20,13 @@ it('throws as the promise rejects', () => {
 
 it('returns the value if asserter passes', async () => {
 	const r = await asyncAssert(Promise.resolve({ a: 1 }), () => {})
-	isType.equal<true, { a: number }, typeof r>()
+	testType.equal<{ a: number }, typeof r>(true)
 	expect(r).toEqual({ a: 1 })
 })
 
 it('returns the value from the asserter if provided', async () => {
 	const r = await asyncAssert(Promise.resolve({ a: 1 }), v => v.a)
-	isType.equal<true, number, typeof r>()
+	testType.equal<number, typeof r>(true)
 	expect(r).toEqual(1)
 })
 
