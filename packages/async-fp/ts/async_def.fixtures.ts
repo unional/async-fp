@@ -37,14 +37,17 @@ export type LeafTupleDef = asyncDef.Infer<typeof leafTupleDef>
 export const leafWithStartDef = asyncDef({
 	name: 'leaf-start',
 	async define() {
+		let value = 1
 		return [
 			{
 				leaf_start: {
 					foo(): number {
-						return 1
+						return value
 					}
 				}
-			}
+			},
+			// non-async seems to also work for some reason.
+			() => (value += 1)
 		]
 	}
 })
@@ -142,9 +145,9 @@ export type RequireDef = asyncDef.Infer<typeof requireDef>
 
 export const optionalDef = asyncDef({
 	name: 'optional',
-	static: asyncDef.static().optional(leafTupleDef),
+	static: asyncDef.static().optional(leafWithStartDef),
 	async define(ctx) {
-		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafTupleDef>>(true)
+		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafWithStartDef>>(true)
 		return {
 			optional: {
 				foo(): number {
@@ -159,10 +162,10 @@ export type OptionalDef = asyncDef.Infer<typeof optionalDef>
 
 export const dynamicDef = asyncDef({
 	name: 'dynamic',
-	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
+	dynamic: asyncDef.dynamic<{ leaf: LeafDefFn }>(),
 	async define(ctx) {
 		const d = await ctx.load('leaf')
-		testType.equal<LeafDef, typeof d>(true)
+		testType.equal<typeof d, LeafDefFn>(true)
 		return {
 			dynamic: {
 				foo(): number {
@@ -177,10 +180,10 @@ export type DynamicDef = asyncDef.Infer<typeof dynamicDef>
 
 export const dynamicDefFn = asyncDef((value: number) => ({
 	name: 'dynamic_fn',
-	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
+	dynamic: asyncDef.dynamic<{ leaf: LeafTupleDefFn }>(),
 	async define(ctx) {
 		const d = await ctx.load('leaf')
-		testType.equal<typeof d, LeafDef>(true)
+		testType.equal<typeof d, LeafTupleDefFn>(true)
 		return {
 			dynamic_fn: {
 				foo(): number {
@@ -195,9 +198,9 @@ export type DynamicDefFn = asyncDef.Infer<typeof dynamicDefFn>
 
 export const abstractRequireDef = asyncDef({
 	name: 'abstract_require',
-	static: asyncDef.static<LeafDef>().require(leafTupleDef),
+	static: asyncDef.static<LeafDef>().require(leafWithStartDefFn),
 	async define(ctx) {
-		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafTupleDef>(true)
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafWithStartDefFn>(true)
 		return {
 			abstract_require: {
 				foo(): number {
