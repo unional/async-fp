@@ -1,5 +1,11 @@
 import type { UnionOfValues } from 'type-plus'
 
+ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never
+
 export namespace Def {
 	export type PluginResultContext<P extends DefConstructor<any, any, any> | void> =
 		P extends DefConstructor<any, any, any> ? Awaited<ReturnType<ReturnType<P>['define']>> : unknown
@@ -8,11 +14,6 @@ export namespace Def {
 		name: string
 		start?: Promise<void>
 	}
-	export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-		k: infer I
-	) => void
-		? I
-		: never
 
 	export type DefineContexts<Plugins extends Array<DefConstructor<any, any, any>>> =
 		UnionToIntersection<Awaited<ReturnType<ReturnType<UnionOfValues<Plugins>>['define']>>>
@@ -109,7 +110,7 @@ export type Def<
  * Gets the `PluginContext` type from the plugin.
  * @return The `PluginContext` or `never`
  */
-export type PluginContext<P extends Def.DefConstructor<any, any, any>> = Def.UnionToIntersection<
+export type PluginContext<P extends Def.DefConstructor<any, any, any>> = UnionToIntersection<
 	Awaited<ReturnType<ReturnType<P>['define']>>
 >
 
@@ -161,9 +162,9 @@ export type AsyncDefResult<D extends AsyncDef.AllAsyncDef<any, any, any> | void>
 	D extends AsyncDef.AllAsyncDef<any, any, any>
 		? ReturnType<D['define']> extends infer R
 			? R extends Promise<[infer X, infer S]>
-				? Def.UnionToIntersection<Awaited<X>>
+				? UnionToIntersection<Awaited<X>>
 				: R extends Promise<[infer X]>
-				? Def.UnionToIntersection<Awaited<X>>
-				: Def.UnionToIntersection<Awaited<R>>
+				? UnionToIntersection<Awaited<X>>
+				: UnionToIntersection<Awaited<R>>
 			: never
 		: unknown

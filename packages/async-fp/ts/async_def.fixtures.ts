@@ -1,7 +1,5 @@
 import { testType } from 'type-plus'
-import { asyncDef, asyncDefConstructor } from './async_def'
-import type { Simple2Plugin } from './async_def.fixtures.simple2.js'
-import type { Def } from './async_def.types.js'
+import { asyncDef } from './async_def'
 
 export const leafDef = asyncDef({
 	name: 'leaf',
@@ -110,7 +108,7 @@ export const abstractDef = asyncDef({
 	name: 'abstract',
 	static: asyncDef.static<LeafDef>(),
 	async define(ctx) {
-		testType.equal<{ name: 'abstract' } & LeafDef, typeof ctx>(true)
+		testType.equal<typeof ctx, { name: 'abstract' } & LeafDef>(true)
 		return [
 			{
 				abstract: {
@@ -182,7 +180,7 @@ export const dynamicDefFn = asyncDef((value: number) => ({
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define(ctx) {
 		const d = await ctx.load('leaf')
-		testType.equal<LeafDef, typeof d>(true)
+		testType.equal<typeof d, LeafDef>(true)
 		return {
 			dynamic_fn: {
 				foo(): number {
@@ -509,159 +507,20 @@ export type AbstractOptionalRequireDynamicDef = asyncDef.Infer<
 	typeof abstractOptionalRequireDynamicDef
 >
 
-export const simplePlugin = asyncDefConstructor(() => ({
-	name: 'simple',
-	async define() {
-		return {
-			simple: {
-				foo(): number {
-					return 1
-				}
-			}
-		}
-	}
-}))
-
-export const requiredPlugin = asyncDefConstructor(() => ({
-	name: 'required',
-	required: [simplePlugin],
-	async define(ctx) {
-		testType.equal<Def.ContextBase & { simple: { foo(): number } }, typeof ctx>(true)
-		return {
-			required: {
-				foo() {
-					return ctx.simple.foo() + 1
-				}
-			}
-		}
-	}
-}))
-
-export const optionalPlugin = asyncDefConstructor(() => ({
-	name: 'optional',
-	optional: [simplePlugin],
-	async define(ctx) {
-		testType.equal<Def.ContextBase & { simple?: { foo(): number } }, typeof ctx>(true)
-		return {
-			optional: {
-				foo(): number {
-					return ctx.simple?.foo() ?? 2
-				}
-			}
-		}
-	}
-}))
-
-export const requiredBothPlugin = asyncDefConstructor(() => ({
-	name: 'required-both',
-	required: [optionalPlugin, requiredPlugin],
-	async define(ctx) {
-		testType.equal<
-			Def.ContextBase & { optional: { foo(): number }; required: { foo(): number } },
-			typeof ctx
-		>(true)
-		return {
-			required_both: {
-				optional() {
-					return ctx.optional.foo()
-				},
-				required() {
-					return ctx.required.foo()
-				}
-			}
-		}
-	}
-}))
-
-export const optionalBothPlugin = asyncDefConstructor(() => ({
-	name: 'optional-both',
-	optional: [optionalPlugin, requiredPlugin],
-	async define(ctx) {
-		testType.equal<
-			Def.ContextBase & { optional?: { foo(): number }; required?: { foo(): number } },
-			typeof ctx
-		>(true)
-		return {
-			optional_both: {
-				optional() {
-					return ctx.optional?.foo()
-				},
-				required() {
-					return ctx.required?.foo()
-				}
-			}
-		}
-	}
-}))
-
-export const mixPlugin = asyncDefConstructor(() => ({
-	name: 'optional-both',
-	required: [requiredPlugin],
-	optional: [optionalPlugin],
-	async define(ctx) {
-		testType.equal<
-			Def.ContextBase & { optional?: { foo(): number }; required: { foo(): number } },
-			typeof ctx
-		>(true)
-		return {
-			optional_both: {
-				optional() {
-					return ctx.optional?.foo()
-				},
-				required() {
-					return ctx.required.foo()
-				}
-			}
-		}
-	}
-}))
-
-export const useDynamicPlugin = asyncDefConstructor<void, { simple2: Simple2Plugin }>(() => ({
-	name: 'use-dynamic',
-	async define(ctx) {
-		testType.equal<Def.ContextBase & Def.Loader<{ simple2: Simple2Plugin }>, typeof ctx>(true)
-		const d = await ctx.load('simple2')
-		return {
-			dynamic: {
-				foo() {
-					return d.simple2.foo()
-				}
-			}
-		}
-	}
-}))
-
 export type NavigateContext = {
 	navigate: {
 		goBack(): void
 	}
 }
 
-export const implementPlugin = asyncDefConstructor(() => ({
+export const implementPlugin = asyncDef(() => ({
 	name: 'implement',
-	async define(): Promise<NavigateContext> {
+	static: asyncDef.static().require(leafTupleDefFn),
+	async define(ctx): Promise<NavigateContext> {
+		testType.equal<Omit<typeof ctx, 'name'>, LeafTupleDefFn>(true)
 		return {
 			navigate: {
 				goBack() {}
-			}
-		}
-	}
-}))
-
-export type NavigatePlugin = Def<{
-	navigate: {
-		goBack(): void
-	}
-}>
-
-export const useAbstractPlugin = asyncDefConstructor<NavigatePlugin>(() => ({
-	name: 'use-abstract',
-	async define(ctx) {
-		return {
-			use_abstract: {
-				goBack() {
-					return ctx.navigate.goBack()
-				}
 			}
 		}
 	}
