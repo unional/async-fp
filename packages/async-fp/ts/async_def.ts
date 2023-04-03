@@ -1,46 +1,6 @@
 import type { UnionOfValues } from 'type-plus'
 import type { Def } from './async_def.types.js'
 
-export function asyncDefConstructor<
-	Static extends Def.DefConstructor<any, any, any> | void = void,
-	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
-	Params extends any[] = [],
-	RequiredPlugins extends any[] = [],
-	OptionalPlugins extends any[] = [],
-	PluginContext extends Record<string | symbol, any> = Record<string | symbol, any>
->(
-	plugin: (
-		...args: Params
-	) => Def.TypeD<Static, Dynamic, RequiredPlugins, OptionalPlugins, PluginContext>
-): typeof plugin
-export function asyncDefConstructor<
-	Static extends Def.DefConstructor<any, any, any> | void = void,
-	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
-	Params extends any[] = [],
-	RequiredPlugins extends any[] = [],
-	PluginContext extends Record<string | symbol, any> = Record<string | symbol, any>
->(
-	plugin: (...args: Params) => Def.TypeB<Static, Dynamic, RequiredPlugins, PluginContext>
-): typeof plugin
-export function asyncDefConstructor<
-	Static extends Def.DefConstructor<any, any, any> | void = void,
-	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
-	Params extends any[] = [],
-	OptionalPlugins extends any[] = [],
-	PluginContext extends Record<string | symbol, any> = Record<string | symbol, any>
->(
-	plugin: (...args: Params) => Def.TypeC<Static, Dynamic, OptionalPlugins, PluginContext>
-): typeof plugin
-export function asyncDefConstructor<
-	Static extends Def.DefConstructor<any, any, any> | void = void,
-	Dynamic extends Record<string, Def.DefConstructor<any, any, any>> | void = void,
-	Params extends any[] = [],
-	PluginContext extends Record<string | symbol, any> = Record<string | symbol, any>
->(plugin: (...args: Params) => Def.TypeA<Static, Dynamic, PluginContext>): typeof plugin
-export function asyncDefConstructor(plugin: unknown): typeof plugin {
-	return plugin
-}
-
 export function asyncDef<
 	Name extends string,
 	Static extends Record<string | symbol, any> | unknown,

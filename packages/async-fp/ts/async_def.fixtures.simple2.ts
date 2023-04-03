@@ -1,6 +1,6 @@
-import { asyncDefConstructor } from './async_def.js'
+import { asyncDef } from './async_def.js'
 
-export const simple2Plugin = asyncDefConstructor((defaultValue: number) => ({
+export const simple2Plugin = asyncDef((defaultValue: number) => ({
 	name: 'simple2',
 	async define() {
 		return {
