@@ -104,8 +104,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       type-plus:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^6.4.0
+        version: 6.4.0
     devDependencies:
       '@repobuddy/jest':
         specifier: ^3.1.3
@@ -235,8 +235,8 @@ importers:
         specifier: ^29.0.0
         version: 29.0.3(@babel/core@7.21.0)(babel-jest@29.3.1)(jest@29.4.3)(typescript@5.0.2)
       type-plus:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^6.4.0
+        version: 6.4.0
       typescript:
         specifier: ^5.0.0
         version: 5.0.2
@@ -2691,7 +2691,7 @@ packages:
       resolve.imports: 2.0.3
       satisfier: 5.4.2
       ts-jest: 29.0.3(@babel/core@7.21.0)(babel-jest@29.3.1)(jest@29.4.3)(typescript@5.0.2)
-      type-plus: 5.0.0
+      type-plus: 5.6.0
     dev: true
 
   /@rushstack/eslint-patch@1.2.0:
@@ -3178,12 +3178,12 @@ packages:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: true
 
-  /acorn-jsx@5.3.2(acorn@8.8.1):
+  /acorn-jsx@5.3.2(acorn@8.8.2):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
-      acorn: 8.8.1
+      acorn: 8.8.2
     dev: true
 
   /acorn-node@1.8.2:
@@ -3210,14 +3210,14 @@ packages:
     hasBin: true
     dev: true
 
-  /acorn@8.8.0:
-    resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
+  /acorn@8.8.1:
+    resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
     engines: {node: '>=0.4.0'}
     hasBin: true
     dev: true
 
-  /acorn@8.8.1:
-    resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
+  /acorn@8.8.2:
+    resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -4963,8 +4963,8 @@ packages:
     resolution: {integrity: sha512-ORs1Rt/uQTqUKjDdGCyrtYxbazf5umATSf/K4qxjmZHORR6HJk+2s/2Pqe+Kk49HHINC/xNIrGfgh8sZcll0ng==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
-      acorn: 8.8.1
-      acorn-jsx: 5.3.2(acorn@8.8.1)
+      acorn: 8.8.2
+      acorn-jsx: 5.3.2(acorn@8.8.2)
       eslint-visitor-keys: 3.3.0
     dev: true
 
@@ -8383,7 +8383,7 @@ packages:
   /satisfier@5.4.2:
     resolution: {integrity: sha512-K1QPzEPjiC/7FcwiCwRH218SS3OVEWlx56EcHI+tZIf+TaAs+OHwwruAD4ke6xvRk/QniwSPkP98o9Oo84RxGQ==}
     dependencies:
-      tersify: 3.11.1
+      tersify: 3.12.1
     dev: true
 
   /scss-parser@1.0.5:
@@ -8911,15 +8911,15 @@ packages:
   /tersify@3.10.2:
     resolution: {integrity: sha512-7R7EAX2CYn14J4M9wp4phx0Wtd10KVl98f+iMIp17Ua9YBqMTkrZYK5LvtJpxrh+fO1uGTyKoeqL1BXpHiayMw==}
     dependencies:
-      acorn: 8.8.0
+      acorn: 8.8.2
       is-buffer: 2.0.5
       unpartial: 0.7.5
     dev: true
 
-  /tersify@3.11.1:
-    resolution: {integrity: sha512-W/Kv1z+cgDRsI10p9CyCZJ+gopPUVOz1/h7OPntr6D52iIHQTbsg40MBUoaG82q8IgD/GKoWhoujg/rOxQW7SA==}
+  /tersify@3.12.1:
+    resolution: {integrity: sha512-VwzXGHZSOB4T27s4uvh9v8FYrNXyfVz0nBQi28TDwrZoQwT8ZJUp1W2Ff73ekN07stJSb0D+pr6iXeNeFqTI6Q==}
     dependencies:
-      acorn: 8.8.1
+      acorn: 8.8.2
       is-buffer: 2.0.5
       unpartial: 1.0.4
 
@@ -9295,17 +9295,17 @@ packages:
       unpartial: 1.0.4
     dev: true
 
-  /type-plus@5.0.0:
-    resolution: {integrity: sha512-nKp5pOQDldmR9BdEjLplLFwiXTVhOK2kReBSgVJ65URDLXCqENYzVDCONaExADIIc1CAGzvzTkB0TUgMAWR2qQ==}
+  /type-plus@5.6.0:
+    resolution: {integrity: sha512-LAIvZzs6mKXYHzwRfGeOuWKsE5jHndwWlLheulMl6eWDSGa1bfZCd0aLQSMgP3HZTbazx/P2UumCqtOz5AMctA==}
     dependencies:
-      tersify: 3.11.1
+      tersify: 3.12.1
       unpartial: 1.0.4
     dev: true
 
-  /type-plus@6.0.0:
-    resolution: {integrity: sha512-ezkCTr6LGC87w9LHc83XJnJFfaeEa/nPhr4yzBKv2+Pw0y4FXKHgrJ2GWM4H1nSKzcEPv4q/Sfw4MKmi8NTxbg==}
+  /type-plus@6.4.0:
+    resolution: {integrity: sha512-HIdOfIA6ua3sgzKfb07jPEo3PphF7eiRGsW0dJ0aBCOyhzBI8wETe0FiBqC0+Mez8eYFwnUcegTLL3n1ykgdrw==}
     dependencies:
-      tersify: 3.11.1
+      tersify: 3.12.1
       unpartial: 1.0.4
 
   /typedarray-to-buffer@3.1.5:

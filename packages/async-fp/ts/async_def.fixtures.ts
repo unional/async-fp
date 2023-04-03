@@ -1,4 +1,4 @@
-import { isType } from 'type-plus'
+import { testType } from 'type-plus'
 import { asyncDef, asyncDefConstructor } from './async_def'
 import type { Simple2Plugin } from './async_def.fixtures.simple2.js'
 import type { Def } from './async_def.types.js'
@@ -21,7 +21,7 @@ export type LeafDef = asyncDef.Infer<typeof leafDef>
 export const leafTupleDef = asyncDef({
 	name: 'leaf-tuple',
 	async define(ctx) {
-		isType.equal<true, { name: 'leaf-tuple' }, typeof ctx>()
+		testType.equal<{ name: 'leaf-tuple' }, typeof ctx>(true)
 		return [
 			{
 				leaf_tuple: {
@@ -73,9 +73,9 @@ export const leafTupleDefFn = asyncDef((value: number) => ({
 	static: asyncDef.static<LeafDef>().optional(leafTupleDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>(true)
 		const d = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof d>()
+		testType.equal<LeafDef, typeof d>(true)
 		return [
 			{
 				leaf_tuple_fn: {
@@ -110,7 +110,7 @@ export const abstractDef = asyncDef({
 	name: 'abstract',
 	static: asyncDef.static<LeafDef>(),
 	async define(ctx) {
-		isType.equal<true, { name: 'abstract' } & LeafDef, typeof ctx>()
+		testType.equal<{ name: 'abstract' } & LeafDef, typeof ctx>(true)
 		return [
 			{
 				abstract: {
@@ -129,7 +129,7 @@ export const requireDef = asyncDef({
 	name: 'require',
 	static: asyncDef.static().require(leafTupleDef),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafTupleDef>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafTupleDef>(true)
 		return {
 			require: {
 				foo(): number {
@@ -146,7 +146,7 @@ export const optionalDef = asyncDef({
 	name: 'optional',
 	static: asyncDef.static().optional(leafTupleDef),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name'>, Partial<LeafTupleDef>>()
+		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafTupleDef>>(true)
 		return {
 			optional: {
 				foo(): number {
@@ -164,7 +164,7 @@ export const dynamicDef = asyncDef({
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define(ctx) {
 		const d = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof d>()
+		testType.equal<LeafDef, typeof d>(true)
 		return {
 			dynamic: {
 				foo(): number {
@@ -182,7 +182,7 @@ export const dynamicDefFn = asyncDef((value: number) => ({
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef }>(),
 	async define(ctx) {
 		const d = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof d>()
+		testType.equal<LeafDef, typeof d>(true)
 		return {
 			dynamic_fn: {
 				foo(): number {
@@ -199,7 +199,7 @@ export const abstractRequireDef = asyncDef({
 	name: 'abstract_require',
 	static: asyncDef.static<LeafDef>().require(leafTupleDef),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafTupleDef>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafTupleDef>(true)
 		return {
 			abstract_require: {
 				foo(): number {
@@ -216,7 +216,7 @@ export const abstractOptionalDef = asyncDef({
 	name: 'abstract_optional',
 	static: asyncDef.static<LeafDef>().optional(leafTupleDef),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>(true)
 		return {
 			abstract_optional: {
 				foo(): number {
@@ -233,7 +233,7 @@ export const requireOptionalDef = asyncDef({
 	name: 'require_optional',
 	static: asyncDef.static().require(leafDef).optional(leafTupleDef),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name'>, LeafDef & Partial<LeafTupleDef>>()
+		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & Partial<LeafTupleDef>>(true)
 		return {
 			require_optional: {
 				foo(): number {
@@ -250,7 +250,7 @@ export const optionalRequireDef = asyncDef({
 	name: 'optional_require',
 	static: asyncDef.static().optional(leafTupleDef).require(leafDefFn),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name'>, Partial<LeafTupleDef> & LeafDefFn>()
+		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafTupleDef> & LeafDefFn>(true)
 		return {
 			optional_require: {
 				foo(): number {
@@ -267,11 +267,9 @@ export const abstractRequireOptionalDef = asyncDef({
 	name: 'abstract_require_optional',
 	static: asyncDef.static<LeafDef>().require(leafWithStartDefFn).optional(leafTupleDef),
 	async define(ctx) {
-		isType.equal<
-			true,
-			Omit<typeof ctx, 'name'>,
-			LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>
-		>()
+		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>>(
+			true
+		)
 		return {
 			abstract_require_optional: {
 				foo(): number {
@@ -288,11 +286,9 @@ export const abstractOptionalRequireDef = asyncDef({
 	name: 'abstract_optional_require',
 	static: asyncDef.static<LeafDef>().optional(leafTupleDef).require(leafWithStartDefFn),
 	async define(ctx) {
-		isType.equal<
-			true,
-			Omit<typeof ctx, 'name'>,
-			LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>
-		>()
+		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>>(
+			true
+		)
 		return {
 			abstract_optional_require: {
 				foo(): number {
@@ -310,11 +306,11 @@ export const abstractDynamicDef = asyncDef({
 	static: asyncDef.static<LeafDef>(),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			abstract_dynamic: {
 				foo(): number {
@@ -332,11 +328,11 @@ export const requireDynamicDef = asyncDef({
 	static: asyncDef.static().require(leafTupleDefFn),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafTupleDefFn>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafTupleDefFn>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			require_dynamic: {
 				foo(): number {
@@ -354,11 +350,11 @@ export const optionalDynamicDef = asyncDef({
 	static: asyncDef.static().optional(requireDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, Partial<RequireDef>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, Partial<RequireDef>>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			optional_dynamic: {
 				foo(): number {
@@ -376,11 +372,11 @@ export const abstractRequireDynamicDef = asyncDef({
 	static: asyncDef.static<LeafDef>().require(leafWithStartDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafWithStartDef>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafWithStartDef>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			abstract_require_dynamic: {
 				foo(): number {
@@ -398,11 +394,11 @@ export const abstractOptionalDynamicDef = asyncDef({
 	static: asyncDef.static<LeafDef>().optional(leafWithStartDefFn),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			abstract_optional_dynamic: {
 				foo(): number {
@@ -420,11 +416,11 @@ export const requireOptionalDynamicDef = asyncDef({
 	static: asyncDef.static().require(leafDef).optional(leafWithStartDefFn),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			require_optional_dynamic: {
 				foo(): number {
@@ -442,11 +438,11 @@ export const optionalRequireDynamicDef = asyncDef({
 	static: asyncDef.static().optional(leafWithStartDefFn).require(leafDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<true, Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>()
+		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			optional_require_dynamic: {
 				foo(): number {
@@ -464,15 +460,14 @@ export const abstractRequireOptionalDynamicDef = asyncDef({
 	static: asyncDef.static<LeafDef>().require(leafWithStartDef).optional(dynamicDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<
-			true,
+		testType.equal<
 			Omit<typeof ctx, 'name' | 'load'>,
 			LeafDef & LeafWithStartDef & Partial<DynamicDef>
-		>()
+		>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			abstract_require_optional_dynamic: {
 				foo(): number {
@@ -492,15 +487,14 @@ export const abstractOptionalRequireDynamicDef = asyncDef({
 	static: asyncDef.static<LeafDef>().optional(dynamicDefFn).require(leafWithStartDef),
 	dynamic: asyncDef.dynamic<{ leaf: LeafDef; leaf_tuple: LeafTupleDef }>(),
 	async define(ctx) {
-		isType.equal<
-			true,
+		testType.equal<
 			Omit<typeof ctx, 'name' | 'load'>,
 			LeafDef & LeafWithStartDef & Partial<DynamicDefFn>
-		>()
+		>(true)
 		const l = await ctx.load('leaf')
-		isType.equal<true, LeafDef, typeof l>()
+		testType.equal<LeafDef, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
-		isType.equal<true, LeafTupleDef, typeof lt>()
+		testType.equal<LeafTupleDef, typeof lt>(true)
 		return {
 			abstract_optional_require_dynamic: {
 				foo(): number {
@@ -532,7 +526,7 @@ export const requiredPlugin = asyncDefConstructor(() => ({
 	name: 'required',
 	required: [simplePlugin],
 	async define(ctx) {
-		isType.equal<true, Def.ContextBase & { simple: { foo(): number } }, typeof ctx>()
+		testType.equal<Def.ContextBase & { simple: { foo(): number } }, typeof ctx>(true)
 		return {
 			required: {
 				foo() {
@@ -547,7 +541,7 @@ export const optionalPlugin = asyncDefConstructor(() => ({
 	name: 'optional',
 	optional: [simplePlugin],
 	async define(ctx) {
-		isType.equal<true, Def.ContextBase & { simple?: { foo(): number } }, typeof ctx>()
+		testType.equal<Def.ContextBase & { simple?: { foo(): number } }, typeof ctx>(true)
 		return {
 			optional: {
 				foo(): number {
@@ -562,11 +556,10 @@ export const requiredBothPlugin = asyncDefConstructor(() => ({
 	name: 'required-both',
 	required: [optionalPlugin, requiredPlugin],
 	async define(ctx) {
-		isType.equal<
-			true,
+		testType.equal<
 			Def.ContextBase & { optional: { foo(): number }; required: { foo(): number } },
 			typeof ctx
-		>()
+		>(true)
 		return {
 			required_both: {
 				optional() {
@@ -584,11 +577,10 @@ export const optionalBothPlugin = asyncDefConstructor(() => ({
 	name: 'optional-both',
 	optional: [optionalPlugin, requiredPlugin],
 	async define(ctx) {
-		isType.equal<
-			true,
+		testType.equal<
 			Def.ContextBase & { optional?: { foo(): number }; required?: { foo(): number } },
 			typeof ctx
-		>()
+		>(true)
 		return {
 			optional_both: {
 				optional() {
@@ -607,11 +599,10 @@ export const mixPlugin = asyncDefConstructor(() => ({
 	required: [requiredPlugin],
 	optional: [optionalPlugin],
 	async define(ctx) {
-		isType.equal<
-			true,
+		testType.equal<
 			Def.ContextBase & { optional?: { foo(): number }; required: { foo(): number } },
 			typeof ctx
-		>()
+		>(true)
 		return {
 			optional_both: {
 				optional() {
@@ -628,7 +619,7 @@ export const mixPlugin = asyncDefConstructor(() => ({
 export const useDynamicPlugin = asyncDefConstructor<void, { simple2: Simple2Plugin }>(() => ({
 	name: 'use-dynamic',
 	async define(ctx) {
-		isType.equal<true, Def.ContextBase & Def.Loader<{ simple2: Simple2Plugin }>, typeof ctx>()
+		testType.equal<Def.ContextBase & Def.Loader<{ simple2: Simple2Plugin }>, typeof ctx>(true)
 		const d = await ctx.load('simple2')
 		return {
 			dynamic: {

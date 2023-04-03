@@ -10,14 +10,11 @@
   },
   "overrides": [
     {
-      "extends": "plugin:harmony/ts-recommended",
+      "extends": "plugin:harmony/ts-prettier",
       "files": [
         "*.ts",
         "*.tsx"
-      ],
-      "rules": {
-        "no-use-before-define": "off"
-      }
+      ]
     }
   ]
 }
