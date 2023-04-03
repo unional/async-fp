@@ -35,8 +35,9 @@ it('exposes name of the def as const', () => {
 })
 
 it('exposes name of the def fn as const', () => {
-	expect(leafDefFn(1).name).toBe('leaf')
-	isType.equal<true, 'leaf', typeof leafDef.name>()
+  const p = leafDefFn(1)
+	expect(p.name).toBe('leaf-fn')
+	isType.equal<true, 'leaf-fn', typeof p.name>()
 })
 
 it(`gets the type of the define result for leaf def`, () => {
