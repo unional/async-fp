@@ -125,7 +125,7 @@ export namespace asyncDef {
 			_type: {
 				static: S
 				require: unknown
-				optional: Partial<O>
+				optional: O
 			}
 			require<R extends Array<Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)>>(
 				...defs: R
@@ -135,7 +135,7 @@ export namespace asyncDef {
 			_type: {
 				static: S
 				require: R
-				optional: Partial<O>
+				optional: O
 			}
 		}
 
@@ -145,7 +145,7 @@ export namespace asyncDef {
 
 		export type ExtractStatic<T extends StaticB | StaticR | StaticO | StaticF | unknown> =
 			T extends StaticB | StaticR | StaticO | StaticF
-				? T['_type']['static'] & T['_type']['require'] & T['_type']['optional']
+				? T['_type']['static'] & T['_type']['require'] & Partial<T['_type']['optional']>
 				: unknown
 
 		export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
