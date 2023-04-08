@@ -90,7 +90,7 @@ it('defines multiple dependencies with all variations', () => {
 		{
 			leaf: { foo(): number }
 			leaf_fn: { foo(): number }
-			leaf_start: { foo(): number }
+			leaf_start: { foo(): string }
 			leaf_tuple?: { foo(): number }
 			leaf_tuple_fn?: { foo(): number }
 			leaf_start_fn?: { foo(): number }
