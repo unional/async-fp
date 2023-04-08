@@ -9,7 +9,7 @@ import {
 	leafTupleDefFn,
 	leafWithStartDef,
 	leafWithStartDefFn
-} from './define.fixtures'
+} from './fixtures'
 
 it('defines require dependency with type', () => {
 	const s = define.required<LeafDef>()
