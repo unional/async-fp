@@ -1,5 +1,5 @@
 import { testType } from 'type-plus'
-import { define } from './async_def'
+import { define } from './define'
 import {
 	LeafDef,
 	LeafTupleDef,
@@ -9,7 +9,7 @@ import {
 	leafTupleDefFn,
 	leafWithStartDef,
 	leafWithStartDefFn
-} from './async_def.fixtures'
+} from './define.fixtures'
 
 it('defines require dependency with type', () => {
 	const s = define.required<LeafDef>()

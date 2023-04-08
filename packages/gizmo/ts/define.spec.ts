@@ -27,7 +27,7 @@ import {
 	RequireDynamicDef,
 	RequireOptionalDef,
 	RequireOptionalDynamicDef
-} from './async_def.fixtures'
+} from './define.fixtures'
 
 it('exposes name of the def as const', () => {
 	expect(leafDef.name).toBe('leaf')

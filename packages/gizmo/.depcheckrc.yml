@@ -1,0 +1,8 @@
+ignores:
+  - '@repobuddy/jest'
+  - '@size-limit/preset-small-lib'
+  - '@types/node'
+  - '@typescript-eslint/parser'
+  - jest-*
+  - ts-jest
+  - tslib
