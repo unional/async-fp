@@ -30,7 +30,7 @@ import type {
 it(`gets the type of the define result for leaf def`, () => {
 	testType.equal<{ leaf: { foo(): number } }, LeafGizmo>(true)
 	testType.equal<{ leaf_tuple: { foo(): number } }, LeafTupleGizmo>(true)
-	testType.equal<{ leaf_start: { foo(): number } }, LeafWithStartGizmo>(true)
+	testType.equal<{ leaf_start: { foo(): string } }, LeafWithStartGizmo>(true)
 	testType.equal<{ leaf_fn: { foo(): number } }, LeafGizmoFn>(true)
 	testType.equal<{ leaf_tuple_fn: { foo(): number } }, LeafTupleGizmoFn>(true)
 	testType.equal<{ leaf_start_fn: { foo(): number } }, LeafWithStartGizmoFn>(true)
