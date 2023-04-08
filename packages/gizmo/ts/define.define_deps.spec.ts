@@ -10,66 +10,67 @@ import {
 	leafWithStartDef,
 	leafWithStartDefFn
 } from './fixtures'
+import type { ExtractDeps } from './types'
 
 it('defines require dependency with type', () => {
 	const s = define.required<LeafDef>()
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf: { foo(): number } }>(true)
 })
 
 it('defines require dependency with definition', () => {
 	const s = define.required(leafDef)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf: { foo(): number } }>(true)
 })
 
 it('defines require dependency with definition function', () => {
 	const s = define.required(leafDefFn)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_fn: { foo(): number } }>(true)
 })
 
 it('defines optional dependency with type', () => {
 	const s = define.optional<LeafDef>()
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf?: { foo(): number } }>(true)
 })
 
 it('defines optional dependency with definition', () => {
 	const s = define.optional(leafDef)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf?: { foo(): number } }>(true)
 })
 
 it('defines optional dependency with definition function', () => {
 	const s = define.optional(leafDefFn)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_fn?: { foo(): number } }>(true)
 })
 
 it('defines require and optional dependency with type', () => {
 	const s = define.required<LeafTupleDef>().optional<LeafDef>()
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
 })
 
 it('defines require and optional dependency with definition', () => {
 	const s = define.optional(leafDef).required(leafTupleDef)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
 })
 
 it('defines require and optional dependency with definition function', () => {
 	const s = define.optional(leafDefFn).required(leafTupleDefFn)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_tuple_fn: { foo(): number }; leaf_fn?: { foo(): number } }>(true)
 })
@@ -82,7 +83,7 @@ it('defines multiple dependencies with all variations', () => {
 		.optional<LeafTupleDef>()
 		.optional(leafTupleDefFn)
 		.optional(leafWithStartDefFn)
-	type S = define.Internal.ExtractDeps<typeof s>
+	type S = ExtractDeps<typeof s>
 
 	testType.equal<
 		S,

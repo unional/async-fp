@@ -1,5 +1,5 @@
 import { testType } from 'type-plus'
-import { define } from './define'
+import { define } from '.'
 
 /**
  * Leaf definition with no dependencies.
