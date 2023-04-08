@@ -1,28 +1,28 @@
 /**
  * Creates an async definition.
  */
-export function asyncDef<
+export function define<
 	Name extends string,
-	Static extends asyncDef.Internal.DefineDeps<unknown, unknown>,
-	Dynamic extends Record<string, asyncDef.Internal.DefineDeps<unknown, unknown>> | unknown,
+	Static extends define.Internal.DepBuilder<unknown, unknown>,
+	Dynamic extends Record<string, define.Internal.DepBuilder<unknown, unknown>> | unknown,
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any>
 		| void
->(plugin: asyncDef.Internal.AsyncDef<Name, Static, Dynamic, Result>): typeof plugin
-export function asyncDef<
+>(plugin: define.Internal.Definition<Name, Static, Dynamic, Result>): typeof plugin
+export function define<
 	Name extends string,
-	Static extends asyncDef.Internal.DefineDeps<unknown, unknown>,
-	Dynamic extends Record<string, asyncDef.Internal.DefineDeps<unknown, unknown>> | unknown,
+	Static extends define.Internal.DepBuilder<unknown, unknown>,
+	Dynamic extends Record<string, define.Internal.DepBuilder<unknown, unknown>> | unknown,
 	Params extends any[],
 	Result extends
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any>
 		| void
 >(
-	plugin: (...args: Params) => asyncDef.Internal.AsyncDef<Name, Static, Dynamic, Result>
+	plugin: (...args: Params) => define.Internal.Definition<Name, Static, Dynamic, Result>
 ): typeof plugin
-export function asyncDef(plugin: unknown): typeof plugin {
+export function define(plugin: unknown): typeof plugin {
 	return plugin
 }
 
@@ -35,19 +35,19 @@ function defineDeps() {
 	}
 }
 
-asyncDef.required = defineDeps as asyncDef.Internal.DefineDeps<unknown, unknown>['required']
-asyncDef.optional = defineDeps as asyncDef.Internal.DefineDeps<unknown, unknown>['optional']
+define.required = defineDeps as define.Internal.DepBuilder<unknown, unknown>['required']
+define.optional = defineDeps as define.Internal.DepBuilder<unknown, unknown>['optional']
 
-export namespace asyncDef {
-	export type Infer<D extends Internal.AsyncDef | ((...args: any[]) => Internal.AsyncDef)> =
-		D extends (...args: any[]) => Internal.AsyncDef
+export namespace define {
+	export type Infer<D extends Internal.Definition | ((...args: any[]) => Internal.Definition)> =
+		D extends (...args: any[]) => Internal.Definition
 			? Internal.InferDef<ReturnType<D>>
-			: D extends Internal.AsyncDef
+			: D extends Internal.Definition
 			? Internal.InferDef<D>
 			: never
 
 	export namespace Internal {
-		export type InferDef<D extends AsyncDef> = D extends Internal.AsyncDef
+		export type InferDef<D extends Definition> = D extends Internal.Definition
 			? ReturnType<D['define']> extends infer R
 				? R extends Promise<[infer X, unknown]>
 					? Awaited<X>
@@ -57,10 +57,10 @@ export namespace asyncDef {
 				: never
 			: unknown
 
-		export type AsyncDef<
+		export type Definition<
 			Name extends string = string,
-			Static extends DefineDeps<unknown, unknown> | unknown = unknown,
-			Dynamic extends Record<string, DefineDeps<unknown, unknown>> | unknown = unknown,
+			Static extends DepBuilder<unknown, unknown> | unknown = unknown,
+			Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
 			Result extends
 				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 				| Record<string | symbol, any>
@@ -74,33 +74,39 @@ export namespace asyncDef {
 
 		export type DefineContext<
 			Name extends string,
-			Static extends DefineDeps<unknown, unknown> | unknown,
-			Dynamic extends Record<string, DefineDeps<unknown, unknown>> | unknown
-		> = Dynamic extends Record<string, DefineDeps<unknown, unknown>>
+			Static extends DepBuilder<unknown, unknown> | unknown,
+			Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
+		> = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
 			? ExtractDeps<Static> & {
 					name: Name
 					load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDeps<Dynamic[I]>>
 			  }
 			: ExtractDeps<Static> & { name: Name }
 
-		export type DefineDeps<R, O> = {
+		export type DepBuilder<R, O> = {
 			[typeSym]: {
 				require: R
 				optional: O
 			}
 			required: {
-				<Required extends Record<string | symbol, any>>(): DefineDeps<R & Required, O>
-				<D extends AsyncDef | ((...args: any[]) => AsyncDef)>(def: D): DefineDeps<R & Infer<D>, O>
+				<Required extends Record<string | symbol, any>>(): DepBuilder<R & Required, O>
+				<D extends Definition | ((...args: any[]) => Definition)>(def: D): DepBuilder<
+					R & Infer<D>,
+					O
+				>
 			}
 			optional: {
-				<Optional extends Record<string | symbol, any>>(): DefineDeps<R, O & Optional>
-				<D extends AsyncDef | ((...args: any[]) => AsyncDef)>(def: D): DefineDeps<R, O & Infer<D>>
+				<Optional extends Record<string | symbol, any>>(): DepBuilder<R, O & Optional>
+				<D extends Definition | ((...args: any[]) => Definition)>(def: D): DepBuilder<
+					R,
+					O & Infer<D>
+				>
 			}
 		}
 
-		export type ExtractDeps<D extends DefineDeps<any, any> | unknown> = D extends DefineDeps<
-			any,
-			any
+		export type ExtractDeps<D extends DepBuilder<any, any> | unknown> = D extends DepBuilder<
+			unknown,
+			unknown
 		>
 			? unknown extends D[typeof typeSym]['require']
 				? unknown extends D[typeof typeSym]['optional']
