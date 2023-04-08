@@ -1,17 +1,16 @@
 const typeSym = Symbol('dep type symbol')
 
 export type Gizmo<
-	Name extends string = string,
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
 	Result extends
-		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-		| Record<string | symbol, any>
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
 	readonly static?: Static
 	readonly dynamic?: Dynamic
-	create(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
+	create(ctx: DefineContext<Static, Dynamic>): Promise<Result>
 }
 
 export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
@@ -24,16 +23,17 @@ export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D ext
 
 export type InferGizmo<D extends Gizmo> = D extends Gizmo
 	? ReturnType<D['create']> extends infer R
-		? R extends Promise<[infer X, unknown]>
+		? R extends Promise<[infer X extends Record<string | symbol, unknown>, unknown]>
 			? Awaited<X>
-			: R extends Promise<[infer X]>
+			: R extends Promise<[infer X extends Record<string | symbol, unknown>]>
 			? Awaited<X>
-			: Awaited<R>
+			: R extends Record<string | symbol, any>
+			? Awaited<R>
+			: never
 		: never
 	: unknown
 
 export type DefineContext<
-	Name extends string,
 	Static extends DepBuilder<unknown, unknown> | unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
@@ -48,16 +48,16 @@ export type DepBuilder<R, O> = {
 		optional: O
 	}
 	required: {
-		<Required extends Record<string | symbol, any>>(): DepBuilder<R & Required, O>
+		<Required extends Record<string | symbol, unknown>>(): DepBuilder<R & Required, O>
 		<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R & InferAllGizmo<D>, O>
 	}
 	optional: {
-		<Optional extends Record<string | symbol, any>>(): DepBuilder<R, O & Optional>
+		<Optional extends Record<string | symbol, unknown>>(): DepBuilder<R, O & Optional>
 		<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R, O & InferAllGizmo<D>>
 	}
 }
 
-export type ExtractDeps<D extends DepBuilder<any, any> | unknown> = D extends DepBuilder<
+export type ExtractDeps<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<
 	unknown,
 	unknown
 >
