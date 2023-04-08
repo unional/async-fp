@@ -180,7 +180,7 @@ export const abstractRequiredAndOptionalGizmo = define({
 
 export type AbstractPlusOptionalGizmo = define.Infer<typeof abstractRequiredAndOptionalGizmo>
 
-export const requireDef = define({
+export const requireGizmo = define({
 	static: define.required(leafTupleGizmo),
 	async create(ctx) {
 		testType.equal<typeof ctx, LeafTupleGizmo>(true)
@@ -194,7 +194,7 @@ export const requireDef = define({
 	}
 })
 
-export type RequireGizmo = define.Infer<typeof requireDef>
+export type RequireGizmo = define.Infer<typeof requireGizmo>
 
 export const optionalGizmo = define({
 	static: define.optional(leafWithStartGizmo),
@@ -375,7 +375,7 @@ export const requireDynamicGizmo = define({
 export type RequireDynamicGizmo = define.Infer<typeof requireDynamicGizmo>
 
 export const optionalDynamicGizmo = define({
-	static: define.optional(requireDef),
+	static: define.optional(requireGizmo),
 	dynamic: {
 		leaf: define.required<LeafGizmo>(),
 		leaf_tuple: define.optional<LeafTupleGizmo>()
