@@ -1,4 +1,12 @@
-import type { DepBuilder, Gizmo, InferAllGizmo } from './types'
+import type {
+	DepBuilder,
+	Gizmo,
+	GizmoBase,
+	GizmoBoth,
+	GizmoDynamic,
+	GizmoStatic,
+	InferAllGizmo
+} from './types'
 
 /**
  * Define a gizmo.
@@ -10,7 +18,27 @@ export function define<
 		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
 		| Record<string | symbol, any>
 		| void
->(plugin: Gizmo<Static, Dynamic, Result>): typeof plugin
+>(plugin: GizmoBoth<Static, Dynamic, Result>): typeof plugin
+export function define<
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: GizmoDynamic<Dynamic, Result>): typeof plugin
+export function define<
+	Static extends DepBuilder<unknown, unknown>,
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: GizmoStatic<Static, Result>): typeof plugin
+export function define<
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: GizmoBase<Result>): typeof plugin
 /**
  * Define a gizmo function.
  */
@@ -22,7 +50,30 @@ export function define<
 		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
 		| Record<string | symbol, any>
 		| void
->(plugin: (...args: Params) => Gizmo<Static, Dynamic, Result>): typeof plugin
+>(plugin: (...args: Params) => GizmoBoth<Static, Dynamic, Result>): typeof plugin
+export function define<
+	Static extends DepBuilder<unknown, unknown>,
+	Params extends unknown[],
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: (...args: Params) => GizmoStatic<Static, Result>): typeof plugin
+export function define<
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
+	Params extends unknown[],
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: (...args: Params) => GizmoDynamic<Dynamic, Result>): typeof plugin
+export function define<
+	Params extends unknown[],
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, any>
+		| void
+>(plugin: (...args: Params) => GizmoBase<Result>): typeof plugin
 export function define(plugin: unknown): typeof plugin {
 	return plugin
 }

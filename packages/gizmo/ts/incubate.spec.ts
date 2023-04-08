@@ -1,7 +1,7 @@
 import { testType } from 'type-plus'
-import { LeafGizmo, leafGizmo, leafGizmoFn, leafTupleGizmo, leafWithStartGizmo } from './fixtures'
-import { incubate } from './incubate'
 import { define } from './define'
+import { leafGizmo, leafGizmoFn, leafTupleGizmo, leafWithStartGizmo } from './fixtures'
+import { incubate } from './incubate'
 
 it('incubates with an initial gizmo', async () => {
 	const r = await incubate(leafGizmo).create()
@@ -32,7 +32,15 @@ it('incubates with gizmo function', async () => {
 
 it('incubates gizmo with start function', async () => {
 	const r = await incubate().with(leafWithStartGizmo).create()
-	testType.equal<typeof r, { leaf_start: { foo(): string } }>(true)
+	testType.equal<
+		typeof r,
+		{
+			leaf_start: {
+				count(): number
+				foo(): string
+			}
+		}
+	>(true)
 
 	expect(r.leaf_start.foo()).toEqual('started')
 })
