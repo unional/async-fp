@@ -1,5 +1,5 @@
 import type { LeftJoin } from 'type-plus'
-import type { Gizmo, InferGizmo } from './types'
+import type { ExtractDeps, Gizmo, InferGizmo } from './types'
 
 /**
  * Create an incubator for gizmos.
@@ -43,12 +43,16 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	 */
 	with<G extends Gizmo>(
 		gizmo: G
-	): InferGizmo<G> extends infer GR
-		? GR extends Record<string | symbol, unknown>
-			? R extends Record<string | symbol, unknown>
-				? GizmoIncubator<LeftJoin<R, GR>>
-				: GizmoIncubator<GR>
-			: GizmoIncubator<R>
+	): ExtractDeps<G> extends infer Required
+		? R extends Required
+			? InferGizmo<G> extends infer GR
+				? GR extends Record<string | symbol, unknown>
+					? R extends Record<string | symbol, unknown>
+						? GizmoIncubator<LeftJoin<R, GR>>
+						: GizmoIncubator<GR>
+					: GizmoIncubator<R>
+				: never
+			: Omit<keyof Required, keyof R>
 		: never
 	/**
 	 * create the gizmo.
