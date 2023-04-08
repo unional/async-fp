@@ -1,8 +1,8 @@
 import { testType } from 'type-plus'
 import {
-	AbstractDef,
+	AbstractRequiredDef,
 	AbstractDynamicDef,
-	AbstractOptionalDef,
+	AbstractPlusOptionalDef,
 	AbstractOptionalDynamicDef,
 	AbstractOptionalRequireDef,
 	AbstractOptionalRequireDynamicDef,
@@ -50,12 +50,12 @@ it(`gets the type of the define result for leaf def`, () => {
 })
 
 it(`gets the type of the define result for static def`, () => {
-	testType.equal<{ abstract: { foo(): number } }, AbstractDef>(true)
+	testType.equal<{ abstract_required: { foo(): number } }, AbstractRequiredDef>(true)
 	testType.equal<{ require: { foo(): number } }, RequireDef>(true)
 	testType.equal<{ optional: { foo(): number } }, OptionalDef>(true)
 
 	testType.equal<{ abstract_require: { foo(): number } }, AbstractRequireDef>(true)
-	testType.equal<{ abstract_optional: { foo(): number } }, AbstractOptionalDef>(true)
+	testType.equal<{ abstract_optional: { foo(): number } }, AbstractPlusOptionalDef>(true)
 	testType.equal<{ require_optional: { foo(): number } }, RequireOptionalDef>(true)
 	testType.equal<{ optional_require: { foo(): number } }, OptionalRequireDef>(true)
 
