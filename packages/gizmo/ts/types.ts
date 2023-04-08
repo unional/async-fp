@@ -9,7 +9,6 @@ export type Gizmo<
 		| Record<string | symbol, any>
 		| void = Record<string | symbol, any> | void
 > = {
-	readonly name: Name
 	readonly static?: Static
 	readonly dynamic?: Dynamic
 	create(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
@@ -39,10 +38,9 @@ export type DefineContext<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
 	? ExtractDeps<Static> & {
-			name: Name
 			load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDeps<Dynamic[I]>>
 	  }
-	: ExtractDeps<Static> & { name: Name }
+	: ExtractDeps<Static>
 
 export type DepBuilder<R, O> = {
 	[typeSym]: {

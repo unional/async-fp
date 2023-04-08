@@ -1,20 +1,18 @@
 import { testType } from 'type-plus'
-import {
-	AbstractRequiredDef,
+import type {
 	AbstractDynamicDef,
-	AbstractPlusOptionalDef,
 	AbstractOptionalDynamicDef,
 	AbstractOptionalRequireDef,
 	AbstractOptionalRequireDynamicDef,
+	AbstractPlusOptionalDef,
 	AbstractRequireDef,
 	AbstractRequireDynamicDef,
 	AbstractRequireOptionalDef,
 	AbstractRequireOptionalDynamicDef,
+	AbstractRequiredDef,
 	DynamicDef,
 	LeafDef,
-	leafDef,
 	LeafDefFn,
-	leafDefFn,
 	LeafTupleDef,
 	LeafTupleDefFn,
 	LeafWithStartDef,
@@ -28,17 +26,6 @@ import {
 	RequireOptionalDef,
 	RequireOptionalDynamicDef
 } from './fixtures'
-
-it('exposes name of the def as const', () => {
-	expect(leafDef.name).toBe('leaf')
-	testType.equal<'leaf', typeof leafDef.name>(true)
-})
-
-it('exposes name of the def fn as const', () => {
-	const p = leafDefFn(1)
-	expect(p.name).toBe('leaf-fn')
-	testType.equal<'leaf-fn', typeof p.name>(true)
-})
 
 it(`gets the type of the define result for leaf def`, () => {
 	testType.equal<{ leaf: { foo(): number } }, LeafDef>(true)
