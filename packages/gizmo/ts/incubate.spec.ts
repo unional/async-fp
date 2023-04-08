@@ -1,6 +1,12 @@
 import { testType } from 'type-plus'
 import { define } from './define'
-import { leafGizmo, leafGizmoFn, leafTupleGizmo, leafWithStartGizmo } from './fixtures'
+import {
+	leafGizmo,
+	leafGizmoFn,
+	leafTupleGizmo,
+	leafWithStartGizmo,
+	staticRequiredGizmo
+} from './fixtures'
 import { incubate } from './incubate'
 
 it('incubates with an initial gizmo', async () => {
@@ -57,3 +63,9 @@ it('overrides gizmo', async () => {
 })
 
 it.todo('does not override in parent incubator')
+
+it('requires static dependencies to be added first', async () => {
+	const i = incubate().with(staticRequiredGizmo)
+	// TODO: should be true
+	testType.equal<typeof i, `missing dependency: 'leaf'`>(false)
+})

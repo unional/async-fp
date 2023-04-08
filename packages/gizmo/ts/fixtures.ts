@@ -258,11 +258,11 @@ export type DynamicRequiredGizmo = define.Infer<typeof dynamicRequiredGizmo>
  */
 export const dynamicOptionalGizmo = define({
 	dynamic: {
-		leaf_tuple: define.optional<LeafTupleGizmo>()
+		leaf_tuple_fn: define.optional<LeafTupleGizmoFn>()
 	},
 	async create(ctx) {
-		const lt = await ctx.load('leaf_tuple')
-		testType.equal<typeof lt, Partial<LeafTupleGizmo>>(true)
+		const lt = await ctx.load('leaf_tuple_fn')
+		testType.equal<typeof lt, Partial<LeafTupleGizmoFn>>(true)
 		return {
 			dynamic_optional: {
 				foo(): number {

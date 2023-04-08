@@ -81,10 +81,10 @@ export type DefineContext<
 	Static extends DepBuilder<unknown, unknown> | unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
-	? ExtractDeps<Static> & {
-			load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDeps<Dynamic[I]>>
+	? ExtractDep<Static> & {
+			load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDep<Dynamic[I]>>
 	  }
-	: ExtractDeps<Static>
+	: ExtractDep<Static>
 
 export type DepBuilder<R, O> = {
 	[typeSym]: {
@@ -101,7 +101,10 @@ export type DepBuilder<R, O> = {
 	}
 }
 
-export type ExtractDeps<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<
+/**
+ * Extract the dependencies from a dep builder.
+ */
+export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<
 	unknown,
 	unknown
 >
@@ -113,3 +116,22 @@ export type ExtractDeps<D extends DepBuilder<unknown, unknown> | unknown> = D ex
 		? D[typeof typeSym]['require']
 		: D[typeof typeSym]['require'] & Partial<D[typeof typeSym]['optional']>
 	: unknown
+
+/**
+ * Extract dependencies of a gizmo.
+ */
+export type ExtractDeps<G extends Gizmo> = G extends GizmoBase
+	? unknown
+	: G extends GizmoBoth<infer S, Record<any, infer D>>
+	? ExtractDep<S> & ExtractDep<UnionToIntersection<D>>
+	: G extends GizmoStatic<infer S>
+	? ExtractDep<S>
+	: G extends GizmoDynamic<Record<any, infer D>>
+	? ExtractDep<UnionToIntersection<D>>
+	: never
+
+export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+	k: infer I
+) => void
+	? I
+	: never
