@@ -7,7 +7,7 @@ import { define } from '.'
  */
 export const leafDef = define({
 	name: 'leaf',
-	define: async () => ({
+	create: async () => ({
 		leaf: {
 			foo(): number {
 				return 1
@@ -26,7 +26,7 @@ export type LeafDef = define.Infer<typeof leafDef>
  */
 export const leafTupleDef = define({
 	name: 'leaf-tuple',
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<{ name: 'leaf-tuple' }, typeof ctx>(true)
 		return [
 			{
@@ -49,7 +49,7 @@ export type LeafTupleDef = define.Infer<typeof leafTupleDef>
  */
 export const leafWithStartDef = define({
 	name: 'leaf-start',
-	async define() {
+	async create() {
 		let value = 1
 		return [
 			{
@@ -76,7 +76,7 @@ export type LeafWithStartDef = define.Infer<typeof leafWithStartDef>
  */
 export const leafDefFn = define((value: number) => ({
 	name: 'leaf-fn',
-	async define() {
+	async create() {
 		return {
 			leaf_fn: {
 				foo() {
@@ -95,7 +95,7 @@ export type LeafDefFn = define.Infer<typeof leafDefFn>
  */
 export const leafTupleDefFn = define((value: number) => ({
 	name: 'leaf-tuple-fn',
-	async define() {
+	async create() {
 		return [
 			{
 				leaf_tuple_fn: {
@@ -115,7 +115,7 @@ export type LeafTupleDefFn = define.Infer<typeof leafTupleDefFn>
  */
 export const leafWithStartDefFn = define((value: number) => ({
 	name: 'leaf-start-fn',
-	define: async () => [
+	create: async () => [
 		{
 			leaf_start_fn: {
 				foo(): number {
@@ -135,7 +135,7 @@ export type LeafWithStartDefFn = define.Infer<typeof leafWithStartDefFn>
 export const abstractRequiredDef = define({
 	name: 'abstract_required',
 	static: define.required<LeafDef>(),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<typeof ctx, { name: 'abstract_required' } & LeafDef>(true)
 		return [
 			{
@@ -157,7 +157,7 @@ export type AbstractRequiredDef = define.Infer<typeof abstractRequiredDef>
 export const abstractOptionalDef = define({
 	name: 'abstract_optional',
 	static: define.optional<LeafDefFn>(),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafDefFn>>(true)
 		return [
 			{
@@ -176,7 +176,7 @@ export type AbstractOptionalDef = define.Infer<typeof abstractOptionalDef>
 export const abstractRequiredAndOptionalDef = define({
 	name: 'abstract_required_and_optional',
 	static: define.required<LeafDef>().optional<LeafTupleDef>(),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafTupleDef>>(true)
 		return {
 			abstract_optional: {
@@ -193,7 +193,7 @@ export type AbstractPlusOptionalDef = define.Infer<typeof abstractRequiredAndOpt
 export const requireDef = define({
 	name: 'require',
 	static: define.required(leafTupleDef),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafTupleDef>(true)
 		return {
 			require: {
@@ -210,7 +210,7 @@ export type RequireDef = define.Infer<typeof requireDef>
 export const optionalDef = define({
 	name: 'optional',
 	static: define.optional(leafWithStartDef),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafWithStartDef>>(true)
 		return {
 			optional: {
@@ -227,7 +227,7 @@ export type OptionalDef = define.Infer<typeof optionalDef>
 export const dynamicDef = define({
 	name: 'dynamic',
 	dynamic: { leaf: define.required<LeafDefFn>() },
-	async define(ctx) {
+	async create(ctx) {
 		const d = await ctx.load('leaf')
 		testType.equal<typeof d, LeafDefFn>(true)
 		return {
@@ -245,7 +245,7 @@ export type DynamicDef = define.Infer<typeof dynamicDef>
 export const dynamicDefFn = define((value: number) => ({
 	name: 'dynamic_fn',
 	dynamic: { leaf: define.required<LeafTupleDefFn>() },
-	async define(ctx) {
+	async create(ctx) {
 		const d = await ctx.load('leaf')
 		testType.equal<typeof d, LeafTupleDefFn>(true)
 		return {
@@ -263,7 +263,7 @@ export type DynamicDefFn = define.Infer<typeof dynamicDefFn>
 export const abstractRequireDef = define({
 	name: 'abstract_require',
 	static: define.required<LeafDef>().required(leafWithStartDefFn),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafWithStartDefFn>(true)
 		return {
 			abstract_require: {
@@ -280,7 +280,7 @@ export type AbstractRequireDef = define.Infer<typeof abstractRequireDef>
 export const requireOptionalDef = define({
 	name: 'require_optional',
 	static: define.required(leafDef).optional(leafTupleDef),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & Partial<LeafTupleDef>>(true)
 		return {
 			require_optional: {
@@ -297,7 +297,7 @@ export type RequireOptionalDef = define.Infer<typeof requireOptionalDef>
 export const optionalRequireDef = define({
 	name: 'optional_require',
 	static: define.optional(leafTupleDef).required(leafDefFn),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, Partial<LeafTupleDef> & LeafDefFn>(true)
 		return {
 			optional_require: {
@@ -314,7 +314,7 @@ export type OptionalRequireDef = define.Infer<typeof optionalRequireDef>
 export const abstractRequireOptionalDef = define({
 	name: 'abstract_require_optional',
 	static: define.required<LeafDef>().required(leafWithStartDefFn).optional(leafTupleDef),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>>(
 			true
 		)
@@ -333,7 +333,7 @@ export type AbstractRequireOptionalDef = define.Infer<typeof abstractRequireOpti
 export const abstractOptionalRequireDef = define({
 	name: 'abstract_optional_require',
 	static: define.required<LeafDef>().optional(leafTupleDef).required(leafWithStartDefFn),
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name'>, LeafDef & LeafWithStartDefFn & Partial<LeafTupleDef>>(
 			true
 		)
@@ -356,7 +356,7 @@ export const abstractDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -381,7 +381,7 @@ export const requireDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafTupleDefFn>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -406,7 +406,7 @@ export const optionalDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.optional<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, Partial<RequireDef>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -431,7 +431,7 @@ export const abstractRequireDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & LeafWithStartDef>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -456,7 +456,7 @@ export const abstractOptionalDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -481,7 +481,7 @@ export const requireOptionalDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -506,7 +506,7 @@ export const optionalRequireDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'name' | 'load'>, LeafDef & Partial<LeafWithStartDefFn>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafDef, typeof l>(true)
@@ -531,7 +531,7 @@ export const abstractRequireOptionalDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<
 			Omit<typeof ctx, 'name' | 'load'>,
 			LeafDef & LeafWithStartDef & Partial<DynamicDef>
@@ -561,7 +561,7 @@ export const abstractOptionalRequireDynamicDef = define({
 		leaf: define.required<LeafDef>(),
 		leaf_tuple: define.required<LeafTupleDef>()
 	},
-	async define(ctx) {
+	async create(ctx) {
 		testType.equal<
 			Omit<typeof ctx, 'name' | 'load'>,
 			LeafDef & LeafWithStartDef & Partial<DynamicDefFn>
@@ -593,7 +593,7 @@ export type NavigateContext = {
 export const implementPlugin = define(() => ({
 	name: 'implement',
 	static: define.required(leafTupleDefFn),
-	async define(ctx): Promise<NavigateContext> {
+	async create(ctx): Promise<NavigateContext> {
 		testType.equal<Omit<typeof ctx, 'name'>, LeafTupleDefFn>(true)
 		return {
 			navigate: {
@@ -605,13 +605,13 @@ export const implementPlugin = define(() => ({
 
 export const sideEffectPlugin = define({
 	name: 'side_effect',
-	async define() {}
+	async create() {}
 })
 
 export const requireSideEffectPlugin = define({
 	name: 'require_side_effect',
 	static: define.required(sideEffectPlugin),
-	async define() {}
+	async create() {}
 })
 
 // @todo: dyanmic optional dependency
