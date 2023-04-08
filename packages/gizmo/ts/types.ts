@@ -7,9 +7,53 @@ export type Gizmo<
 		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
+> =
+	| GizmoBase<Result>
+	| GizmoStatic<Static, Result>
+	| GizmoDynamic<Dynamic, Result>
+	| GizmoBoth<Static, Dynamic, Result>
+
+export type GizmoBase<
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, unknown>
+		| void = Record<string | symbol, any> | void
 > = {
-	readonly static?: Static
-	readonly dynamic?: Dynamic
+	create(): Promise<Result>
+}
+
+export type GizmoStatic<
+	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, unknown>
+		| void = Record<string | symbol, any> | void
+> = {
+	readonly static: Static
+	create(ctx: DefineContext<Static, unknown>): Promise<Result>
+}
+
+export type GizmoDynamic<
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, unknown>
+		| void = Record<string | symbol, any> | void
+> = {
+	readonly dynamic: Dynamic
+	create(ctx: DefineContext<unknown, Dynamic>): Promise<Result>
+}
+
+export type GizmoBoth<
+	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
+	Result extends
+		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| Record<string | symbol, unknown>
+		| void = Record<string | symbol, any> | void
+> = {
+	readonly static: Static
+	readonly dynamic: Dynamic
 	create(ctx: DefineContext<Static, Dynamic>): Promise<Result>
 }
 

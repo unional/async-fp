@@ -66,6 +66,11 @@ it('defines require and optional dependency with definition', () => {
 	type S = ExtractDeps<typeof s>
 
 	testType.equal<S, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
+
+	const s2 = define.required(leafTupleGizmo).optional(leafGizmo)
+	type S2 = ExtractDeps<typeof s2>
+
+	testType.equal<S2, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
 })
 
 it('defines require and optional dependency with definition function', () => {
@@ -90,7 +95,10 @@ it('defines multiple dependencies with all variations', () => {
 		{
 			leaf: { foo(): number }
 			leaf_fn: { foo(): number }
-			leaf_start: { foo(): string }
+			leaf_start: {
+				count(): number
+				foo(): string
+			}
 			leaf_tuple?: { foo(): number }
 			leaf_tuple_fn?: { foo(): number }
 			leaf_start_fn?: { foo(): number }
