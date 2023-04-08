@@ -1,6 +1,7 @@
 import { testType } from 'type-plus'
-import { leafGizmo, leafGizmoFn, leafTupleGizmo, leafWithStartGizmo } from './fixtures'
+import { LeafGizmo, leafGizmo, leafGizmoFn, leafTupleGizmo, leafWithStartGizmo } from './fixtures'
 import { incubate } from './incubate'
+import { define } from './define'
 
 it('incubates with an initial gizmo', async () => {
 	const r = await incubate(leafGizmo).create()
@@ -35,3 +36,16 @@ it('incubates gizmo with start function', async () => {
 
 	expect(r.leaf_start.foo()).toEqual('started')
 })
+
+const newLeaf = define({
+	create: async () => ({ leaf: { foo: (): string => 'foo' } })
+})
+
+it('overrides gizmo', async () => {
+	const r = await incubate().with(leafGizmo).with(newLeaf).create()
+
+	testType.equal<typeof r, { leaf: { foo(): string } }>(true)
+	expect(r.leaf.foo()).toEqual('foo')
+})
+
+it.todo('does not override in parent incubator')
