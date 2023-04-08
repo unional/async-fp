@@ -1,5 +1,5 @@
 /**
- * Creates an async definition.
+ * Define a gizmo.
  */
 export function define<
 	Name extends string,
@@ -9,7 +9,10 @@ export function define<
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any>
 		| void
->(plugin: define.Internal.Definition<Name, Static, Dynamic, Result>): typeof plugin
+>(plugin: Gizmo<Name, Static, Dynamic, Result>): typeof plugin
+/**
+ * Define a gizmo function.
+ */
 export function define<
 	Name extends string,
 	Static extends define.Internal.DepBuilder<unknown, unknown>,
@@ -19,9 +22,7 @@ export function define<
 		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
 		| Record<string | symbol, any>
 		| void
->(
-	plugin: (...args: Params) => define.Internal.Definition<Name, Static, Dynamic, Result>
-): typeof plugin
+>(plugin: (...args: Params) => Gizmo<Name, Static, Dynamic, Result>): typeof plugin
 export function define(plugin: unknown): typeof plugin {
 	return plugin
 }
@@ -38,16 +39,32 @@ function defineDeps() {
 define.required = defineDeps as define.Internal.DepBuilder<unknown, unknown>['required']
 define.optional = defineDeps as define.Internal.DepBuilder<unknown, unknown>['optional']
 
+export type Gizmo<
+	Name extends string = string,
+	Static extends define.Internal.DepBuilder<unknown, unknown> | unknown = unknown,
+	Dynamic extends Record<string, define.Internal.DepBuilder<unknown, unknown>> | unknown = unknown,
+	Result extends
+		| [result: Record<string | symbol, any>, start?: () => Promise<any>]
+		| Record<string | symbol, any>
+		| void = Record<string | symbol, any> | void
+> = {
+	readonly name: Name
+	readonly static?: Static
+	readonly dynamic?: Dynamic
+	define(ctx: define.Internal.DefineContext<Name, Static, Dynamic>): Promise<Result>
+}
+
 export namespace define {
-	export type Infer<D extends Internal.Definition | ((...args: any[]) => Internal.Definition)> =
-		D extends (...args: any[]) => Internal.Definition
-			? Internal.InferDef<ReturnType<D>>
-			: D extends Internal.Definition
-			? Internal.InferDef<D>
-			: never
+	export type Infer<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
+		...args: any[]
+	) => Gizmo
+		? Internal.InferDef<ReturnType<D>>
+		: D extends Gizmo
+		? Internal.InferDef<D>
+		: never
 
 	export namespace Internal {
-		export type InferDef<D extends Definition> = D extends Internal.Definition
+		export type InferDef<D extends Gizmo> = D extends Gizmo
 			? ReturnType<D['define']> extends infer R
 				? R extends Promise<[infer X, unknown]>
 					? Awaited<X>
@@ -56,21 +73,6 @@ export namespace define {
 					: Awaited<R>
 				: never
 			: unknown
-
-		export type Definition<
-			Name extends string = string,
-			Static extends DepBuilder<unknown, unknown> | unknown = unknown,
-			Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
-			Result extends
-				| [result: Record<string | symbol, any>, start?: () => Promise<any>]
-				| Record<string | symbol, any>
-				| void = Record<string | symbol, any> | void
-		> = {
-			readonly name: Name
-			readonly static?: Static
-			readonly dynamic?: Dynamic
-			define(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
-		}
 
 		export type DefineContext<
 			Name extends string,
@@ -90,17 +92,11 @@ export namespace define {
 			}
 			required: {
 				<Required extends Record<string | symbol, any>>(): DepBuilder<R & Required, O>
-				<D extends Definition | ((...args: any[]) => Definition)>(def: D): DepBuilder<
-					R & Infer<D>,
-					O
-				>
+				<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R & Infer<D>, O>
 			}
 			optional: {
 				<Optional extends Record<string | symbol, any>>(): DepBuilder<R, O & Optional>
-				<D extends Definition | ((...args: any[]) => Definition)>(def: D): DepBuilder<
-					R,
-					O & Infer<D>
-				>
+				<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R, O & Infer<D>>
 			}
 		}
 
