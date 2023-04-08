@@ -46,17 +46,17 @@ export type LeafTupleGizmo = define.Infer<typeof leafTupleGizmo>
  */
 export const leafWithStartGizmo = define({
 	async create() {
-		let value = 1
+		let value = 'not started'
 		return [
 			{
 				leaf_start: {
-					foo(): number {
+					foo() {
 						return value
 					}
 				}
 			},
 			// non-async seems to also work for some reason.
-			() => (value += 1)
+			() => (value = 'started')
 		]
 	}
 })
@@ -501,7 +501,10 @@ export const abstractRequireOptionalDynamicGizmo = define({
 		leaf_tuple: define.required<LeafTupleGizmo>()
 	},
 	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'load'>, LeafGizmo & LeafWithStartGizmo & Partial<DynamicGizmo>>(true)
+		testType.equal<
+			Omit<typeof ctx, 'load'>,
+			LeafGizmo & LeafWithStartGizmo & Partial<DynamicGizmo>
+		>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafGizmo, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
@@ -527,9 +530,10 @@ export const abstractOptionalRequireDynamicGizmo = define({
 		leaf_tuple: define.required<LeafTupleGizmo>()
 	},
 	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'load'>, LeafGizmo & LeafWithStartGizmo & Partial<DynamicGizmoFn>>(
-			true
-		)
+		testType.equal<
+			Omit<typeof ctx, 'load'>,
+			LeafGizmo & LeafWithStartGizmo & Partial<DynamicGizmoFn>
+		>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<LeafGizmo, typeof l>(true)
 		const lt = await ctx.load('leaf_tuple')
