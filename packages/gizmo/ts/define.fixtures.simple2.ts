@@ -1,4 +1,4 @@
-import { define } from './async_def.js'
+import { define } from './define.js'
 
 export const simple2Plugin = define((defaultValue: number) => ({
 	name: 'simple2',

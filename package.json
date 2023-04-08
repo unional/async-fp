@@ -14,6 +14,7 @@
     "coverage": "jest --coverage --maxWorkers=60%",
     "cs": "changeset",
     "depcheck": "turbo run depcheck",
+		"gizmo": "pnpm --filter=@unional/gizmo",
     "lint": "turbo run lint",
     "nuke": "pnpm clean && turbo run nuke && rimraf node_modules",
     "prepack": "pinst --disable",

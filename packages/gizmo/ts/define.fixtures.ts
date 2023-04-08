@@ -1,5 +1,5 @@
 import { testType } from 'type-plus'
-import { define } from './async_def'
+import { define } from './define'
 
 /**
  * Leaf definition with no dependencies.
