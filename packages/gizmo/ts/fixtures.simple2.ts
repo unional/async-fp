@@ -2,7 +2,7 @@ import { define } from './define.js'
 
 export const simple2Plugin = define((defaultValue: number) => ({
 	name: 'simple2',
-	async define() {
+	async create() {
 		return {
 			simple2: {
 				foo() {

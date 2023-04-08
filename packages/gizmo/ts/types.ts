@@ -12,7 +12,7 @@ export type Gizmo<
 	readonly name: Name
 	readonly static?: Static
 	readonly dynamic?: Dynamic
-	define(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
+	create(ctx: DefineContext<Name, Static, Dynamic>): Promise<Result>
 }
 
 export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
@@ -24,7 +24,7 @@ export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D ext
 	: never
 
 export type InferGizmo<D extends Gizmo> = D extends Gizmo
-	? ReturnType<D['define']> extends infer R
+	? ReturnType<D['create']> extends infer R
 		? R extends Promise<[infer X, unknown]>
 			? Awaited<X>
 			: R extends Promise<[infer X]>
