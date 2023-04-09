@@ -1,5 +1,4 @@
 import { testType } from 'type-plus'
-import { define } from './define'
 import {
 	dynamicRequiredGizmo,
 	leafGizmo,
@@ -9,8 +8,8 @@ import {
 	staticDynamicBothGizmo,
 	staticOptionalGizmo,
 	staticRequiredGizmo
-} from './fixtures'
-import { MissingDependency, incubate } from './incubate'
+} from './fixtures.js'
+import { define, incubate, type MissingDependency } from './index.js'
 
 it('incubates with an initial gizmo', async () => {
 	const r = await incubate(leafGizmo).create()

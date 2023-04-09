@@ -6,7 +6,7 @@ import type {
 	GizmoDynamic,
 	GizmoStatic,
 	InferAllGizmo
-} from './types'
+} from './types.js'
 
 /**
  * Define a gizmo.

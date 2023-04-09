@@ -1,5 +1,5 @@
 import { testType } from 'type-plus'
-import { define } from '.'
+import { define } from './define.js'
 
 /**
  * Leaf gizmo with no dependencies.

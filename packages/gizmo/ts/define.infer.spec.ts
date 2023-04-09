@@ -20,7 +20,7 @@ import type {
 	DynamicBothGizmoFn,
 	StaticDynamicBothGizmo,
 	StaticDynamicBothGizmoFn
-} from './fixtures'
+} from './fixtures.js'
 
 it(`gets the result type for leaf gizmo`, () => {
 	testType.equal<{ leaf: { foo(): number } }, LeafGizmo>(true)
