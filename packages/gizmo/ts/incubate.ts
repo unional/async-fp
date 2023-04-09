@@ -1,5 +1,5 @@
-import type { LeftJoin } from 'type-plus'
-import type { ExtractDeps, Gizmo, InferGizmo } from './types'
+import type { LeftJoin, RequiredKeys } from 'type-plus'
+import type { ExtractDeps, Gizmo, InferGizmo, hiddenSymbol } from './types'
 
 /**
  * Create an incubator for gizmos.
@@ -43,20 +43,30 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	 */
 	with<G extends Gizmo>(
 		gizmo: G
-	): ExtractDeps<G> extends infer Required
-		? R extends Required
-			? InferGizmo<G> extends infer GR
-				? GR extends Record<string | symbol, unknown>
-					? R extends Record<string | symbol, unknown>
-						? GizmoIncubator<LeftJoin<R, GR>>
-						: GizmoIncubator<GR>
-					: GizmoIncubator<R>
-				: never
-			: Omit<keyof Required, keyof R>
+	): ExtractDeps<G> extends infer Deps
+		? R extends Deps
+			? InferIncubator<R, G>
+			: Deps extends Record<string | number | symbol, any>
+			? RequiredKeys<Deps> extends keyof R
+				? InferIncubator<R, G>
+				: MissingDependency<Exclude<RequiredKeys<Deps>, keyof R>>
+			: never // @TODO: may be missing some cases here
 		: never
 	/**
 	 * create the gizmo.
-	 *
 	 */
 	create(): Promise<R>
 }
+
+type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR
+	? GR extends Record<string | symbol, unknown>
+		? R extends Record<string | symbol, unknown>
+			? GizmoIncubator<LeftJoin<R, GR>>
+			: GizmoIncubator<GR>
+		: GizmoIncubator<R>
+	: never
+
+/**
+ * Missing some dependencies.
+ */
+export type MissingDependency<T> = { [hiddenSymbol]: T }
