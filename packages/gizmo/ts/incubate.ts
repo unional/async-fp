@@ -1,5 +1,5 @@
 import type { LeftJoin, RequiredKeys } from 'type-plus'
-import type { ExtractDeps, Gizmo, InferGizmo, hiddenSymbol } from './types'
+import type { ExtractDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
 
 /**
  * Create an incubator for gizmos.
@@ -65,8 +65,3 @@ type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR
 			: GizmoIncubator<GR>
 		: GizmoIncubator<R>
 	: never
-
-/**
- * Missing some dependencies.
- */
-export type MissingDependency<T> = { [hiddenSymbol]: T }

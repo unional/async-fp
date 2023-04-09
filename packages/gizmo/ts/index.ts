@@ -1,2 +1,3 @@
 export * from './define.js'
-export type { Gizmo } from './types.js'
+export * from './incubate.js'
+export type { Gizmo, MissingDependency } from './types.js'

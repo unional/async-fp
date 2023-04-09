@@ -136,3 +136,8 @@ export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) ex
 ) => void
 	? I
 	: never
+
+/**
+ * Missing some dependencies.
+ */
+export type MissingDependency<T> = { [hiddenSymbol]: T }
