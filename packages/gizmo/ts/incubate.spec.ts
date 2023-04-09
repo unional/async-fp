@@ -1,13 +1,16 @@
 import { testType } from 'type-plus'
 import { define } from './define'
 import {
+	dynamicRequiredGizmo,
 	leafGizmo,
 	leafGizmoFn,
 	leafTupleGizmo,
 	leafWithStartGizmo,
+	staticDynamicBothGizmo,
+	staticOptionalGizmo,
 	staticRequiredGizmo
 } from './fixtures'
-import { incubate } from './incubate'
+import { MissingDependency, incubate } from './incubate'
 
 it('incubates with an initial gizmo', async () => {
 	const r = await incubate(leafGizmo).create()
@@ -64,8 +67,73 @@ it('overrides gizmo', async () => {
 
 it.todo('does not override in parent incubator')
 
-it('requires static dependencies to be added first', async () => {
-	const i = incubate().with(staticRequiredGizmo)
-	// TODO: should be true
-	testType.equal<typeof i, `missing dependency: 'leaf'`>(false)
+it('returns MissingDependency if required dependency is missing', () => {
+	const s = incubate().with(staticRequiredGizmo)
+	testType.equal<typeof s, MissingDependency<'leaf'>>(true)
+
+	const sOther = incubate().with(leafWithStartGizmo).with(staticRequiredGizmo)
+	testType.equal<typeof sOther, MissingDependency<'leaf'>>(true)
+
+	const d = incubate().with(dynamicRequiredGizmo)
+	testType.equal<typeof d, MissingDependency<'leaf_fn'>>(true)
+
+	const dOther = incubate().with(leafWithStartGizmo).with(dynamicRequiredGizmo)
+	testType.equal<typeof dOther, MissingDependency<'leaf_fn'>>(true)
+})
+
+it('can create when required dependency is provided', async () => {
+	const s = await incubate().with(leafGizmo).with(staticRequiredGizmo).create()
+	testType.equal<
+		typeof s,
+		{
+			leaf: { foo(): number }
+			static_required: { foo(): number }
+		}
+	>(true)
+})
+
+it('allows optional dependency to be missing', async () => {
+	const s = await incubate().with(staticOptionalGizmo).create()
+	testType.equal<typeof s, { static_optional: { foo(): number } }>(true)
+	expect(s.static_optional.foo()).toEqual(1)
+})
+
+it('allows optional wiht other gizmo', async () => {
+	const s = await incubate().with(leafGizmo).with(staticOptionalGizmo).create()
+	testType.equal<
+		typeof s,
+		{
+			leaf: { foo(): number }
+			static_optional: { foo(): number }
+		}
+	>(true)
+})
+
+it('allows required with other gizmo', async () => {
+	const s = await incubate().with(leafGizmo).with(leafGizmoFn(1)).with(staticRequiredGizmo).create()
+	testType.equal<
+		typeof s,
+		{
+			leaf: { foo(): number }
+			leaf_fn: { foo(): number }
+			static_required: { foo(): number }
+		}
+	>(true)
+})
+
+it('returns MismatchDependency for only required dependencies', () => {
+	const b = incubate().with(staticDynamicBothGizmo)
+	testType.equal<typeof b, MissingDependency<'leaf_start' | 'leaf'>>(true)
+})
+
+it('returns MismatchDependency for the missing dependencies', () => {
+	const a = incubate().with(leafWithStartGizmo).with(staticDynamicBothGizmo)
+	testType.equal<typeof a, MissingDependency<'leaf'>>(true)
+
+	const b = incubate().with(leafGizmo).with(staticDynamicBothGizmo)
+	testType.equal<typeof b, MissingDependency<'leaf_start'>>(true)
+})
+
+it('allows when both required dependencies are provided', async () => {
+	incubate().with(leafWithStartGizmo).with(leafGizmo).with(staticDynamicBothGizmo).create()
 })

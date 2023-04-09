@@ -1,4 +1,5 @@
-const typeSym = Symbol('dep type symbol')
+
+export const hiddenSymbol = Symbol('hidden prop symbol')
 
 export type Gizmo<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
@@ -87,7 +88,7 @@ export type DefineContext<
 	: ExtractDep<Static>
 
 export type DepBuilder<R, O> = {
-	[typeSym]: {
+	[hiddenSymbol]: {
 		require: R
 		optional: O
 	}
@@ -108,13 +109,13 @@ export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D ext
 	unknown,
 	unknown
 >
-	? unknown extends D[typeof typeSym]['require']
-		? unknown extends D[typeof typeSym]['optional']
+	? unknown extends D[typeof hiddenSymbol]['require']
+		? unknown extends D[typeof hiddenSymbol]['optional']
 			? unknown
-			: Partial<D[typeof typeSym]['optional']>
-		: unknown extends D[typeof typeSym]['optional']
-		? D[typeof typeSym]['require']
-		: D[typeof typeSym]['require'] & Partial<D[typeof typeSym]['optional']>
+			: Partial<D[typeof hiddenSymbol]['optional']>
+		: unknown extends D[typeof hiddenSymbol]['optional']
+		? D[typeof hiddenSymbol]['require']
+		: D[typeof hiddenSymbol]['require'] & Partial<D[typeof hiddenSymbol]['optional']>
 	: unknown
 
 /**
