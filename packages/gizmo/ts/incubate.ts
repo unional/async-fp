@@ -19,9 +19,13 @@ export function incubate(gizmo?: Gizmo) {
 			return this
 		},
 		async create() {
-			const result = {} as Record<string | symbol, unknown>
+			const result = {
+				async load(_identifier: string) {
+					return result
+				}
+			} as Record<string | symbol, unknown>
 			for (const gizmo of gizmos) {
-				const gizmoResult = await gizmo.create(gizmo)
+				const gizmoResult = await gizmo.create(result)
 				if (Array.isArray(gizmoResult)) {
 					const [value, start] = gizmoResult
 					if (start) {
@@ -32,6 +36,7 @@ export function incubate(gizmo?: Gizmo) {
 					Object.assign(result, gizmoResult)
 				}
 			}
+			delete result.load
 			return result
 		}
 	} as unknown
