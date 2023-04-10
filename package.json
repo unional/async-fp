@@ -9,9 +9,8 @@
     "async-context": "pnpm --filter=@unional/async-context",
     "async-fp": "pnpm --filter=async-fp",
     "build": "turbo run build",
-    "build:watch": "tsc -b -w",
     "clean": "turbo run clean",
-    "coverage": "jest --coverage --maxWorkers=60%",
+    "coverage": "turbo run coverage",
     "cs": "changeset",
     "depcheck": "turbo run depcheck",
     "gizmo": "pnpm --filter=@unional/gizmo",
@@ -22,11 +21,9 @@
     "postinstall": "husky install",
     "release": "pnpm publish -r && changeset tag",
     "size": "turbo run size",
-    "test": "jest --maxWorkers=60%",
-    "test:watch": "jest --watch --maxWorkers=60%",
+    "test": "turbo run test",
     "verify": "turbo run lint build coverage depcheck size",
-    "version": "changeset version",
-    "watch": "pnpm test:watch"
+    "version": "changeset version"
   },
   "husky": {
     "hooks": {

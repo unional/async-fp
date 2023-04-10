@@ -58,14 +58,12 @@
       ]
     },
     "verify": {
-      "dependsOn": ["lint", "build", "coverage", "depcheck", "size"]
-    },
-    "watch": {
       "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        ":(glob)ts/**/*.ts"
+        "lint",
+        "build",
+        "coverage",
+        "depcheck",
+        "size"
       ]
     }
   }
