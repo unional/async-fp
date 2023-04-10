@@ -1,5 +1,17 @@
 # @unional/gizmo
 
+## 1.0.1
+
+### Patch Changes
+
+- 228a724: Add `DynamicLoader<T>` type.
+
+  This is added so that when the `ctx` needs to be specified manually,
+  This type can be used for the dynamic dependency.
+
+- 9abf3c1: Export more types.
+  To fix the type cannot be named issue.
+
 ## 1.0.0
 
 ### Major Changes
