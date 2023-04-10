@@ -9,13 +9,14 @@
     "functional",
     "typescript"
   ],
-  "homepage": "https://github.com/unional/async-fp/tree/master/packages/async-context",
+  "homepage": "https://github.com/unional/async-fp/tree/main/packages/async-context",
   "bugs": {
     "url": "https://github.com/unional/async-fp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/unional/async-fp.git"
+    "url": "https://github.com/unional/async-fp.git",
+    "directory": "packages/async-context"
   },
   "license": "MIT",
   "author": {
