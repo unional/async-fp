@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.0.1
+
+### Patch Changes
+
+- Updated dependencies [228a724]
+- Updated dependencies [9abf3c1]
+  - @unional/gizmo@1.0.1
+  - @unional/async-context@9.0.1
+
 ## 9.0.0
 
 ### Major Changes
