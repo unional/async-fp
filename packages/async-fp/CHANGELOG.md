@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.0.2
+
+### Patch Changes
+
+- a2dca4a: expose `/gizmo/testing`
+- Updated dependencies [2c26a4a]
+  - @unional/gizmo@1.0.2
+  - @unional/async-context@9.0.2
+
 ## 9.0.1
 
 ### Patch Changes

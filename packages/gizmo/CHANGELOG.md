@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 1.0.2
+
+### Patch Changes
+
+- 2c26a4a: Add testing exports
+
 ## 1.0.1
 
 ### Patch Changes
