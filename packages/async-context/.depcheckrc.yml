@@ -4,5 +4,6 @@ ignores:
   - '@types/node'
   - '@typescript-eslint/parser'
   - jest-*
+  - rimraf # https://github.com/depcheck/depcheck/issues/776
   - ts-jest
   - tslib

@@ -14,7 +14,7 @@
     "coverage": "jest --coverage --maxWorkers=60%",
     "cs": "changeset",
     "depcheck": "turbo run depcheck",
-		"gizmo": "pnpm --filter=@unional/gizmo",
+    "gizmo": "pnpm --filter=@unional/gizmo",
     "lint": "turbo run lint",
     "nuke": "pnpm clean && turbo run nuke && rimraf node_modules",
     "prepack": "pinst --disable",
@@ -62,7 +62,7 @@
     "jest-watch-typeahead": "^2.2.2",
     "npm-check-updates": "^16.0.5",
     "pinst": "^3.0.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.0",
     "turbo": "^1.4.3",
     "typescript": "^5.0.0"
   },
