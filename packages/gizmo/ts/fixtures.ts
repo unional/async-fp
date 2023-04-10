@@ -1,3 +1,4 @@
+// istanbul ignore file
 import { testType } from 'type-plus'
 import { define } from './define.js'
 
@@ -122,7 +123,7 @@ export type LeafWithStartGizmoFn = define.Infer<typeof leafWithStartGizmoFn>
  * Gizmo with static required dependency.
  */
 export const staticRequiredGizmo = define({
-	static: define.required<LeafGizmo>(),
+	static: define.require<LeafGizmo>(),
 	async create(ctx) {
 		testType.equal<typeof ctx, LeafGizmo>(true)
 		return [
@@ -162,7 +163,7 @@ export type StaticOptionalGizmo = define.Infer<typeof staticOptionalGizmo>
  * Gizmo with both static required and optional dependencies.
  */
 export const staticBothGizmo = define({
-	static: define.required<LeafGizmo>().optional<LeafTupleGizmo>(),
+	static: define.require<LeafGizmo>().optional<LeafTupleGizmo>(),
 	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'load'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
 		return {
@@ -180,7 +181,7 @@ export type StaticBothGizmo = define.Infer<typeof staticBothGizmo>
  * Gizmo function with static required dependency.
  */
 export const staticRequiredGizmoFn = define(() => ({
-	static: define.required<LeafGizmo>(),
+	static: define.require(leafGizmo),
 	async create(ctx) {
 		testType.equal<typeof ctx, LeafGizmo>(true)
 		return [
@@ -200,7 +201,7 @@ export type StaticRequiredGizmoFn = define.Infer<typeof staticRequiredGizmoFn>
  * Gizmo function with static optional dependency.
  */
 export const staticOptionalGizmoFn = define(() => ({
-	static: define.optional<LeafGizmoFn>(),
+	static: define.optional(leafGizmoFn),
 	async create(ctx) {
 		testType.equal<typeof ctx, Partial<LeafGizmoFn>>(true)
 		return [
@@ -220,7 +221,7 @@ export type StaticOptionalGizmoFn = define.Infer<typeof staticOptionalGizmoFn>
  * Gizmo function with both static required and optional dependencies.
  */
 export const staticBothGizmoFn = define(() => ({
-	static: define.required<LeafGizmo>().optional<LeafTupleGizmo>(),
+	static: define.require(leafGizmo).optional(leafTupleGizmo),
 	async create(ctx) {
 		testType.equal<Omit<typeof ctx, 'load'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
 		return {
@@ -238,7 +239,7 @@ export type StaticBothGizmoFn = define.Infer<typeof staticBothGizmoFn>
  * Gizmo with dynamic required dependency.
  */
 export const dynamicRequiredGizmo = define({
-	dynamic: { leaf: define.required<LeafGizmoFn>() },
+	dynamic: { leaf: define.require<LeafGizmoFn>() },
 	async create(ctx) {
 		const d = await ctx.load('leaf')
 		testType.equal<typeof d, LeafGizmoFn>(true)
@@ -279,7 +280,7 @@ export type DynamicOptionalGizmo = define.Infer<typeof dynamicOptionalGizmo>
  */
 export const dynamicBothGizmo = define({
 	dynamic: {
-		leaf: define.required<LeafGizmo>(),
+		leaf: define.require<LeafGizmo>(),
 		leaf_tuple: define.optional<LeafTupleGizmo>()
 	},
 	async create(ctx) {
@@ -302,7 +303,7 @@ export type DynamicBothGizmo = define.Infer<typeof dynamicBothGizmo>
  * Gizmo function with dynamic required dependency.
  */
 export const dynamicRequiredGizmoFn = define((value: number) => ({
-	dynamic: { leaf: define.required<LeafTupleGizmoFn>() },
+	dynamic: { leaf: define.require<LeafTupleGizmoFn>() },
 	async create(ctx) {
 		const d = await ctx.load('leaf')
 		testType.equal<typeof d, LeafTupleGizmoFn>(true)
@@ -341,7 +342,7 @@ export type DynamicOptionalGizmoFn = define.Infer<typeof dynamicOptionalGizmoFn>
  */
 export const dynamicBothGizmoFn = define((value: number) => ({
 	dynamic: {
-		leaf: define.required<LeafTupleGizmoFn>(),
+		leaf: define.require<LeafTupleGizmoFn>(),
 		leaf_tuple: define.optional<LeafWithStartGizmo>()
 	},
 	async create(ctx) {
@@ -365,9 +366,9 @@ export type DynamicBothGizmoFn = define.Infer<typeof dynamicBothGizmoFn>
  * It has both required and optional dependencies.
  */
 export const staticDynamicBothGizmo = define({
-	static: define.required(leafWithStartGizmo).optional(dynamicRequiredGizmo),
+	static: define.require(leafWithStartGizmo).optional(dynamicRequiredGizmo),
 	dynamic: {
-		leaf: define.required<LeafGizmo>(),
+		leaf: define.require<LeafGizmo>(),
 		leaf_tuple: define.optional<LeafTupleGizmo>()
 	},
 	async create(ctx) {
@@ -394,9 +395,9 @@ export type StaticDynamicBothGizmo = define.Infer<typeof staticDynamicBothGizmo>
  * It has both required and optional dependencies.
  */
 export const staticDynamicBothGizmoFn = define(() => ({
-	static: define.required(leafWithStartGizmo).optional(dynamicRequiredGizmo),
+	static: define.require(leafWithStartGizmo).optional(dynamicRequiredGizmo),
 	dynamic: {
-		leaf: define.required<LeafGizmo>(),
+		leaf: define.require<LeafGizmo>(),
 		leaf_tuple: define.optional<LeafTupleGizmo>()
 	},
 	async create(ctx) {
@@ -425,7 +426,7 @@ export type NavigateContext = {
 }
 
 export const implementGizmo = define(() => ({
-	static: define.required(leafTupleGizmoFn),
+	static: define.require(leafTupleGizmoFn),
 	async create(ctx): Promise<NavigateContext> {
 		testType.equal<typeof ctx, LeafTupleGizmoFn>(true)
 		return {
@@ -464,6 +465,6 @@ export type SideEffectGizmoFn = define.Infer<typeof sideEffectGizmoFn>
  * Size effect gizmo can still be used as dependency
  */
 export const requireSideEffectGizmo = define({
-	static: define.required(sideEffectGizmo),
+	static: define.require(sideEffectGizmo),
 	async create() {}
 })

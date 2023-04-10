@@ -1,3 +1,4 @@
+// istanbul ignore file
 import { define } from './define.js'
 
 export const simple2Plugin = define((defaultValue: number) => ({
