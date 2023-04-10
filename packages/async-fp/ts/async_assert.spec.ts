@@ -1,6 +1,6 @@
 import { a } from 'assertron'
 import { testType } from 'type-plus'
-import { asyncAssert } from './async_assert'
+import { asyncAssert } from './index.js'
 
 it('throws as the asserter throws', () => {
 	a.throws(

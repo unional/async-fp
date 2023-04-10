@@ -12,8 +12,8 @@ import {
 	staticDynamicBothGizmo,
 	staticOptionalGizmo,
 	staticRequiredGizmo
-} from './fixtures'
-import type { ExtractDeps, InferAllGizmo } from './types'
+} from './fixtures.js'
+import type { ExtractDeps, InferAllGizmo } from './types.js'
 
 it('gets static required dependency', () => {
 	testType.equal<ExtractDeps<typeof staticRequiredGizmo>, InferAllGizmo<typeof leafGizmo>>(true)

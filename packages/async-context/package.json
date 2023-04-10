@@ -23,6 +23,19 @@
     "email": "homawong@gmail.com"
   },
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./esm/index.d.ts",
+        "default": "./esm/index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "jsnext:main": "esm/index.js",
@@ -31,7 +44,7 @@
     "cjs",
     "esm",
     "ts",
-    "!**/*.spec.*"
+    "!**/*.{spec,test,unit,accept,integrate,system}.*"
   ],
   "scripts": {
     "build": "run-p build:cjs build:esm",
