@@ -1,56 +1,195 @@
-# `async-fp`
+# @unional/gizmo
 
-[![NPM version][npm-image]][npm-url]
-[![NPM downloads][downloads-image]][downloads-url]
-[![Bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][gizmo-npm-image]][gizmo-npm-url]
+[![NPM downloads][gizmo-downloads-image]][gizmo-npm-url]
+[![Bundle size][gizmo-bundlephobia-image]][gizmo-bundlephobia-url]
 
 [![Codecov][codecov-image]][codecov-url]
 
-Collection of utilities for asynchronous functional programming.
+[@unional/gizmo] is a library to create `gizmo`.
+
+A `gizmo` is an object with static or dynamic dependencies,
+and an optional `start` function.
+
+```ts
+import { define } from '@unional/gizmo'
+
+const gizmo = define({
+  // optional static dependencies
+  static: define.require(...).optional(...),
+  // optional dynamic dependencies
+  dynamic: {
+    'a': define.require(...).optional(...),
+    'b': define.require(...).optional(...)
+  },
+  async create(ctx) {
+    function foo() {
+      // static dependencies are available in ctx
+      const value = ctx.some_dep.doSomething()
+    }
+
+    // dynamic dependencies are available through `ctx.load()`
+    const a = await ctx.load('a')
+
+    // either return nothing, or
+    // return the object directly, or
+    return [
+      { foo },
+      async start() { /* ..snap.. */ }
+    ]
+  }
+})
+```
+
+You can also create a `gizmo function` using `define()`:
+
+```ts
+import { define } from '@unional/gizmo'
+
+const gizmoFn = define((options) => {
+  async create() { /* ..snap.. */ }
+})
+
+const gizmo = gizmoFn({ /* options */ })
+```
+
+To create an object from `gizmo`, you use the `incubate()` function.
+
+The typical way of using `gizmo` is to define specific behaviors in different `gizmo`,
+and combine them together for different use cases.
+
+```ts
+import { incubate } from '@unional/gizmo'
+
+const incubator = incubate()
+  .with(gizmoA)
+  .with(gizmoB)
+  .with(gizmoCFn())
+
+const obj = await incubator.create()
+```
+
+When creating a `gizmo`, the type system will ensure that all dependencies are loaded.
+
+```ts
+import { incubate } from '@unional/gizmo'
+
+// MissingDependency<'abc'>
+const incubator = incubate().with(needStaticABC)
+```
+
+It also supports an optional async `start` function,
+to perform some async initialization after the `gizmo` is created.
+
+```ts
+import { define, incubate } from '@unional/gizmo'
+
+const notification = define({
+  async create() {
+    let ws: WebSocket
+    const events = new Map<string, (data: any) => void>()
+    return [{
+      register(event, handler) {
+        events.set(event, handler)
+      },
+    },
+    async start() {
+      // connect on start
+      ws = new WebSocket('ws://localhost:8080')
+      // register events
+      // ...
+    }]
+  }
+})
+```
+
+This library is also available in [async-fp] as `gizmo` or under `async-fp/gizmo`.
+
+## Motivation
+
+[@just-web] is a framework that provides a simple way to build web applications using plugins.
+
+It needs a mechanism to define and compose plugins,
+where each plugin can perform some async work when the application starts.
+
+[@unional/gizmo] generalizes this pattern so that any object can be created and initialized asynchronously.
 
 ## Installation
 
 ```sh
 # npm
-npm install async-fp
+npm install @unional/gizmo
 
 # yarn
-yarn add async-fp
+yarn add @unional/gizmo
 
 # pnpm
-pnpm install async-fp
+pnpm install @unional/gizmo
 
 #rush
-rush add -p async-fp
+rush add -p @unional/gizmo
 ```
 
-## [`AsyncContext`][async_context]
+## Usage
 
 ```ts
-import { AsyncContext } from 'async-fp'
+import { define, incubate } from '@unional/gizmo'
 
-const context = new AsyncContext(async () => ({ config: 'async value' }))
-
-await context.get() // => { config: 'async value' }
-```
-
-## [`asyncAssert`][async_assert]
-
-```ts
-import { asyncAssert } from 'async-fp'
-
-const value = await asyncAssert(Promise.resolve({ a: 1 }), v => {
-  if (v.a === 1) throw new Error('not accepting 1')
+const notification = define({
+  async create() {
+    let ws: WebSocket
+    const events = new Map<string, (data: any) => void>()
+    return [{
+      register(event, handler) {
+        events.set(event, handler)
+      },
+    },
+    async start() {
+      // connect on start
+      ws = new WebSocket('ws://localhost:8080')
+      // register events
+      // ...
+    }]
+  }
 })
+
+const app = async incubate()
+  .with(notification)
+  .with(/* other gizmos */)
+  .create()
+
+app.notification.register(...)
 ```
 
-[async_assert]: https://github.com/unional/async-fp/blob/main/packages/async-fp/ts/async_assert.ts
-[async_context]: https://github.com/unional/async-fp/blob/main/packages/async-context/ts/AsyncContext.ts
-[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/async-fp.svg
-[bundlephobia-url]: https://bundlephobia.com/result?p=async-fp
+## Performance
+
+`gizmo` creation is asynchronous.
+It allows the dependencies to be loaded asynchronously.
+
+As it is asynchronous, it is not as fast as creating a plain object synchronously.
+
+Here is a comparison between plain object creation, using `Object.assign()` to do mixins, and `gizmo` to create 100,000 objects:
+
+| plain object | Object.assign() | gizmo      |
+| ------------ | --------------- | ---------- |
+| 21-26 ms     | 57-90 ms        | 170-219 ms |
+
+The test is done on a Ryzen 7 5800X, Windows 11, Node 18.15.0
+
+While you can say that `gizmo` is up to 8x slower than plain object creation,
+in practice this hardly matters.
+
+`gizmo` is specificially designed to compose objects asynchronously.
+It is used to compose objects that are used throughout the application,
+and you typically only need to create one such object.
+
+[@just-web]: https://github.com/justland/just-web
+[@unional/gizmo]: https://github.com/unional/async-fp/tree/main/packages/gizmo
+[async-fp]: https://github.com/unional/async-fp/tree/main/packages/async-fp
 [codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/unional/async-fp
-[downloads-image]: https://img.shields.io/npm/dm/async-fp.svg?style=flat
-[downloads-url]: https://npmjs.org/package/async-fp
-[npm-image]: https://img.shields.io/npm/v/async-fp.svg?style=flat
-[npm-url]: https://npmjs.org/package/async-fp
+[gizmo-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/gizmo.svg
+[gizmo-bundlephobia-url]: https://bundlephobia.com/result?p=@unional/gizmo
+[gizmo-downloads-image]: https://img.shields.io/npm/dm/@unional/gizmo.svg?style=flat
+[gizmo-npm-image]: https://img.shields.io/npm/v/@unional/gizmo.svg?style=flat
+[gizmo-npm-url]: https://npmjs.org/package/@unional/gizmo
