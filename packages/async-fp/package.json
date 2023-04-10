@@ -23,30 +23,29 @@
     "email": "homawong@gmail.com"
   },
   "sideEffects": false,
-	"type": "module",
-	"exports": {
-		".": {
-			"import": {
-				"types": "./esm/index.d.ts",
-				"default": "./esm/index.js"
-			},
-			"require": {
-				"types": "./cjs/index.d.ts",
-				"default": "./cjs/index.js"
-			}
-		},
-		"./gizmo": {
-			"import": {
-				"types": "./esm/gizmo.d.ts",
-				"default": "./esm/gizmo.js"
-			},
-			"require": {
-				"types": "./cjs/gizmo.d.ts",
-				"default": "./cjs/gizmo.js"
-			}
-		},
-		"./package.json": "./package.json"
-	},
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./esm/index.d.ts",
+        "default": "./esm/index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      }
+    },
+    "./gizmo": {
+      "import": {
+        "types": "./esm/gizmo.d.ts",
+        "default": "./esm/gizmo.js"
+      },
+      "require": {
+        "types": "./cjs/gizmo.d.ts",
+        "default": "./cjs/gizmo.js"
+      }
+    }
+  },
   "main": "./cjs/index.js",
   "module": "./esm/index.js",
   "jsnext:main": "./esm/index.js",
@@ -55,11 +54,11 @@
     "cjs",
     "esm",
     "ts",
-		"!**/*.{spec,test,unit,accept,integrate,system}.*"
+    "!**/*.{spec,test,unit,accept,integrate,system}.*"
   ],
   "scripts": {
     "build": "run-p build:cjs build:esm",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json && ncp ../../.config/package.cjs.json ./cjs/package.json",
     "build:esm": "tsc",
     "clean": "rimraf cjs esm coverage *.tsbuildinfo",
     "coverage": "jest --coverage",
@@ -92,6 +91,7 @@
     "jest-watch-suspend": "^1.1.2",
     "jest-watch-toggle-config-2": "^2.1.0",
     "jest-watch-typeahead": "^2.2.2",
+    "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "size-limit": "^8.0.1",
