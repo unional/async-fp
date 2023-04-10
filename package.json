@@ -19,7 +19,8 @@
     "release": "changeset publish",
     "size": "turbo run size",
     "test": "turbo run test",
-    "verify": "turbo run lint build coverage depcheck size"
+    "verify": "turbo run lint build coverage depcheck size",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
