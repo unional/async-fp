@@ -1,0 +1,6 @@
+paths:
+  - ts
+paths-ignore:
+  - '**/*.accept.ts'
+  - '**/*.spec.ts'
+  - '**/*.fixture.*'
