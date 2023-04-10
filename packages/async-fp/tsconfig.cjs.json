@@ -4,5 +4,8 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "cjs"
-  }
+  },
+	"exclude": [
+		"ts/gizmo_testing.ts"
+	]
 }
