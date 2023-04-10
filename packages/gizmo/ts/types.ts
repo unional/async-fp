@@ -82,10 +82,16 @@ export type DefineContext<
 	Static extends DepBuilder<unknown, unknown> | unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
-	? ExtractDep<Static> & {
-			load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDep<Dynamic[I]>>
-	  }
+	? ExtractDep<Static> & DynamicLoader<Dynamic>
 	: ExtractDep<Static>
+
+/**
+ * Define the `ctx.load` function.
+ */
+export type DynamicLoader<Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown> =
+	{
+		load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDep<Dynamic[I]>>
+	}
 
 export type DepBuilder<R, O> = {
 	[hiddenSymbol]: {

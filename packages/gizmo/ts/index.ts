@@ -7,5 +7,6 @@ export type {
 	GizmoDynamic,
 	GizmoBoth,
 	DepBuilder,
+	DynamicLoader,
 	MissingDependency
 } from './types.js'

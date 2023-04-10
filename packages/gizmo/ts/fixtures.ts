@@ -468,3 +468,33 @@ export const requireSideEffectGizmo = define({
 	static: define.require(sideEffectGizmo),
 	async create() {}
 })
+
+/**
+ * When the gizmo function is generic,
+ * the type resolution is very complicated.
+ *
+ * Here is what I guess what happened:
+ *
+ * `define()` saw the input is a generic function,
+ * its type is resolved immediately,
+ * similar to specifying a generic type in `define<...>()` manually.
+ *
+ * Therefore, `Static` is resolved to `DepBuilder<unknown, unknown>`.
+ * Thus `ctx: DefineContext<Static, ...>` is resolved to unknown.
+ *
+ * Then, when defining `static: define.require(leafTupleGizmoFn)`,
+ * that is getting updated to the more specific type,
+ * but that does not affect the type of `ctx`.
+ *
+ * So, the type of `ctx` is still `unknown`,
+ * and we have to specify the type of `ctx` manually.
+ */
+export const genericGizmoFn = define(<N>(value: N) => ({
+	static: define.require(leafTupleGizmoFn),
+	async create(ctx: LeafTupleGizmoFn) {
+		testType.equal<typeof ctx, LeafTupleGizmoFn>(true)
+		return {
+			foo: value
+		}
+	}
+}))
