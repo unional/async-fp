@@ -30,6 +30,18 @@
         "node": "./cjs/index.js",
         "default": "./cjs/index.js"
       }
+    },
+    "./testing": {
+      "import": {
+        "types": "./esm/testing.d.ts",
+        "node": "./esm/testing.js",
+        "default": "./esm/testing.js"
+      },
+      "require": {
+        "types": "./cjs/testing.d.ts",
+        "node": "./cjs/testing.js",
+        "default": "./cjs/testing.js"
+      }
     }
   },
   "main": "./cjs/index.js",
