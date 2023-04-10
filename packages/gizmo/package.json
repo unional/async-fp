@@ -1,98 +1,98 @@
 {
-	"name": "@unional/gizmo",
-	"version": "0.0.0",
-	"description": "Building gizmos",
-	"homepage": "https://github.com/unional/async-fp/tree/master/packages/gizmo#readme",
-	"bugs": {
-		"url": "https://github.com/unional/async-fp/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/unional/async-fp.git",
-		"directory": "packages/gizmo"
-	},
-	"license": "MIT",
-	"author": {
-		"name": "Homa Wong (unional)",
-		"email": "homawong@gmail.com"
-	},
-	"sideEffects": false,
-	"type": "module",
-	"exports": {
-		".": {
-			"import": {
-				"types": "./esm/index.d.ts",
-				"node": "./esm/index.js",
-				"default": "./esm/index.js"
-			},
-			"require": {
-				"types": "./cjs/index.d.ts",
-				"node": "./cjs/index.js",
-				"default": "./cjs/index.js"
-			}
-		},
-		"./package.json": "./package.json"
-	},
-	"main": "./cjs/index.js",
-	"module": "./esm/index.js",
-	"jsnext:main": "./esm/index.js",
-	"types": "./esm/index.d.ts",
-	"files": [
-		"cjs",
-		"esm",
-		"ts",
-		"!**/*.spec.*"
-	],
-	"scripts": {
-		"build": "run-p build:cjs build:esm",
-		"build:cjs": "tsc -p tsconfig.cjs.json",
-		"build:esm": "tsc",
-		"clean": "rimraf cjs esm coverage *.tsbuildinfo",
-		"coverage": "jest --coverage",
-		"depcheck": "depcheck",
-		"lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
-		"nuke": "run-s clean nuke:local",
-		"nuke:local": "rimraf node_modules",
-		"prepublishOnly": "run-s build",
-		"size": "size-limit",
-		"test": "jest",
-		"test:watch": "jest --watch",
-		"verify": "npm-run-all -p lint build coverage -p depcheck size"
-	},
-	"devDependencies": {
-		"@repobuddy/jest": "^3.1.3",
-		"@size-limit/preset-small-lib": "^8.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.33.0",
-		"@typescript-eslint/parser": "^5.33.0",
-		"cross-env": "^7.0.3",
-		"depcheck": "^1.4.3",
-		"eslint": "^8.22.0",
-		"eslint-config-prettier": "^8.7.0",
-		"eslint-plugin-harmony": "^7.1.2",
-		"jest": "^29.4.3",
-		"jest-esm-transformer-2": "^1.0.0",
-		"jest-watch-suspend": "^1.1.2",
-		"jest-watch-toggle-config-2": "^2.1.0",
-		"jest-watch-typeahead": "^2.2.2",
-		"npm-run-all": "^4.1.5",
-		"rimraf": "^3.0.2",
-		"size-limit": "^8.0.1",
-		"ts-jest": "^29.0.0",
-		"type-plus": "^6.4.0",
-		"typescript": "^4.9.5"
-	},
-	"engines": {
-		"node": ">= 14.16"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"size-limit": [
-		{
-			"path": "./cjs/index.js"
-		},
-		{
-			"path": "./esm/index.js"
-		}
-	]
+  "name": "@unional/gizmo",
+  "version": "0.0.0",
+  "description": "Building gizmos",
+  "homepage": "https://github.com/unional/async-fp/tree/master/packages/gizmo#readme",
+  "bugs": {
+    "url": "https://github.com/unional/async-fp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unional/async-fp.git",
+    "directory": "packages/gizmo"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Homa Wong (unional)",
+    "email": "homawong@gmail.com"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./esm/index.d.ts",
+        "node": "./esm/index.js",
+        "default": "./esm/index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "node": "./cjs/index.js",
+        "default": "./cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "jsnext:main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
+  "files": [
+    "cjs",
+    "esm",
+    "ts",
+    "!**/*.{spec,test,unit,accept,integrate,system}.*"
+  ],
+  "scripts": {
+    "build": "run-p build:cjs build:esm",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc",
+    "clean": "rimraf cjs esm coverage *.tsbuildinfo",
+    "coverage": "jest --coverage",
+    "depcheck": "depcheck",
+    "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
+    "nuke": "run-s clean nuke:local",
+    "nuke:local": "rimraf node_modules",
+    "prepublishOnly": "run-s build",
+    "size": "size-limit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "verify": "npm-run-all -p lint build coverage -p depcheck size"
+  },
+  "devDependencies": {
+    "@repobuddy/jest": "^3.1.3",
+    "@size-limit/preset-small-lib": "^8.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "cross-env": "^7.0.3",
+    "depcheck": "^1.4.3",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-harmony": "^7.1.2",
+    "jest": "^29.4.3",
+    "jest-esm-transformer-2": "^1.0.0",
+    "jest-watch-suspend": "^1.1.2",
+    "jest-watch-toggle-config-2": "^2.1.0",
+    "jest-watch-typeahead": "^2.2.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "size-limit": "^8.0.1",
+    "ts-jest": "^29.0.0",
+    "type-plus": "^6.4.0",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": ">= 14.16"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "size-limit": [
+    {
+      "path": "./cjs/index.js"
+    },
+    {
+      "path": "./esm/index.js"
+    }
+  ]
 }

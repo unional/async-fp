@@ -1,5 +1,5 @@
 import type { LeftJoin } from 'type-plus'
-import { BlockingGetDetected, ContextAlreadyInitialized } from './errors'
+import { BlockingGetDetected, ContextAlreadyInitialized } from './errors.js'
 
 export class AsyncContext<
 	Init extends Record<string | symbol, any>,

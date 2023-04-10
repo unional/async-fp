@@ -23,15 +23,39 @@
     "email": "homawong@gmail.com"
   },
   "sideEffects": false,
-  "main": "cjs/index.js",
-  "module": "esm/index.js",
-  "jsnext:main": "esm/index.js",
-  "typings": "esm/index.d.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./esm/index.d.ts",
+				"default": "./esm/index.js"
+			},
+			"require": {
+				"types": "./cjs/index.d.ts",
+				"default": "./cjs/index.js"
+			}
+		},
+		"./gizmo": {
+			"import": {
+				"types": "./esm/gizmo.d.ts",
+				"default": "./esm/gizmo.js"
+			},
+			"require": {
+				"types": "./cjs/gizmo.d.ts",
+				"default": "./cjs/gizmo.js"
+			}
+		},
+		"./package.json": "./package.json"
+	},
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "jsnext:main": "./esm/index.js",
+  "types": "./esm/index.d.ts",
   "files": [
     "cjs",
     "esm",
     "ts",
-    "!**/*.spec.*"
+		"!**/*.{spec,test,unit,accept,integrate,system}.*"
   ],
   "scripts": {
     "build": "run-p build:cjs build:esm",
@@ -49,7 +73,8 @@
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
   "dependencies": {
-    "@unional/async-context": "workspace:^"
+    "@unional/async-context": "workspace:^",
+    "@unional/gizmo": "workspace:^"
   },
   "devDependencies": {
     "@repobuddy/jest": "^3.1.3",

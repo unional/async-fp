@@ -1,4 +1,4 @@
-import { AsyncContext } from '.'
+import { AsyncContext } from './index.js'
 
 test('exports AsyncContext', () => {
 	expect(AsyncContext).toBeDefined()

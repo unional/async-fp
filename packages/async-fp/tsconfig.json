@@ -1,18 +1,21 @@
 {
   "extends": "../../.config/tsconfig.setting.json",
   "compilerOptions": {
-    "module": "ES2020",
-    "moduleResolution": "Node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "outDir": "esm",
     "rootDir": "ts"
   },
   "references": [
     {
       "path": "../async-context"
-    }
+    },
+		{
+			"path": "../gizmo"
+		}
   ],
   "include": [
     "ts",
-    "typings"
+    "types"
   ]
 }
