@@ -97,7 +97,7 @@
     "size-limit": "^8.0.1",
     "ts-jest": "^29.0.0",
     "type-plus": "^6.4.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.4"
   },
   "engines": {
     "node": ">= 14.16"
