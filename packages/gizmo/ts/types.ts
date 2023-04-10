@@ -1,4 +1,4 @@
-
+// istanbul ignore next
 export const hiddenSymbol = Symbol('hidden prop symbol')
 
 export type Gizmo<
@@ -93,12 +93,48 @@ export type DepBuilder<R, O> = {
 		optional: O
 	}
 	required: {
+		/**
+		 * Define a gizmo as a require dependency by specifying the type.
+		 *
+		 * ```ts
+		 * const gizmo = define({
+		 *   static: define.require<SomeGizmo>()
+		 * })
+		 * ```
+		 */
 		<Required extends Record<string | symbol, unknown>>(): DepBuilder<R & Required, O>
-		<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R & InferAllGizmo<D>, O>
+		/**
+		 * Define a gizmo as a require dependency by passing in the gizmo directly.
+		 *
+		 * ```ts
+		 * const gizmo = define({
+		 *   static: define.require(someGizmo)
+		 * })
+		 * ```
+		 */
+		<G extends Gizmo | ((...args: any[]) => Gizmo)>(gizmo: G): DepBuilder<R & InferAllGizmo<G>, O>
 	}
 	optional: {
+		/**
+		 * Define a gizmo as an optional dependency by specifying the type.
+		 *
+		 * ```ts
+		 * const gizmo = define({
+		 *   static: define.optional<SomeGizmo>()
+		 * })
+		 * ```
+		 */
 		<Optional extends Record<string | symbol, unknown>>(): DepBuilder<R, O & Optional>
-		<D extends Gizmo | ((...args: any[]) => Gizmo)>(def: D): DepBuilder<R, O & InferAllGizmo<D>>
+		/**
+		 * Define a gizmo as an optional dependency by passing in the gizmo directly.
+		 *
+		 * ```ts
+		 * const gizmo = define({
+		 *   static: define.optional(someGizmo)
+		 * })
+		 * ```
+		 */
+		<G extends Gizmo | ((...args: any[]) => Gizmo)>(gizmo: G): DepBuilder<R, O & InferAllGizmo<G>>
 	}
 }
 

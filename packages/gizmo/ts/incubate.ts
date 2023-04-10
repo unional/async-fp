@@ -6,8 +6,22 @@ import type { ExtractDeps, Gizmo, InferGizmo, MissingDependency } from './types.
  *
  * Use the `with()` function to add gizmos to the incubator.
  * And then use `create()` to create the gizmo.
+ *
+ * ```ts
+ * const gizmo = await incubate().with(gizmo1).with(gizmo2).create()
+ * ```
  */
 export function incubate(): Omit<GizmoIncubator<unknown>, 'create'>
+/**
+ * Create an incubator for gizmos.
+ *
+ * Use the `with()` function to add gizmos to the incubator.
+ * And then use `create()` to create the gizmo.
+ *
+ * ```ts
+ * const gizmo = await incubate(gizmo1).with(gizmo2).create()
+ * ```
+ */
 export function incubate<G extends Gizmo>(gizmo: G): GizmoIncubator<InferGizmo<G>>
 export function incubate(gizmo?: Gizmo) {
 	const gizmos: Gizmo[] = []

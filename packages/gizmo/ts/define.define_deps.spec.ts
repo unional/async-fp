@@ -13,21 +13,21 @@ import {
 import type { ExtractDep } from './types.js'
 
 it('defines require dependency with type', () => {
-	const s = define.required<LeafGizmo>()
+	const s = define.require<LeafGizmo>()
 	type S = ExtractDep<typeof s>
 
 	testType.equal<S, { leaf: { foo(): number } }>(true)
 })
 
 it('defines require dependency with definition', () => {
-	const s = define.required(leafGizmo)
+	const s = define.require(leafGizmo)
 	type S = ExtractDep<typeof s>
 
 	testType.equal<S, { leaf: { foo(): number } }>(true)
 })
 
 it('defines require dependency with definition function', () => {
-	const s = define.required(leafGizmoFn)
+	const s = define.require(leafGizmoFn)
 	type S = ExtractDep<typeof s>
 
 	testType.equal<S, { leaf_fn: { foo(): number } }>(true)
@@ -55,7 +55,7 @@ it('defines optional dependency with definition function', () => {
 })
 
 it('defines require and optional dependency with type', () => {
-	const s = define.required<LeafTupleGizmo>().optional<LeafGizmo>()
+	const s = define.require<LeafTupleGizmo>().optional<LeafGizmo>()
 	type S = ExtractDep<typeof s>
 
 	testType.equal<S, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
@@ -67,7 +67,7 @@ it('defines require and optional dependency with definition', () => {
 
 	testType.equal<S, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
 
-	const s2 = define.required(leafTupleGizmo).optional(leafGizmo)
+	const s2 = define.require(leafTupleGizmo).optional(leafGizmo)
 	type S2 = ExtractDep<typeof s2>
 
 	testType.equal<S2, { leaf_tuple: { foo(): number }; leaf?: { foo(): number } }>(true)
@@ -82,7 +82,7 @@ it('defines require and optional dependency with definition function', () => {
 
 it('defines multiple dependencies with all variations', () => {
 	const s = define
-		.required<LeafGizmo>()
+		.require<LeafGizmo>()
 		.required(leafGizmoFn)
 		.required(leafWithStartGizmo)
 		.optional<LeafTupleGizmo>()
