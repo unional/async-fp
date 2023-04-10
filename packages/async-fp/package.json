@@ -45,6 +45,16 @@
         "types": "./cjs/gizmo.d.ts",
         "default": "./cjs/gizmo.js"
       }
+    },
+    "./gizmo/testing": {
+      "import": {
+        "types": "./esm/gizmo_testing.d.ts",
+        "default": "./esm/gizmo_testing.js"
+      },
+      "require": {
+        "types": "./cjs/gizmo_testing.d.ts",
+        "default": "./cjs/gizmo_testing.js"
+      }
     }
   },
   "main": "./cjs/index.js",
