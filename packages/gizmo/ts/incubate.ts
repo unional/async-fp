@@ -59,6 +59,11 @@ export function incubate(gizmo?: Gizmo) {
 export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown> = {
 	/**
 	 * Add a gizmo to the incubator.
+	 *
+	 * Note that the gizmo cannot be created inline.
+	 * It must be created ahead of time using `define()`.
+	 *
+	 * This is because TypeScript will perform type inference in the wrong order when inline.
 	 */
 	with<G extends Gizmo>(
 		gizmo: G
