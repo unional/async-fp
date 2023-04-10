@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.0
+
+### Major Changes
+
+- d0a68ba: Release as Node ESM module
+
 ## 8.1.1
 
 ### Patch Changes
