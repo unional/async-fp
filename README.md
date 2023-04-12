@@ -1,9 +1,9 @@
-# `async-fp` repository
+# async-fp repository
 
 [![GitHub NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
 
-## [`async-fp`][async-fp-pkg-url]
+## [async-fp][async-fp-pkg-url]
 
 [![NPM version][async-fp-npm-image]][async-fp-npm-url]
 [![NPM downloads][async-fp-downloads-image]][async-fp-downloads-url]
@@ -11,7 +11,7 @@
 
 A collection of utilities for asynchronous functional programming.
 
-## [`@unional/async-context`][async-context-pkg-url]
+## [@unional/async-context][async-context-pkg-url]
 
 [![NPM version][async-context-npm-image]][async-context-npm-url]
 [![NPM downloads][async-context-downloads-image]][async-context-downloads-url]
