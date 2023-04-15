@@ -10,7 +10,7 @@ import {
 	leafWithStartGizmo,
 	leafWithStartGizmoFn
 } from './fixtures.js'
-import type { ExtractDep } from './types.js'
+import type { ExtractDep, GizmoBase } from './types.js'
 
 it('defines require dependency with type', () => {
 	const s = define.require<LeafGizmo>()
@@ -104,4 +104,18 @@ it('defines multiple dependencies with all variations', () => {
 			leaf_start_fn?: { foo(): number }
 		}
 	>(true)
+})
+
+it.skip('infers gizmo function with optional params', () => {
+	const g = define((options?: { a: number }) => ({
+		async create() {
+			return options
+		}
+	}))
+
+	// TODO: this should work
+	// @ts-expect-error
+	g({ a: 1 })
+
+	testType.equal<typeof g, (options?: { a: number }) => GizmoBase<{ a: number } | undefined>>(true)
 })

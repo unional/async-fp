@@ -15,5 +15,6 @@
     "npmrc",
     "testname",
     "whoami"
-  ]
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
