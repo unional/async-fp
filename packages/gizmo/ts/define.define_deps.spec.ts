@@ -106,15 +106,13 @@ it('defines multiple dependencies with all variations', () => {
 	>(true)
 })
 
-it.skip('infers gizmo function with optional params', () => {
+it('infers gizmo function with optional params', () => {
 	const g = define((options?: { a: number }) => ({
 		async create() {
 			return options
 		}
 	}))
 
-	// TODO: this should work
-	// @ts-expect-error
 	g({ a: 1 })
 
 	testType.equal<typeof g, (options?: { a: number }) => GizmoBase<{ a: number } | undefined>>(true)
