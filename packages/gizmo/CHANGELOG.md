@@ -1,5 +1,12 @@
 # @unional/gizmo
 
+## 1.0.3
+
+### Patch Changes
+
+- 0e2b1ea: Add additional doc
+- b63ae8b: Allow `start()` function to be sync.
+
 ## 1.0.2
 
 ### Patch Changes
