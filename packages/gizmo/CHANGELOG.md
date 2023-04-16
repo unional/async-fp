@@ -1,5 +1,13 @@
 # @unional/gizmo
 
+## 1.0.4
+
+### Patch Changes
+
+- 9a28ca3: Fix `required()` -> `require()`.
+
+  The original fix only did that at the top level.
+
 ## 1.0.3
 
 ### Patch Changes
