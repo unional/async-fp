@@ -98,7 +98,7 @@ export type DepBuilder<R, O> = {
 		require: R
 		optional: O
 	}
-	required: {
+	require: {
 		/**
 		 * Define a gizmo as a require dependency by specifying the type.
 		 *
@@ -108,7 +108,7 @@ export type DepBuilder<R, O> = {
 		 * })
 		 * ```
 		 */
-		<Required extends Record<string | symbol, unknown>>(): DepBuilder<R & Required, O>
+		<Require extends Record<string | symbol, unknown>>(): DepBuilder<R & Require, O>
 		/**
 		 * Define a gizmo as a require dependency by passing in the gizmo directly.
 		 *

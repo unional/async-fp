@@ -168,12 +168,12 @@ export function define(plugin: unknown): typeof plugin {
 
 function defineDeps() {
 	return {
-		required: defineDeps,
+		require: defineDeps,
 		optional: defineDeps
 	}
 }
 
-define.require = defineDeps as DepBuilder<unknown, unknown>['required']
+define.require = defineDeps as DepBuilder<unknown, unknown>['require']
 define.optional = defineDeps as DepBuilder<unknown, unknown>['optional']
 
 export namespace define {
