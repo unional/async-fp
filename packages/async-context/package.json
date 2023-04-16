@@ -1,6 +1,6 @@
 {
   "name": "@unional/async-context",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "description": "Asynchronous context for functional style programming",
   "keywords": [
     "async",
