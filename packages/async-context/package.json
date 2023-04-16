@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "iso-error": "^6.0.0",
-    "type-plus": "^6.4.0"
+    "type-plus": "^6.6.0"
   },
   "devDependencies": {
     "@repobuddy/jest": "^3.1.3",
