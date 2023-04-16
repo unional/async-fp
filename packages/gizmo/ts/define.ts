@@ -25,7 +25,7 @@ export function define<
 	Static extends DepBuilder<unknown, unknown>,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmo: GizmoBoth<Static, Dynamic, Result>): typeof gizmo
@@ -42,7 +42,7 @@ export function define<
 export function define<
 	Static extends DepBuilder<unknown, unknown>,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmo: GizmoStatic<Static, Result>): typeof gizmo
@@ -64,7 +64,7 @@ export function define<
 export function define<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmo: GizmoDynamic<Dynamic, Result>): typeof gizmo
@@ -79,7 +79,7 @@ export function define<
  */
 export function define<
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmo: GizmoBase<Result>): typeof gizmo
@@ -101,7 +101,7 @@ export function define<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
 	Params extends unknown[],
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmoFn: (...args: Params) => GizmoBoth<Static, Dynamic, Result>): typeof gizmoFn
@@ -119,7 +119,7 @@ export function define<
 	Static extends DepBuilder<unknown, unknown>,
 	Params extends unknown[],
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmoFn: (...args: Params) => GizmoStatic<Static, Result>): typeof gizmoFn
@@ -142,7 +142,7 @@ export function define<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
 	Params extends unknown[],
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmoFn: (...args: Params) => GizmoDynamic<Dynamic, Result>): typeof gizmoFn
@@ -158,7 +158,7 @@ export function define<
 export function define<
 	Params extends unknown[],
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
 		| void
 >(gizmoFn: (...args: Params) => GizmoBase<Result>): typeof gizmoFn

@@ -5,7 +5,7 @@ export type Gizmo<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > =
@@ -16,7 +16,7 @@ export type Gizmo<
 
 export type GizmoBase<
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
@@ -26,7 +26,7 @@ export type GizmoBase<
 export type GizmoStatic<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
@@ -37,7 +37,7 @@ export type GizmoStatic<
 export type GizmoDynamic<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
@@ -49,7 +49,7 @@ export type GizmoBoth<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
 	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => Promise<unknown>]
+		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {

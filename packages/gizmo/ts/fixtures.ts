@@ -58,11 +58,34 @@ export const leafWithStartGizmo = define({
 					}
 				}
 			},
+			// the start function can be sync
 			() => (value = 'started')
 		]
 	}
 })
 export type LeafWithStartGizmo = define.Infer<typeof leafWithStartGizmo>
+
+export const leafWithAsyncStartGizmo = define({
+	async create() {
+		let value = 'not started'
+		let count = 0
+		return [
+			{
+				leaf_async_start: {
+					count() {
+						return count++
+					},
+					foo() {
+						return value
+					}
+				}
+			},
+			// the start function can be async
+			() => Promise.resolve((value = 'started'))
+		]
+	}
+})
+export type LeafWithAsyncStartGizmo = define.Infer<typeof leafWithAsyncStartGizmo>
 
 /**
  * Leaf gizmo written in function form.

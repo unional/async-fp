@@ -78,8 +78,10 @@ import { incubate } from '@unional/gizmo'
 const incubator = incubate().with(needStaticABC)
 ```
 
-It also supports an optional async `start` function,
-to perform some async initialization after the `gizmo` is created.
+It also supports an optional `start` function
+to perform some initialization after the `gizmo` is created.
+
+This start function can be sync or async.
 
 ```ts
 import { define, incubate } from '@unional/gizmo'
