@@ -68,6 +68,7 @@
     "size": "size-limit",
     "test": "jest",
     "test:watch": "jest --watch",
+    "w": "pnpm test:watch",
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
   "devDependencies": {

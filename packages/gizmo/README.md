@@ -163,6 +163,23 @@ const app = async incubate()
 app.notification.register(...)
 ```
 
+Each gizmo can also compose other gizmos.
+
+```ts
+import { define } from '@unional/gizmo'
+
+const gizmo = define({
+  async create(ctx) {
+    const other = await ctx.with(otherGizmo)
+    const another = await ctx.with(anotherGizmo)
+    return {
+      ...other,
+      ...another,
+    }
+  }
+})
+```
+
 ## Performance
 
 `gizmo` creation is asynchronous.
@@ -181,7 +198,7 @@ The test is done on a Ryzen 7 5800X, Windows 11, Node 18.15.0
 While you can say that `gizmo` is up to 8x slower than plain object creation,
 in practice this hardly matters.
 
-`gizmo` is specificially designed to compose objects asynchronously.
+`gizmo` is specifically designed to compose objects asynchronously.
 It is used to compose objects that are used throughout the application,
 and you typically only need to create one such object.
 

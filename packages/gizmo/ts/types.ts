@@ -1,3 +1,5 @@
+import { RequiredKeys } from 'type-plus'
+
 // istanbul ignore next
 export const hiddenSymbol = Symbol('hidden prop symbol')
 
@@ -20,7 +22,7 @@ export type GizmoBase<
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
-	create(): Promise<Result>
+	create(ctx: WithFn<DefineContext<unknown, unknown>>): Promise<Result>
 }
 
 export type GizmoStatic<
@@ -31,7 +33,9 @@ export type GizmoStatic<
 		| void = Record<string | symbol, any> | void
 > = {
 	readonly static: Static
-	create(ctx: DefineContext<Static, unknown>): Promise<Result>
+	create(
+		ctx: WithFn<DefineContext<Static, unknown>> & DefineContext<Static, unknown>
+	): Promise<Result>
 }
 
 export type GizmoDynamic<
@@ -42,7 +46,9 @@ export type GizmoDynamic<
 		| void = Record<string | symbol, any> | void
 > = {
 	readonly dynamic: Dynamic
-	create(ctx: DefineContext<unknown, Dynamic>): Promise<Result>
+	create(
+		ctx: WithFn<DefineContext<unknown, Dynamic>> & DefineContext<unknown, Dynamic>
+	): Promise<Result>
 }
 
 export type GizmoBoth<
@@ -55,7 +61,9 @@ export type GizmoBoth<
 > = {
 	readonly static: Static
 	readonly dynamic: Dynamic
-	create(ctx: DefineContext<Static, Dynamic>): Promise<Result>
+	create(
+		ctx: WithFn<DefineContext<Static, Dynamic>> & DefineContext<Static, Dynamic>
+	): Promise<Result>
 }
 
 export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
@@ -85,6 +93,28 @@ export type DefineContext<
 	? ExtractDep<Static> & DynamicLoader<Dynamic>
 	: ExtractDep<Static>
 
+export type WithFn<CurrentContext> = {
+	with<
+		Static extends DepBuilder<unknown, unknown>,
+		Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
+		Result extends
+			| [result: Record<string | symbol, unknown>, start?: () => unknown]
+			| Record<string | symbol, any>
+			| void,
+		G extends Gizmo<Static, Dynamic, Result>
+	>(
+		gizmo: G
+	): ExtractGizmoDeps<G> extends infer Deps
+		? CurrentContext extends Deps
+			? Promise<InferGizmo<G>>
+			: Deps extends Record<string | number | symbol, unknown>
+			? RequiredKeys<Deps> extends [keyof CurrentContext]
+				? Promise<InferGizmo<G>>
+				: MissingDependency<Exclude<RequiredKeys<Deps>, keyof CurrentContext>>
+			: never // @TODO: may be missing some cases here
+		: never
+	//Promise<InferGizmo<typeof gizmo>>
+}
 /**
  * Define the `ctx.load` function.
  */
@@ -163,15 +193,13 @@ export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D ext
 /**
  * Extract dependencies of a gizmo.
  */
-export type ExtractDeps<G extends Gizmo> = G extends GizmoBase
-	? unknown
-	: G extends GizmoBoth<infer S, Record<any, infer D>>
+export type ExtractGizmoDeps<G extends Gizmo> = G extends GizmoBoth<infer S, Record<any, infer D>>
 	? ExtractDep<S> & ExtractDep<UnionToIntersection<D>>
 	: G extends GizmoStatic<infer S>
 	? ExtractDep<S>
 	: G extends GizmoDynamic<Record<any, infer D>>
 	? ExtractDep<UnionToIntersection<D>>
-	: never
+	: Record<string, unknown>
 
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 	k: infer I

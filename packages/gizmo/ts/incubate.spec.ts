@@ -1,9 +1,12 @@
 import { testType } from 'type-plus'
 import {
+	LeafGizmo,
+	LeafTupleGizmo,
 	dynamicRequiredGizmo,
 	leafGizmo,
 	leafGizmoFn,
 	leafTupleGizmo,
+	leafTupleGizmoFn,
 	leafWithStartGizmo,
 	staticDynamicBothGizmo,
 	staticOptionalGizmo,
@@ -97,7 +100,7 @@ it('allows optional dependency to be missing', async () => {
 	expect(s.static_optional.foo()).toEqual(1)
 })
 
-it('allows optional wiht other gizmo', async () => {
+it('allows optional with other gizmo', async () => {
 	const s = await incubate().with(leafGizmo).with(staticOptionalGizmo).create()
 	testType.equal<
 		typeof s,
@@ -135,4 +138,72 @@ it('returns MismatchDependency for the missing dependencies', () => {
 
 it('allows when both required dependencies are provided', async () => {
 	incubate().with(leafWithStartGizmo).with(leafGizmo).with(staticDynamicBothGizmo).create()
+})
+
+it('allows gizmo to add another gizmo using `with()`', async () => {
+	const gizmo = define({
+		async create(ctx) {
+			return await ctx.with(leafGizmo)
+		}
+	})
+
+	const r = await incubate().with(gizmo).create()
+	testType.equal<typeof r, { leaf: { foo(): number } }>(true)
+})
+
+it('allows gizmo to add leaf tuple gizmo using `with()`', async () => {
+	const gizmo = define({
+		async create(ctx) {
+			return await ctx.with(leafTupleGizmoFn(1))
+		}
+	})
+
+	const r = await incubate().with(gizmo).create()
+	testType.equal<typeof r, { leaf_tuple_fn: { foo(): number } }>(true)
+})
+
+it('allows gizmo to add leaf with start gizmo using `with()`', async () => {
+	const gizmo = define({
+		async create(ctx) {
+			return await ctx.with(leafWithStartGizmo)
+		}
+	})
+
+	const r = await incubate().with(gizmo).create()
+	testType.equal<typeof r, { leaf_start: { count(): number; foo(): string } }>(true)
+
+	expect(r.leaf_start.foo()).toEqual('started')
+})
+
+it('add static required gizmo using `with()` without dependency gets MissingDependency', async () => {
+	define({
+		async create(ctx) {
+			const r = await ctx.with(staticRequiredGizmo)
+			testType.equal<typeof r, MissingDependency<'leaf'>>(true)
+		}
+	})
+})
+
+it('allows gizmo to add static required gizmo using `with()`', async () => {
+	const gizmo = define({
+		static: define.require<LeafGizmo>(),
+		async create(ctx) {
+			return await ctx.with(staticRequiredGizmo)
+		}
+	})
+
+	const r = await incubate().with(leafGizmo).with(gizmo).create()
+	testType.canAssign<typeof r, { static_required: { foo(): number } }>(true)
+})
+
+it('allows static require gizmo to add another gizmo using `with()`', async () => {
+	const gizmo = define({
+		static: define.require<LeafTupleGizmo>(),
+		async create(ctx) {
+			return await ctx.with(leafGizmo)
+		}
+	})
+
+	const r = await incubate().with(leafTupleGizmo).with(gizmo).create()
+	testType.canAssign<typeof r, { leaf: { foo(): number } }>(true)
 })

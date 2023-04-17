@@ -1,5 +1,6 @@
 import { testType } from 'type-plus'
 import {
+	LeafGizmo,
 	dynamicBothGizmo,
 	dynamicOptionalGizmo,
 	dynamicRequiredGizmo,
@@ -13,56 +14,58 @@ import {
 	staticOptionalGizmo,
 	staticRequiredGizmo
 } from './fixtures.js'
-import type { ExtractDeps, InferAllGizmo } from './types.js'
+import type { ExtractGizmoDeps, InferAllGizmo } from './types.js'
+
+it('gets no dependency from leaf gizmo', () => {
+	testType.equal<ExtractGizmoDeps<typeof leafGizmo>, Record<string, unknown>>(true)
+})
 
 it('gets static required dependency', () => {
-	testType.equal<ExtractDeps<typeof staticRequiredGizmo>, InferAllGizmo<typeof leafGizmo>>(true)
+	testType.equal<ExtractGizmoDeps<typeof staticRequiredGizmo>, LeafGizmo>(true)
 })
 
 it('gets static optional dependency', () => {
 	testType.equal<
-		ExtractDeps<typeof staticOptionalGizmo>,
+		ExtractGizmoDeps<typeof staticOptionalGizmo>,
 		Partial<InferAllGizmo<typeof leafGizmoFn>>
 	>(true)
 })
 
 it('gets static required and optional dependency', () => {
 	testType.equal<
-		ExtractDeps<typeof staticBothGizmo>,
+		ExtractGizmoDeps<typeof staticBothGizmo>,
 		InferAllGizmo<typeof leafGizmo> & Partial<InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 })
 
 it('gets dynamic required dependency', () => {
-	testType.equal<ExtractDeps<typeof dynamicRequiredGizmo>, InferAllGizmo<typeof leafGizmoFn>>(
-		true
-	)
+	testType.equal<ExtractGizmoDeps<typeof dynamicRequiredGizmo>, InferAllGizmo<typeof leafGizmoFn>>(true)
 })
 
 it('gets dynamic optional dependency', () => {
 	testType.equal<
-		ExtractDeps<typeof dynamicOptionalGizmo>,
+		ExtractGizmoDeps<typeof dynamicOptionalGizmo>,
 		Partial<InferAllGizmo<typeof leafTupleGizmoFn>>
 	>(true)
 })
 
 it('gets dynamic required and optional dependency', () => {
 	testType.equal<
-		ExtractDeps<typeof dynamicBothGizmo>,
+		ExtractGizmoDeps<typeof dynamicBothGizmo>,
 		InferAllGizmo<typeof leafGizmo> & Partial<InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 })
 
 it('gets both static and dynamic dependencies', () => {
 	testType.equal<
-		ExtractDeps<typeof staticDynamicBothGizmo>,
+		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
 			InferAllGizmo<typeof leafGizmo> &
 			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 
 	testType.equal<
-		ExtractDeps<typeof staticDynamicBothGizmo>,
+		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
 			InferAllGizmo<typeof leafGizmo> &
 			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>

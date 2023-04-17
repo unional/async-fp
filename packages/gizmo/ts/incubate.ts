@@ -1,5 +1,5 @@
 import type { LeftJoin, RequiredKeys } from 'type-plus'
-import type { ExtractDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
+import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency, WithFn } from './types.js'
 
 /**
  * Create an incubator for gizmos.
@@ -34,26 +34,35 @@ export function incubate(gizmo?: Gizmo) {
 		},
 		async create() {
 			const result = {
+				async with(gizmo: Gizmo) {
+					return injectGizmo(result, gizmo)
+				},
 				async load(_identifier: string) {
 					return result
 				}
-			} as Record<string | symbol, unknown>
+			} as Record<string | symbol, unknown> & WithFn<any>
 			for (const gizmo of gizmos) {
-				const gizmoResult = await gizmo.create(result)
-				if (Array.isArray(gizmoResult)) {
-					const [value, start] = gizmoResult
-					if (start) {
-						await start()
-					}
-					Object.assign(result, value)
-				} else {
-					Object.assign(result, gizmoResult)
-				}
+				await injectGizmo(result, gizmo)
 			}
 			delete result.load
 			return result
 		}
 	} as unknown
+}
+
+async function injectGizmo(result: Record<string | symbol, unknown> & WithFn<any>, gizmo: Gizmo) {
+	const gizmoResult = await gizmo.create(result)
+	if (Array.isArray(gizmoResult)) {
+		const [value, start] = gizmoResult
+		if (start) {
+			await start()
+		}
+		Object.assign(result, value)
+		return value
+	} else {
+		Object.assign(result, gizmoResult)
+		return gizmoResult
+	}
 }
 
 export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown> = {
@@ -67,7 +76,7 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	 */
 	with<G extends Gizmo>(
 		gizmo: G
-	): ExtractDeps<G> extends infer Deps
+	): ExtractGizmoDeps<G> extends infer Deps
 		? R extends Deps
 			? InferIncubator<R, G>
 			: Deps extends Record<string | number | symbol, any>

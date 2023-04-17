@@ -13,7 +13,9 @@
     "macos",
     "npmjs",
     "npmrc",
+    "repobuddy",
     "testname",
+    "tsbuildinfo",
     "whoami"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib"
