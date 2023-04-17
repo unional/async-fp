@@ -118,7 +118,7 @@ importers:
         version: 8.0.1
       ts-jest:
         specifier: ^29.0.0
-        version: 29.0.3(@babel/core@7.21.0)(jest@29.4.3)(typescript@5.1.0-dev.20230416)
+        version: 29.0.3(@babel/core@7.21.4)(jest@29.4.3)(typescript@5.1.0-dev.20230416)
       typescript:
         specifier: 5.1.0-dev.20230416
         version: 5.1.0-dev.20230416
@@ -213,6 +213,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.33.0
         version: 5.33.0(eslint@8.22.0)(typescript@5.1.0-dev.20230416)
+      assertron:
+        specifier: ^11.0.1
+        version: 11.0.1
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -257,7 +260,7 @@ importers:
         version: 8.0.1
       ts-jest:
         specifier: ^29.0.0
-        version: 29.0.3(@babel/core@7.21.4)(jest@29.4.3)(typescript@5.1.0-dev.20230416)
+        version: 29.0.3(@babel/core@7.21.0)(jest@29.4.3)(typescript@5.1.0-dev.20230416)
       type-plus:
         specifier: ^6.6.0
         version: 6.6.0
@@ -2098,8 +2101,8 @@ packages:
       is-promise: 4.0.0
       iso-error: 4.4.0
       path-equal: 1.2.2
-      satisfier: 5.2.2
-      tersify: 3.10.2
+      satisfier: 5.4.2
+      tersify: 3.12.1
       type-plus: 4.18.1
     dev: true
 
@@ -5252,12 +5255,6 @@ packages:
       chokidar: 3.5.3
       immutable: 4.1.0
       source-map-js: 1.0.2
-    dev: true
-
-  /satisfier@5.2.2:
-    resolution: {integrity: sha512-VEMcWR7F9xCqWtmjt8HetuycNAPqP5MPcZrYTs+DshHNiE39jWLPjdZeTt/+bhh4ogge2OuktNOWTMcQHAOHcA==}
-    dependencies:
-      tersify: 3.10.2
     dev: true
 
   /satisfier@5.4.2:

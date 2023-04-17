@@ -13,6 +13,7 @@ import {
 	staticRequiredGizmo
 } from './fixtures.js'
 import { define, incubate, type MissingDependency } from './index.js'
+import { AssertOrder } from 'assertron'
 
 it('incubates with an initial gizmo', async () => {
 	const r = await incubate(leafGizmo).create()
@@ -206,4 +207,27 @@ it('allows static require gizmo to add another gizmo using `with()`', async () =
 
 	const r = await incubate().with(leafTupleGizmo).with(gizmo).create()
 	testType.canAssign<typeof r, { leaf: { foo(): number } }>(true)
+})
+
+it('calls start at the order of `with()`', async () => {
+	const o = new AssertOrder()
+	const s1 = define({
+		async create() {
+			return [undefined, () => o.once(1)]
+		}
+	})
+	const s2 = define({
+		async create() {
+			return [undefined, () => o.once(2)]
+		}
+	})
+	const s3 = define({
+		async create(ctx) {
+			await ctx.with(s2)
+			return [undefined, () => o.once(3)]
+		}
+	})
+
+	await incubate().with(s1).with(s3).create()
+	o.end()
 })

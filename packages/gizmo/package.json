@@ -76,6 +76,7 @@
     "@size-limit/preset-small-lib": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "assertron": "^11.0.1",
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.3",
     "eslint": "^8.22.0",
