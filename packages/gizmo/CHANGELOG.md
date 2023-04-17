@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 1.1.0
+
+### Minor Changes
+
+- 5332cfc: Allow gizmo to compose from other gizmos through `ctx.with()`.
+
 ## 1.0.4
 
 ### Patch Changes
