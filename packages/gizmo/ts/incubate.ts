@@ -45,6 +45,7 @@ export function incubate(gizmo?: Gizmo) {
 				await injectGizmo(result, gizmo)
 			}
 			delete result.load
+			delete (result as any).with
 			return result
 		}
 	} as unknown

@@ -231,3 +231,10 @@ it('calls start at the order of `with()`', async () => {
 	await incubate().with(s1).with(s3).create()
 	o.end()
 })
+
+it('gizmo does not contain the load or with method', async () => {
+	const gizmo =await incubate().with(leafGizmo).create()
+	const keys = Object.keys(gizmo)
+	expect(keys.includes('load')).toBe(false)
+	expect(keys.includes('with')).toBe(false)
+})
