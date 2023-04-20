@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 1.1.1
+
+### Patch Changes
+
+- 5d4041f: Remove the `with` method from resulting gizmo
+
 ## 1.1.0
 
 ### Minor Changes
