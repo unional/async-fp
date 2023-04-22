@@ -41,6 +41,8 @@ const gizmo = define({
 })
 ```
 
+---
+
 You can also create a *gizmo function* using `define()`:
 
 ```ts
@@ -52,6 +54,26 @@ const gizmoFn = define((options) => {
 
 const gizmo = gizmoFn({ /* options */ })
 ```
+
+Note: due to a bug in TypeScript 4.8.4 to 5.0.0,
+if your *gizmo function* has an optional parameter,
+the function type is not inferred correctly.
+
+While this is fixed in TypeScript 5.1.0,
+if your code need to support those versions,
+you will need to define the *gizmo function* type explicitly:
+
+```ts
+const gizmoFn: (options?: MyOptions) => GizmoBase<void> =
+  define((options?: MyOptions) => {
+    async create() { /* ..snap.. */ }
+  })
+```
+
+You can get do this by getting the type using `typeof gizmoFn`,
+and then adjust the param.
+
+---
 
 To create an object from *gizmo*, you use the `incubate()` function.
 
@@ -69,6 +91,8 @@ const incubator = incubate()
 const obj = await incubator.create()
 ```
 
+---
+
 When creating a *gizmo*, the type system will ensure that all dependencies are loaded.
 
 ```ts
@@ -77,6 +101,8 @@ import { incubate } from '@unional/gizmo'
 // MissingDependency<'abc'>
 const incubator = incubate().with(needStaticABC)
 ```
+
+---
 
 It also supports an optional `start` function
 to perform some initialization after the *gizmo* is created.
@@ -173,6 +199,8 @@ const app = await incubator.create()
 app.notification.register(...)
 ```
 
+---
+
 Each *gizmo* can be composed from other *gizmos*.
 
 ```ts
@@ -191,6 +219,8 @@ const gizmo = define({
 })
 ```
 
+---
+
 When creating the *gizmo*,
 you can specify a `start` function to perform some initialization.
 
@@ -199,6 +229,8 @@ const gizmo = await incubate().with(...).with(...).create(gizmo => {
     // do something
 })
 ```
+
+---
 
 You can also use the `init` function to perform some initialization.
 
