@@ -91,7 +91,7 @@ export type LeafWithAsyncStartGizmo = define.Infer<typeof leafWithAsyncStartGizm
  * Leaf gizmo written in function form.
  *
  * Function form allows additional input when the definition is used.
- * This is anologous to class with arguments in constructor.
+ * This is analogous to class with arguments in constructor.
  */
 export const leafGizmoFn = define((value: number) => ({
 	async create() {
