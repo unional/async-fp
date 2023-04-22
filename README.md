@@ -35,7 +35,7 @@ await context.get() //=> { config: 'async value' }
 [![NPM downloads][gizmo-downloads-image]][gizmo-npm-url]
 [![Bundle size][gizmo-bundlephobia-image]][gizmo-bundlephobia-url]
 
-[@unional/gizmo] is a library to create `gizmo`: an object with static or dynamic dependencies, and an optional `start` function.
+[@unional/gizmo] is a library to create *gizmo*: an object with static or dynamic dependencies, with an optional `start` function.
 
 ```ts
 import { define, incubate } from '@unional/gizmo'
@@ -55,7 +55,7 @@ const gizmoWithStart = define({
 const gizmoWithAsyncStart = define({
   async create() { return
   [
-    { foo2: { blow() { /* ..snap.. */ } } },
+    { foo3: { blow() { /* ..snap.. */ } } },
     async () => { /* ..snap.. */ }
   ] }
 })
