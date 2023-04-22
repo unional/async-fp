@@ -6,9 +6,9 @@
 
 [![Codecov][codecov-image]][codecov-url]
 
-[@unional/gizmo] is a library to create `gizmo`.
+[@unional/gizmo] is a library to create a *gizmo*.
 
-A `gizmo` is an object with static or dynamic dependencies,
+A *gizmo* is an object with static or dynamic dependencies,
 and an optional `start` function.
 
 ```ts
@@ -41,7 +41,7 @@ const gizmo = define({
 })
 ```
 
-You can also create a `gizmo function` using `define()`:
+You can also create a *gizmo function* using `define()`:
 
 ```ts
 import { define } from '@unional/gizmo'
@@ -53,9 +53,9 @@ const gizmoFn = define((options) => {
 const gizmo = gizmoFn({ /* options */ })
 ```
 
-To create an object from `gizmo`, you use the `incubate()` function.
+To create an object from *gizmo*, you use the `incubate()` function.
 
-The typical way of using `gizmo` is to define specific behaviors in different `gizmo`,
+The typical way of using *gizmo* is to define specific behaviors in different *gizmo*,
 and combine them together for different use cases.
 
 ```ts
@@ -69,7 +69,7 @@ const incubator = incubate()
 const obj = await incubator.create()
 ```
 
-When creating a `gizmo`, the type system will ensure that all dependencies are loaded.
+When creating a *gizmo*, the type system will ensure that all dependencies are loaded.
 
 ```ts
 import { incubate } from '@unional/gizmo'
@@ -79,7 +79,7 @@ const incubator = incubate().with(needStaticABC)
 ```
 
 It also supports an optional `start` function
-to perform some initialization after the `gizmo` is created.
+to perform some initialization after the *gizmo* is created.
 
 This start function can be sync or async.
 
@@ -134,6 +134,15 @@ rush add -p @unional/gizmo
 
 ## Usage
 
+The key feature of *gizmo* is that it support asynchronous composition.
+
+You can create various *gizmo* and compose them together.
+
+In the example below, we are creating a `notification` *gizmo*.
+
+Then we use the `incubate()` function to create an *gizmo incubator*,
+and at the end we use the incubator to create the `app` object.
+
 ```ts
 import { define, incubate } from '@unional/gizmo'
 
@@ -155,15 +164,16 @@ const notification = define({
   }
 })
 
-const app = async incubate()
+const incubator = incubate()
   .with(notification)
   .with(/* other gizmos */)
-  .create()
+
+const app = await incubator.create()
 
 app.notification.register(...)
 ```
 
-Each gizmo can also compose other gizmos.
+Each *gizmo* can be composed from other *gizmos*.
 
 ```ts
 import { define } from '@unional/gizmo'
@@ -175,9 +185,39 @@ const gizmo = define({
     return {
       ...other,
       ...another,
+      additional: { ... }
     }
   }
 })
+```
+
+When creating the *gizmo*,
+you can specify a `start` function to perform some initialization.
+
+```ts
+const gizmo = await incubate().with(...).with(...).create(gizmo => {
+    // do something
+})
+```
+
+You can also use the `init` function to perform some initialization.
+
+The `init` function is useful when you are exporting your *gizmo incubator*,
+and you want to perform some initialization before the *gizmo* is created.
+
+```ts
+// gizmo.ts
+export const yourGizmoIncubator = incubate().with(...).with(...).init(gizmo => {
+    // do something
+})
+
+// consumer.ts
+import { yourGizmoIncubator } from './gizmo'
+
+const gizmo = await yourGizmoIncubator.create()
+
+// the consumer can also perform some initialization
+const gizmo = await yourGizmoIncubator.create(gizmo => { /* do something */ })
 ```
 
 ## Performance
