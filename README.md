@@ -45,19 +45,21 @@ const gizmo = define({
 })
 
 const gizmoWithStart = define({
-  async create() { return
-  [
-    { foo2: { blow() { /* ..snap.. */ } } },
-    () => { /* ..snap.. */ }
-  ] }
+  async create() {
+    return [
+      { foo2: { blow() { /* ..snap.. */ } } },
+      () => { /* ..snap.. */ }
+    ]
+  }
 })
 
 const gizmoWithAsyncStart = define({
-  async create() { return
-  [
-    { foo3: { blow() { /* ..snap.. */ } } },
-    async () => { /* ..snap.. */ }
-  ] }
+  async create() {
+    return  [
+      { foo3: { blow() { /* ..snap.. */ } } },
+      async () => { /* ..snap.. */ }
+    ]
+  }
 })
 
 const obj = await incubate().with(gizmo).create()
