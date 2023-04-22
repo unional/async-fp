@@ -1,4 +1,4 @@
-import type { LeftJoin, RequiredKeys } from 'type-plus'
+import type { AnyFunction, LeftJoin, RequiredKeys } from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency, WithFn } from './types.js'
 
 /**
@@ -32,7 +32,7 @@ export function incubate(gizmo?: Gizmo) {
 			gizmos.push(gizmo)
 			return this
 		},
-		async create() {
+		async create(start?: AnyFunction) {
 			const result = {
 				async with(gizmo: Gizmo) {
 					return injectGizmo(result, gizmo)
@@ -43,6 +43,9 @@ export function incubate(gizmo?: Gizmo) {
 			} as Record<string | symbol, unknown> & WithFn<any>
 			for (const gizmo of gizmos) {
 				await injectGizmo(result, gizmo)
+			}
+			if (start) {
+				await start(result)
 			}
 			delete result.load
 			delete (result as any).with
@@ -89,7 +92,7 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	/**
 	 * create the gizmo.
 	 */
-	create(): Promise<R>
+	create(start?: (gizmo: R) => unknown): Promise<R>
 }
 
 type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR

@@ -233,8 +233,32 @@ it('calls start at the order of `with()`', async () => {
 })
 
 it('gizmo does not contain the load or with method', async () => {
-	const gizmo =await incubate().with(leafGizmo).create()
+	const gizmo = await incubate().with(leafGizmo).create()
 	const keys = Object.keys(gizmo)
 	expect(keys.includes('load')).toBe(false)
 	expect(keys.includes('with')).toBe(false)
+})
+
+it('can pass in an start handler during create', async () => {
+	expect.assertions(2)
+	const app = await incubate()
+		.with(leafGizmo)
+		.with(staticRequiredGizmo)
+		.create(app => {
+			expect(app.static_required.foo()).toEqual(1)
+		})
+
+	expect(app.static_required.foo()).toEqual(1)
+})
+
+it('can pass in an async start handler during create', async () => {
+	expect.assertions(2)
+	const app = await incubate()
+		.with(leafGizmo)
+		.with(staticRequiredGizmo)
+		.create(async app => {
+			expect(app.static_required.foo()).toEqual(1)
+		})
+
+	expect(app.static_required.foo()).toEqual(1)
 })
