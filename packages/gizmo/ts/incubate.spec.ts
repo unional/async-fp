@@ -22,9 +22,14 @@ it('incubates with an initial gizmo', async () => {
 	expect(r.leaf.foo()).toEqual(1)
 })
 
-it('does not have start function if no initial gizmo', () => {
+it('does not have create function if no initial gizmo', () => {
 	const i = incubate()
-	testType.equal<keyof typeof i, 'with'>(true)
+	testType.never<keyof typeof i & 'create'>(true)
+})
+
+it('does not have init function if no initial gizmo', () => {
+	const i = incubate()
+	testType.never<keyof typeof i & 'init'>(true)
 })
 
 it('incubates using `with()`', async () => {
@@ -261,4 +266,24 @@ it('can pass in an async start handler during create', async () => {
 		})
 
 	expect(app.static_required.foo()).toEqual(1)
+})
+
+it('can provider an initializer that calls when the gizmo is created', async () => {
+	const o = new AssertOrder(2)
+	expect.assertions(3)
+	const incubator = incubate()
+		.with(leafGizmo)
+		.with(staticRequiredGizmo)
+		.init(app => {
+			o.once(1)
+			expect(app.static_required.foo()).toEqual(1)
+		})
+
+	const app = await incubator.create(app => {
+		o.once(2)
+		expect(app.static_required.foo()).toEqual(1)
+	})
+
+	expect(app.static_required.foo()).toEqual(1)
+	o.end()
 })

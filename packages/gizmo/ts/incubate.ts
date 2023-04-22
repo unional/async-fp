@@ -11,7 +11,7 @@ import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency, WithFn } f
  * const gizmo = await incubate().with(gizmo1).with(gizmo2).create()
  * ```
  */
-export function incubate(): Omit<GizmoIncubator<unknown>, 'create'>
+export function incubate(): Omit<GizmoIncubator<unknown>, 'create' | 'init'>
 /**
  * Create an incubator for gizmos.
  *
@@ -27,9 +27,14 @@ export function incubate(gizmo?: Gizmo) {
 	const gizmos: Gizmo[] = []
 	if (gizmo) gizmos.push(gizmo)
 
+	let init: AnyFunction | undefined
 	return {
 		with<G extends Gizmo>(gizmo: G) {
 			gizmos.push(gizmo)
+			return this
+		},
+		init(initializer: AnyFunction) {
+			init = initializer
 			return this
 		},
 		async create(start?: AnyFunction) {
@@ -43,6 +48,9 @@ export function incubate(gizmo?: Gizmo) {
 			} as Record<string | symbol, unknown> & WithFn<any>
 			for (const gizmo of gizmos) {
 				await injectGizmo(result, gizmo)
+			}
+			if (init) {
+				await init(result)
 			}
 			if (start) {
 				await start(result)
@@ -89,8 +97,44 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 				: MissingDependency<Exclude<RequiredKeys<Deps>, keyof R>>
 			: never // @TODO: may be missing some cases here
 		: never
+
 	/**
-	 * create the gizmo.
+	 * Initializes the gizmo.
+	 *
+	 * This optional function allows you to perform some initialization before the gizmo is created.
+	 * This is useful if you are exposing the incubator directly to the outside world,
+	 * which you can use this function to perform some initialization when the gizmo is created.
+	 *
+	 * The incubator caller can still pass in their own start function to the `create()` function
+	 * to perform additional initialization specific to the caller.
+	 *
+	 * When this function is called, the gizmo is considered to be final.
+	 * The `.with()` function will be removed from the incubator.
+	 *
+	 * ```ts
+	 * const incubator = incubate().with(...).init(g => { /..snap../ })
+	 *
+	 * // incubator.with() is not available
+	 * const gizmo = await incubator.create()
+	 * ```
+	 */
+	init(initializer?: (gizmo: R) => unknown): Pick<GizmoIncubator<R>, 'create'>
+	/**
+	 * Creates the gizmo.
+	 *
+	 * You can optionally pass in a start handler which you can use to perform some initialization.
+	 *
+	 * The handler can be synchronous or asynchronous.
+	 *
+	 * ```ts
+	 * const gizmo = await incubate().with(gizmo1).with(gizmo2).create(g => {
+	 *   // initialize
+	 * })
+	 *
+	 * const gizmo = await incubate().with(gizmo1).with(gizmo2).create(async g => {
+	 *   // initialize
+	 * })
+	 * ```
 	 */
 	create(start?: (gizmo: R) => unknown): Promise<R>
 }
