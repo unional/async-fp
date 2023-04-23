@@ -1,5 +1,51 @@
 # @unional/gizmo
 
+## 1.2.0
+
+### Minor Changes
+
+- 8996c07: `.create()` now accepts a `start` function to perform initialization.
+
+  ```ts
+  incubate().with(...).with(...).create(gizmo => {
+    // initialization
+  })
+  ```
+
+- 0c4e97a: Adds an `.init()` function to perform initialization before the gizmo is created.
+
+  This optional function allows you to perform some initialization before the gizmo is created.
+
+  This is useful if you are exposing the incubator directly to the outside world,
+  which you can use this function to perform some initialization when the gizmo is created.
+  The incubator caller can still pass in their own start function to the `create()` function, to perform additional initialization specific to the caller.
+
+  When this function is called, the gizmo is considered to be final.
+  The `.with()` function will be removed from the incubator.
+
+  ```ts
+  const incubator = incubate().with(...).init(g => { /* initialize */ })
+
+  // incubator.with() is not available
+  const gizmo = await incubator.create()
+  ```
+
+- 80f5dc5: Add `incubate().merge()` function to merge _gizmo instance_ into the _incubator_.
+
+  This allows consumers to compose _gizmos_ when they only have access to the resulting _gizmo instances_ or just plain objects.
+
+  ```ts
+  import { define } from '@unional/gizmo'
+
+  export async function activate({ mic }) {
+  	const miku = await incubate().merge(mic).with(mikuGizmo).create()
+  }
+  ```
+
+### Patch Changes
+
+- 3b6c56b: Expose `/testing` for CJS usage
+
 ## 1.1.1
 
 ### Patch Changes
