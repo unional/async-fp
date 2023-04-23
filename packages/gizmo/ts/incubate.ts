@@ -1,4 +1,4 @@
-import type { AnyFunction, LeftJoin, RequiredKeys } from 'type-plus'
+import { isType, type AnyFunction, type LeftJoin, type RequiredKeys } from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency, WithFn } from './types.js'
 
 /**
@@ -24,13 +24,17 @@ export function incubate(): Omit<GizmoIncubator<unknown>, 'create' | 'init'>
  */
 export function incubate<G extends Gizmo>(gizmo: G): GizmoIncubator<InferGizmo<G>>
 export function incubate(gizmo?: Gizmo) {
-	const gizmos: Gizmo[] = []
-	if (gizmo) gizmos.push(gizmo)
+	const dependencies: Array<{ gizmo: Gizmo } | { instance: Record<string | symbol, unknown> }> = []
+	if (gizmo) dependencies.push({ gizmo })
 
 	let init: AnyFunction | undefined
 	return {
 		with<G extends Gizmo>(gizmo: G) {
-			gizmos.push(gizmo)
+			dependencies.push({ gizmo })
+			return this
+		},
+		merge(instance: Record<string | symbol, unknown>) {
+			dependencies.push({ instance })
 			return this
 		},
 		init(initializer: AnyFunction) {
@@ -46,8 +50,12 @@ export function incubate(gizmo?: Gizmo) {
 					return result
 				}
 			} as Record<string | symbol, unknown> & WithFn<any>
-			for (const gizmo of gizmos) {
-				await injectGizmo(result, gizmo)
+			for (const dep of dependencies) {
+				if (isType<{ gizmo: Gizmo }>(dep, d => !!d.gizmo)) {
+					await injectGizmo(result, dep.gizmo)
+				} else {
+					Object.assign(result, dep.instance)
+				}
 			}
 			if (init) {
 				await init(result)
@@ -98,6 +106,9 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 			: never // @TODO: may be missing some cases here
 		: never
 
+	merge<G extends Record<string | symbol, unknown>>(
+		gizmoInstance: G
+	): R extends Record<string | symbol, unknown> ? GizmoIncubator<LeftJoin<R, G>> : GizmoIncubator<G>
 	/**
 	 * Initializes the gizmo.
 	 *
