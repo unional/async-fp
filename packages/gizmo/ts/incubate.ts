@@ -157,3 +157,9 @@ type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR
 			: GizmoIncubator<GR>
 		: GizmoIncubator<R>
 	: never
+
+export namespace incubate {
+	export type Infer<Incubator extends GizmoIncubator<unknown>> = Awaited<
+		ReturnType<Incubator['create']>
+	>
+}
