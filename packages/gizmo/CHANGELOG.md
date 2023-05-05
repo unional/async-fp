@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 1.3.0
+
+### Minor Changes
+
+- 2e545ae: Add `incubate.Infer<I>`
+
 ## 1.2.0
 
 ### Minor Changes
