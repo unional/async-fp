@@ -1,5 +1,13 @@
 # @unional/gizmo
 
+## 2.0.2
+
+### Patch Changes
+
+- 6ecc0e7: Add `type-plus` as dependency.
+
+  It was mistakenly added as devDependency.
+
 ## 2.0.1
 
 ### Patch Changes

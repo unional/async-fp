@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.11
+
+### Patch Changes
+
+- 6ecc0e7: Update `iso-error` and `type-plus`
+
 ## 9.0.10
 
 ## 9.0.9
