@@ -96,7 +96,6 @@
     "rimraf": "^5.0.0",
     "size-limit": "^8.0.1",
     "ts-jest": "^29.1.0",
-    "tslib": "^2.5.0",
     "type-plus": "^6.6.0",
     "typescript": "5.1.0-dev.20230502"
   },
@@ -109,9 +108,6 @@
   "size-limit": [
     {
       "path": "./cjs/index.js"
-    },
-    {
-      "path": "./tslib/index.js"
     },
     {
       "path": "./esm/index.js"

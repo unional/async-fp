@@ -47,5 +47,4 @@ node_modules
 .turbo
 cjs/
 esm/
-tslib/
 *.tsbuildinfo
