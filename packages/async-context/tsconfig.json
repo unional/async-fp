@@ -1,8 +1,6 @@
 {
-  "extends": "../../.config/tsconfig.setting.json",
+	"extends": "@repobuddy/typescript/tsconfig/monorepo",
   "compilerOptions": {
-    "module": "ES2020",
-    "moduleResolution": "Node",
     "outDir": "esm",
     "rootDir": "ts"
   },

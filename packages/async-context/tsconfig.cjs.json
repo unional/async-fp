@@ -2,8 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "moduleResolution": "Node",
-    "outDir": "cjs",
-    "target": "es2019"
+    "outDir": "cjs"
   }
 }

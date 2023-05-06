@@ -4,7 +4,6 @@
 		"outDir": "esm",
 		"rootDir": "ts"
 	},
-	"references": [],
 	"include": [
 		"ts",
 		"types"
