@@ -62,8 +62,8 @@
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
   "dependencies": {
-    "iso-error": "^6.0.0",
-    "type-plus": "^6.6.0"
+    "iso-error": "^6.0.2",
+    "type-plus": "^6.7.0"
   },
   "devDependencies": {
     "@repobuddy/jest": "^3.2.0",

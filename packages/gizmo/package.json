@@ -91,7 +91,6 @@
     "rimraf": "^5.0.0",
     "size-limit": "^8.0.1",
     "ts-jest": "^29.1.0",
-    "type-plus": "^6.6.0",
     "typescript": "5.1.0-dev.20230506"
   },
   "engines": {
@@ -107,5 +106,8 @@
     {
       "path": "./esm/index.js"
     }
-  ]
+  ],
+  "dependencies": {
+    "type-plus": "^6.7.0"
+  }
 }
