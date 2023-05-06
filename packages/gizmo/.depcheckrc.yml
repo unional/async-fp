@@ -1,9 +1,10 @@
 ignores:
-  - '@repobuddy/jest'
+  - '@repobuddy/*'
   - '@size-limit/preset-small-lib'
   - '@types/node'
   - '@typescript-eslint/parser'
   - jest-*
+  - repobuddy
   - rimraf # https://github.com/depcheck/depcheck/issues/776
   - ts-jest
   - tslib

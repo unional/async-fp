@@ -63,8 +63,7 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 			if (start) {
 				await start(result)
 			}
-			delete result.load
-			delete (result as any).with
+			delete result['load']
 			return result
 		}
 	} as unknown

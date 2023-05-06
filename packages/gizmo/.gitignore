@@ -45,8 +45,7 @@ node_modules
 .progress
 .reports
 .turbo
-cjs
-esm
-lib*
-tslib
+cjs/
+esm/
+tslib/
 *.tsbuildinfo
