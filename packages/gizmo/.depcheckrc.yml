@@ -3,6 +3,7 @@ ignores:
   - '@size-limit/preset-small-lib'
   - '@types/node'
   - '@typescript-eslint/parser'
+  - eslint*
   - jest-*
   - repobuddy
   - rimraf # https://github.com/depcheck/depcheck/issues/776
