@@ -21,7 +21,7 @@ export type GizmoBase<
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
-	create(ctx: DefineContext<unknown, unknown>): Promise<Result>
+	create(): Promise<Result>
 }
 
 export type GizmoStatic<
