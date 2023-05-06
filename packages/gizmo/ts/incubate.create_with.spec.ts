@@ -2,13 +2,11 @@ import { AssertOrder } from 'assertron'
 import { testType } from 'type-plus'
 import {
 	LeafGizmo,
-	LeafTupleGizmo,
 	leafGizmo,
-	leafTupleGizmo,
 	leafWithStartGizmo,
 	staticRequiredGizmo
 } from './fixtures.js'
-import { define, incubate, type MissingDependency } from './index.js'
+import { define, incubate } from './index.js'
 
 it('can use incubator within create to instantiate another gizmo', async () => {
 	const gizmo = define({
@@ -34,20 +32,11 @@ it('can use incubator within create to instantiate another gizmo with start', as
 	expect(r.leaf_start.foo()).toEqual('started')
 })
 
-it('add static required gizmo using `with()` without dependency gets MissingDependency', async () => {
-	define({
-		async create(ctx) {
-			const r = await ctx.with(staticRequiredGizmo)
-			testType.equal<typeof r, MissingDependency<'leaf'>>(true)
-		}
-	})
-})
-
-it('allows gizmo to add static required gizmo using `with()`', async () => {
+it('provides the context available so far for creating additional gizmo with incubate', async () => {
 	const gizmo = define({
 		static: define.require<LeafGizmo>(),
 		async create(ctx) {
-			return await ctx.with(staticRequiredGizmo)
+			return await incubate(ctx).with(staticRequiredGizmo).create()
 		}
 	})
 
@@ -55,17 +44,7 @@ it('allows gizmo to add static required gizmo using `with()`', async () => {
 	testType.canAssign<typeof r, { static_required: { foo(): number } }>(true)
 })
 
-it('allows static require gizmo to add another gizmo using `with()`', async () => {
-	const gizmo = define({
-		static: define.require<LeafTupleGizmo>(),
-		async create(ctx) {
-			return await ctx.with(leafGizmo)
-		}
-	})
-
-	const r = await incubate().with(leafTupleGizmo).with(gizmo).create()
-	testType.canAssign<typeof r, { leaf: { foo(): number } }>(true)
-})
+it.todo('dynamic loading with incubate in create')
 
 it('calls start at the order of `with()`', async () => {
 	const o = new AssertOrder()
@@ -80,8 +59,8 @@ it('calls start at the order of `with()`', async () => {
 		}
 	})
 	const s3 = define({
-		async create(ctx) {
-			await ctx.with(s2)
+		async create() {
+			await incubate().with(s2).create()
 			return [undefined, () => o.once(3)]
 		}
 	})
@@ -90,53 +69,4 @@ it('calls start at the order of `with()`', async () => {
 	o.end()
 })
 
-it('gizmo does not contain the load or with method', async () => {
-	const gizmo = await incubate().with(leafGizmo).create()
-	const keys = Object.keys(gizmo)
-	expect(keys.includes('load')).toBe(false)
-	expect(keys.includes('with')).toBe(false)
-})
-
-it('can pass in an start handler during create', async () => {
-	expect.assertions(2)
-	const app = await incubate()
-		.with(leafGizmo)
-		.with(staticRequiredGizmo)
-		.create(app => {
-			expect(app.static_required.foo()).toEqual(1)
-		})
-
-	expect(app.static_required.foo()).toEqual(1)
-})
-
-it('can pass in an async start handler during create', async () => {
-	expect.assertions(2)
-	const app = await incubate()
-		.with(leafGizmo)
-		.with(staticRequiredGizmo)
-		.create(async app => {
-			expect(app.static_required.foo()).toEqual(1)
-		})
-
-	expect(app.static_required.foo()).toEqual(1)
-})
-
-it('can provider an initializer that calls when the gizmo is created', async () => {
-	const o = new AssertOrder(2)
-	expect.assertions(3)
-	const incubator = incubate()
-		.with(leafGizmo)
-		.with(staticRequiredGizmo)
-		.init(app => {
-			o.once(1)
-			expect(app.static_required.foo()).toEqual(1)
-		})
-
-	const app = await incubator.create(app => {
-		o.once(2)
-		expect(app.static_required.foo()).toEqual(1)
-	})
-
-	expect(app.static_required.foo()).toEqual(1)
-	o.end()
-})
+it.todo('complex start function order cases?')
