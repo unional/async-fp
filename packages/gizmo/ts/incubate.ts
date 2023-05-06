@@ -1,5 +1,5 @@
 import { isType, type AnyFunction, type LeftJoin, type RequiredKeys } from 'type-plus'
-import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency, WithFn } from './types.js'
+import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
 
 /**
  * Create an incubator for gizmos.
@@ -46,13 +46,10 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 		},
 		async create(start?: AnyFunction) {
 			const result = {
-				async with(gizmo: Gizmo) {
-					return injectGizmo(result, gizmo)
-				},
 				async load(_identifier: string) {
 					return result
 				}
-			} as Record<string | symbol, unknown> & WithFn<any>
+			} as Record<string | symbol, unknown>
 			for (const dep of dependencies) {
 				if (isType<{ gizmo: Gizmo }>(dep, d => !!d.gizmo)) {
 					await injectGizmo(result, dep.gizmo)
@@ -73,7 +70,7 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 	} as unknown
 }
 
-async function injectGizmo(result: Record<string | symbol, unknown> & WithFn<any>, gizmo: Gizmo) {
+async function injectGizmo(result: Record<string | symbol, unknown>, gizmo: Gizmo) {
 	const gizmoResult = await gizmo.create(result)
 	if (Array.isArray(gizmoResult)) {
 		const [value, start] = gizmoResult

@@ -162,8 +162,8 @@ it('calls start at the order of `with()`', async () => {
 		}
 	})
 	const s3 = define({
-		async create(ctx) {
-			await ctx.with(s2)
+		async create() {
+			await incubate().with(s2).create()
 			return [undefined, () => o.once(3)]
 		}
 	})
@@ -171,6 +171,8 @@ it('calls start at the order of `with()`', async () => {
 	await incubate().with(s1).with(s3).create()
 	o.end()
 })
+
+it.todo('complex start function order cases?')
 
 it('gizmo does not contain the load or with method', async () => {
 	const gizmo = await incubate().with(leafGizmo).create()

@@ -1,4 +1,3 @@
-import { AssertOrder } from 'assertron'
 import { testType } from 'type-plus'
 import {
 	LeafGizmo,
@@ -45,28 +44,3 @@ it('provides the context available so far for creating additional gizmo with inc
 })
 
 it.todo('dynamic loading with incubate in create')
-
-it('calls start at the order of `with()`', async () => {
-	const o = new AssertOrder()
-	const s1 = define({
-		async create() {
-			return [undefined, () => o.once(1)]
-		}
-	})
-	const s2 = define({
-		async create() {
-			return [undefined, () => o.once(2)]
-		}
-	})
-	const s3 = define({
-		async create() {
-			await incubate().with(s2).create()
-			return [undefined, () => o.once(3)]
-		}
-	})
-
-	await incubate().with(s1).with(s3).create()
-	o.end()
-})
-
-it.todo('complex start function order cases?')
