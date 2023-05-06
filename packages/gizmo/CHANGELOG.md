@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 2.0.1
+
+### Patch Changes
+
+- ae98148: Remove `ctx` from `GizmoBase`. The ctx is empty.
+
 ## 2.0.0
 
 ### Major Changes
