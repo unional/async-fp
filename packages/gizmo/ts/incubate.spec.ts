@@ -12,21 +12,27 @@ import {
 } from './fixtures.js'
 import { define, incubate, type MissingDependency } from './index.js'
 
-it('incubates with an initial gizmo', async () => {
-	const r = await incubate(leafGizmo).create()
-
-	testType.equal<typeof r, { leaf: { foo(): number } }>(true)
-	expect(r.leaf.foo()).toEqual(1)
-})
-
-it('does not have create function if no initial gizmo', () => {
+it('does not start with a create function', () => {
 	const i = incubate()
 	testType.never<keyof typeof i & 'create'>(true)
 })
 
-it('does not have init function if no initial gizmo', () => {
+it('does not start with an init function', () => {
 	const i = incubate()
 	testType.never<keyof typeof i & 'init'>(true)
+})
+
+it('incubates with an base object', async () => {
+	const r = await incubate({
+		base: {
+			foo(): string {
+				return 'foo'
+			}
+		}
+	}).create()
+
+	testType.equal<typeof r, { base: { foo(): string } }>(true)
+	expect(r.base.foo()).toEqual('foo')
 })
 
 it('incubates using `with()`', async () => {

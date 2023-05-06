@@ -5,16 +5,15 @@ import {
 	LeafTupleGizmo,
 	leafGizmo,
 	leafTupleGizmo,
-	leafTupleGizmoFn,
 	leafWithStartGizmo,
 	staticRequiredGizmo
 } from './fixtures.js'
 import { define, incubate, type MissingDependency } from './index.js'
 
-it('allows gizmo to add another gizmo using `with()`', async () => {
+it('can use incubator within create to instantiate another gizmo', async () => {
 	const gizmo = define({
-		async create(ctx) {
-			return await ctx.with(leafGizmo)
+		async create() {
+			return await incubate().with(leafGizmo).create()
 		}
 	})
 
@@ -22,21 +21,10 @@ it('allows gizmo to add another gizmo using `with()`', async () => {
 	testType.equal<typeof r, { leaf: { foo(): number } }>(true)
 })
 
-it('allows gizmo to add leaf tuple gizmo using `with()`', async () => {
+it('can use incubator within create to instantiate another gizmo with start', async () => {
 	const gizmo = define({
-		async create(ctx) {
-			return await ctx.with(leafTupleGizmoFn(1))
-		}
-	})
-
-	const r = await incubate().with(gizmo).create()
-	testType.equal<typeof r, { leaf_tuple_fn: { foo(): number } }>(true)
-})
-
-it('allows gizmo to add leaf with start gizmo using `with()`', async () => {
-	const gizmo = define({
-		async create(ctx) {
-			return await ctx.with(leafWithStartGizmo)
+		async create() {
+			return await incubate().with(leafWithStartGizmo).create()
 		}
 	})
 

@@ -15,19 +15,22 @@ export function incubate(): Omit<GizmoIncubator<unknown>, 'create' | 'init'>
 /**
  * Create an incubator for gizmos.
  *
+ * Starts the incubator with a base object.
  * Use the `with()` function to add gizmos to the incubator.
  * And then use `create()` to create the gizmo.
  *
  * ```ts
- * const gizmo = await incubate(gizmo1).with(gizmo2).create()
+ * const gizmo = await incubate(baseObject).with(gizmo2).create()
  * ```
  */
-export function incubate<G extends Gizmo>(gizmo: G): GizmoIncubator<InferGizmo<G>>
-export function incubate(gizmo?: Gizmo) {
+export function incubate<Base extends Record<string | symbol, unknown>>(
+	base: Base
+): GizmoIncubator<Base>
+export function incubate(base?: Record<string | symbol, unknown>) {
 	const dependencies: Array<{ gizmo: Gizmo } | { instance: Record<string | symbol, unknown> }> = []
-	if (gizmo) dependencies.push({ gizmo })
+	if (base) dependencies.push({ instance: base })
 
-	let init: AnyFunction | undefined
+	let initFn: AnyFunction | undefined
 	return {
 		with<G extends Gizmo>(gizmo: G) {
 			dependencies.push({ gizmo })
@@ -38,7 +41,7 @@ export function incubate(gizmo?: Gizmo) {
 			return this
 		},
 		init(initializer: AnyFunction) {
-			init = initializer
+			initFn = initializer
 			return this
 		},
 		async create(start?: AnyFunction) {
@@ -57,8 +60,8 @@ export function incubate(gizmo?: Gizmo) {
 					Object.assign(result, dep.instance)
 				}
 			}
-			if (init) {
-				await init(result)
+			if (initFn) {
+				await initFn(result)
 			}
 			if (start) {
 				await start(result)
