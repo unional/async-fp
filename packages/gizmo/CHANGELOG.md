@@ -1,5 +1,13 @@
 # @unional/gizmo
 
+## 2.0.0
+
+### Major Changes
+
+- 58c52cc: Change `incubate` to take a base object instead of a gizmo.
+  This change allows a gizmo to create other gizmos within the `create()` method.
+- 3ea4879: Remove `ctx.with()`
+
 ## 1.3.0
 
 ### Minor Changes
