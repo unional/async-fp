@@ -84,7 +84,7 @@
     "setimmediate": "^1.0.5",
     "size-limit": "^8.0.1",
     "ts-jest": "^29.1.0",
-    "typescript": "5.1.0-dev.20230507"
+    "typescript": "5.1.0-dev.20230508"
   },
   "engines": {
     "node": ">= 14.16"
