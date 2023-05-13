@@ -148,7 +148,6 @@ export type LeafWithStartGizmoFn = define.Infer<typeof leafWithStartGizmoFn>
 export const staticRequiredGizmo = define({
 	static: define.require<LeafGizmo>(),
 	async create(ctx) {
-
 		testType.equal<Omit<typeof ctx, 'with'>, LeafGizmo>(true)
 		return [
 			{
@@ -309,7 +308,7 @@ export const dynamicBothGizmo = define({
 	},
 	async create(ctx) {
 		const l = await ctx.load('leaf')
-		testType.equal<LeafGizmo, typeof l>(true)
+		testType.equal<typeof l, LeafGizmo>(true)
 		const lt = await ctx.load('leaf_tuple')
 		testType.equal<typeof lt, Partial<LeafTupleGizmo>>(true)
 		return {
