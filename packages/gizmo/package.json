@@ -74,6 +74,9 @@
     "w": "pnpm test:watch",
     "verify": "npm-run-all -p lint build coverage -p depcheck size"
   },
+  "dependencies": {
+    "type-plus": "^7.0.1"
+  },
   "devDependencies": {
     "@repobuddy/jest": "^3.2.0",
     "@repobuddy/typescript": "^1.2.0",
@@ -106,8 +109,5 @@
     {
       "path": "./esm/index.js"
     }
-  ],
-  "dependencies": {
-    "type-plus": "^6.7.0"
-  }
+  ]
 }
