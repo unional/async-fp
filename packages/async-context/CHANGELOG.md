@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.12
+
+### Patch Changes
+
+- 4dd0a08: Update `type-plus`
+
 ## 9.0.11
 
 ### Patch Changes
