@@ -7,7 +7,7 @@ import {
 } from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
 
-const closableApps = new Map<Record<KeyTypes, unknown>, Function[]>()
+const closableApps = new Map<Record<KeyTypes, unknown>, CallableFunction[]>()
 function addCloser(app: Record<string | symbol, unknown>, closer: unknown) {
 	if (typeof closer === 'function') {
 		const closers = closableApps.get(app) ?? []
