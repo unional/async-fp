@@ -367,6 +367,20 @@ const gizmo = await incubate().with(...).with(...).create(gizmo => {
 })
 ```
 
+The `start` function can also provide a `cleanup` function.
+Which will be called when you call `incubator.cleanup(gizmo)`:
+
+```ts
+const gizmo = await incubate().with(...).with(...).create(gizmo => () => {
+  // clean up
+})
+
+incubator.cleanup(gizmo)
+```
+
+The same `cleanup` function can also be provided in the `init()` function,
+or the `start` function of each *gizmo*.
+
 ---
 
 You can also use the `init` function to perform some initialization.

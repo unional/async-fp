@@ -1,5 +1,20 @@
-import { isType, type AnyFunction, type LeftJoin, type RequiredKeys } from 'type-plus'
+import {
+	isType,
+	type AnyFunction,
+	type KeyTypes,
+	type LeftJoin,
+	type RequiredKeys
+} from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
+
+const closableApps = new Map<Record<KeyTypes, unknown>, Function[]>()
+function addCloser(app: Record<string | symbol, unknown>, closer: unknown) {
+	if (typeof closer === 'function') {
+		const closers = closableApps.get(app) ?? []
+		closers.push(closer)
+		closableApps.set(app, closers)
+	}
+}
 
 /**
  * Create an incubator for gizmos.
@@ -58,10 +73,10 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 				}
 			}
 			if (initFn) {
-				await initFn(result)
+				addCloser(result, await initFn(result))
 			}
 			if (start) {
-				await start(result)
+				addCloser(result, await start(result))
 			}
 			delete result['load']
 			return result
@@ -69,12 +84,30 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 	} as unknown
 }
 
+/**
+ * Invokes any cleanup functions of the gizmo and its dependents.
+ *
+ * The gizmo is not destroyed as in other languages,
+ * as there is no destructor or ability to tap into the garbage collector of JavaScript.
+ *
+ * But nonetheless, the cleanup functions are used to close resources such as network connections,
+ * strong map, cache, etc.
+ *
+ * The gizmo should not be used after cleanup.
+ */
+incubate.cleanup = (app: Record<string | symbol, unknown>) => {
+	const closers = closableApps.get(app)
+	if (closers) {
+		closers.forEach(c => c())
+	}
+}
+
 async function injectGizmo(result: Record<string | symbol, unknown>, gizmo: Gizmo) {
 	const gizmoResult = await gizmo.create(result)
 	if (Array.isArray(gizmoResult)) {
 		const [value, start] = gizmoResult
 		if (start) {
-			await start()
+			addCloser(result, await start())
 		}
 		Object.assign(result, value)
 		return value

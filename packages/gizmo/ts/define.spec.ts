@@ -60,3 +60,16 @@ it('needs explicit type when defining a gizmo function with optional params', as
 	await incubate().with(gizmoFn()).create()
 	await incubate().with(gizmoFn(1)).create()
 })
+
+it('can define a cleanup function as the return value of start', async () => {
+	expect.assertions(1)
+
+	const gizmo = define({
+		async create() {
+			return [{}, () => () => expect(true).toBe(true)]
+		}
+	})
+
+	const app = await incubate().with(gizmo).create()
+	incubate.cleanup(app)
+})

@@ -205,7 +205,7 @@ it('can pass in an async start handler during create', async () => {
 	expect(app.static_required.foo()).toEqual(1)
 })
 
-it('can provider an initializer that calls when the gizmo is created', async () => {
+it('can provide an initializer that calls when the gizmo is created', async () => {
 	const o = new AssertOrder(2)
 	expect.assertions(3)
 	const incubator = incubate()
@@ -222,5 +222,29 @@ it('can provider an initializer that calls when the gizmo is created', async () 
 	})
 
 	expect(app.static_required.foo()).toEqual(1)
+	o.end()
+})
+
+it('can provide an initializer with cleanup', async () => {
+	const o = new AssertOrder(4)
+	expect.assertions(3)
+	const incubator = incubate()
+		.with(leafGizmo)
+		.with(staticRequiredGizmo)
+		.init(app => {
+			o.once(1)
+			expect(app.static_required.foo()).toEqual(1)
+			return () => o.once(3)
+		})
+
+	const app = await incubator.create(app => {
+		o.once(2)
+		expect(app.static_required.foo()).toEqual(1)
+		return () => o.once(4)
+	})
+
+	expect(app.static_required.foo()).toEqual(1)
+
+	incubate.cleanup(app)
 	o.end()
 })
