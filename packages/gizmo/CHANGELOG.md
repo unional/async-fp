@@ -1,5 +1,15 @@
 # @unional/gizmo
 
+## 2.1.0
+
+### Minor Changes
+
+- 93e47d8: Support `cleanup()` of _gizmo_.
+
+### Patch Changes
+
+- 4dd0a08: Update `type-plus`
+
 ## 2.0.2
 
 ### Patch Changes
