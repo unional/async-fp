@@ -116,6 +116,9 @@ const gizmo = define({
 A *gizmo* can have static or dynamic dependencies.
 You define the dependencies with the `static` and `dynamic` properties.
 
+**NOTE**: `dynamic` dependencies are not fully testing and may be removed in the future for simplicity.
+We may add them back in the future when the use case is clear.
+
 ```ts
 import { define } from '@unional/gizmo'
 
@@ -272,7 +275,7 @@ import { define } from '@unional/gizmo'
 
 const gizmo = define({
   async create(ctx) {
-    const mic = ctx.with(micGizmo)
+    const { mic } = await ctx.with(micGizmo).create()
     return {
       mic,
       miku: { sing() { /* ... */ } }
