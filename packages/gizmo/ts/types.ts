@@ -1,6 +1,6 @@
 
 // istanbul ignore next
-export const hiddenSymbol = Symbol('hidden prop symbol')
+export const _type = Symbol('hidden prop symbol')
 
 export type Gizmo<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
@@ -95,7 +95,7 @@ export type DynamicLoader<Dynamic extends Record<string, DepBuilder<unknown, unk
 	}
 
 export type DepBuilder<R, O> = {
-	[hiddenSymbol]: {
+	[_type]: {
 		require: R
 		optional: O
 	}
@@ -152,13 +152,13 @@ export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D ext
 	unknown,
 	unknown
 >
-	? unknown extends D[typeof hiddenSymbol]['require']
-		? unknown extends D[typeof hiddenSymbol]['optional']
+	? unknown extends D[typeof _type]['require']
+		? unknown extends D[typeof _type]['optional']
 			? unknown
-			: Partial<D[typeof hiddenSymbol]['optional']>
-		: unknown extends D[typeof hiddenSymbol]['optional']
-		? D[typeof hiddenSymbol]['require']
-		: D[typeof hiddenSymbol]['require'] & Partial<D[typeof hiddenSymbol]['optional']>
+			: Partial<D[typeof _type]['optional']>
+		: unknown extends D[typeof _type]['optional']
+		? D[typeof _type]['require']
+		: D[typeof _type]['require'] & Partial<D[typeof _type]['optional']>
 	: unknown
 
 /**
@@ -181,4 +181,4 @@ export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) ex
 /**
  * Missing some dependencies.
  */
-export type MissingDependency<T> = { [hiddenSymbol]: T }
+export type MissingDependency<T> = { [_type]: T }
