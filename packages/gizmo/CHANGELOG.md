@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 2.2.0
+
+### Minor Changes
+
+- e2da176: Supports defining gizmo with sync `create()`.
+
 ## 2.1.0
 
 ### Minor Changes
