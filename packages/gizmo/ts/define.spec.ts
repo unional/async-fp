@@ -1,6 +1,4 @@
-import { define } from './define.js'
-import { incubate } from './incubate.js'
-import { GizmoBase } from './index.js'
+import { define, incubate, type GizmoBase } from './index.js'
 
 it('can specify a sync start function', async () => {
 	const gizmo = define({
