@@ -1,8 +1,28 @@
 import { define, incubate, type GizmoBase } from './index.js'
 
+it('can define a gizmo with sync create without start', async () => {
+	const def = define({
+		create() {
+			return { a: 1 }
+		}
+	})
+	const gizmo = await incubate().with(def).create()
+	expect(gizmo.a).toEqual(1)
+})
+
+it('can define a gizmo with sync create return array form', async () => {
+	const def = define({
+		create() {
+			return [{ a: 1 }]
+		}
+	})
+	const gizmo = await incubate().with(def).create()
+	expect(gizmo.a).toEqual(1)
+})
+
 it('can specify a sync start function', async () => {
 	const gizmo = define({
-		async create() {
+		create() {
 			let value: string | undefined
 			return [
 				{

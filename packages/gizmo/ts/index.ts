@@ -1,12 +1,12 @@
 export * from './define.js'
 export * from './incubate.js'
 export type {
-	Gizmo,
-	GizmoBase,
-	GizmoStatic,
-	GizmoDynamic,
-	GizmoBoth,
 	DepBuilder,
 	DynamicLoader,
+	Gizmo,
+	GizmoBase,
+	GizmoBoth,
+	GizmoDynamic,
+	GizmoStatic,
 	MissingDependency
 } from './types.js'

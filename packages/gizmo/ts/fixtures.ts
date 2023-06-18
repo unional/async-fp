@@ -7,13 +7,15 @@ import { define } from './define.js'
  * The create function can be written as async arrow function.
  */
 export const leafGizmo = define({
-	create: async () => ({
-		leaf: {
-			foo(): number {
-				return 1
+	async create() {
+		return {
+			leaf: {
+				foo(): number {
+					return 1
+				}
 			}
 		}
-	})
+	}
 })
 export type LeafGizmo = define.Infer<typeof leafGizmo>
 

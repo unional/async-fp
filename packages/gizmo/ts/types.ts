@@ -1,4 +1,3 @@
-
 // istanbul ignore next
 export const _type = Symbol('hidden prop symbol')
 
@@ -21,7 +20,7 @@ export type GizmoBase<
 		| Record<string | symbol, unknown>
 		| void = Record<string | symbol, any> | void
 > = {
-	create(): Promise<Result>
+	create(): Result | Promise<Result>
 }
 
 export type GizmoStatic<
@@ -32,7 +31,7 @@ export type GizmoStatic<
 		| void = Record<string | symbol, any> | void
 > = {
 	readonly static: Static
-	create(ctx: DefineContext<Static, unknown>): Promise<Result>
+	create(ctx: DefineContext<Static, unknown>): Result | Promise<Result>
 }
 
 export type GizmoDynamic<
@@ -43,7 +42,7 @@ export type GizmoDynamic<
 		| void = Record<string | symbol, any> | void
 > = {
 	readonly dynamic: Dynamic
-	create(ctx: DefineContext<unknown, Dynamic>): Promise<Result>
+	create(ctx: DefineContext<unknown, Dynamic>): Result | Promise<Result>
 }
 
 export type GizmoBoth<
@@ -56,7 +55,7 @@ export type GizmoBoth<
 > = {
 	readonly static: Static
 	readonly dynamic: Dynamic
-	create(ctx: DefineContext<Static, Dynamic>): Promise<Result>
+	create(ctx: DefineContext<Static, Dynamic>): Result | Promise<Result>
 }
 
 export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
@@ -73,6 +72,10 @@ export type InferGizmo<D extends Gizmo> = D extends Gizmo
 			? Awaited<X>
 			: R extends Promise<[infer X extends Record<string | symbol, unknown>]>
 			? Awaited<X>
+			: R extends [infer X extends Record<string | symbol, unknown>, unknown]
+			? X
+			: R extends [infer X extends Record<string | symbol, unknown>]
+			? X
 			: R extends Record<string | symbol, any>
 			? Awaited<R>
 			: never
