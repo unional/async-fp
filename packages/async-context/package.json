@@ -82,7 +82,7 @@
     "repobuddy": "^1.0.2",
     "rimraf": "^5.0.0",
     "setimmediate": "^1.0.5",
-    "size-limit": "^9.0.0",
+    "size-limit": "^10.0.0",
     "ts-jest": "^29.1.0"
   },
   "engines": {
