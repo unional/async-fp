@@ -1,3 +1,4 @@
+import { it } from 'vitest'
 import { define, incubate } from './index.js'
 
 const baseGizmo = define({
@@ -21,7 +22,7 @@ const baseTestGizmo = define({
 				foo(): string {
 					return 'foo'
 				},
-				test() {}
+				test() { }
 			}
 		}
 	}

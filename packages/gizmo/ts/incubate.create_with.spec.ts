@@ -1,4 +1,5 @@
 import { testType } from 'type-plus'
+import { expect, it } from 'vitest'
 import {
 	LeafGizmo,
 	leafGizmo,

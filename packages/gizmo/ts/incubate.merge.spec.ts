@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest'
 import { incubate } from './incubate.js'
 import { leafGizmo, leafTupleGizmo, staticRequiredGizmo } from './testing.js'
 

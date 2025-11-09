@@ -1,7 +1,8 @@
 import { a, AssertOrder } from 'assertron'
-import { assertType, testType } from 'type-plus'
-import { AsyncContext, BlockingGetDetected, ContextAlreadyInitialized } from './index.js'
 import 'setimmediate'
+import { assertType, testType } from 'type-plus'
+import { describe, expect, it, test } from 'vitest'
+import { AsyncContext, BlockingGetDetected, ContextAlreadyInitialized } from './index.js'
 
 describe('constructor', () => {
 	test('with object', async () => {

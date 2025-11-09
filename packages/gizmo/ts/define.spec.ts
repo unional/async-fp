@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest'
 import { define, incubate, type GizmoBase } from './index.js'
 
 it('can define a gizmo with sync create without start', async () => {
@@ -72,7 +73,7 @@ it('needs explicit type when defining a gizmo function with optional params', as
 	// this is a bug in TypeScript introduced in 4.8, fixed in 5.1.0
 
 	const gizmoFn: (a?: number | undefined) => GizmoBase<void> = define((_a?: number) => ({
-		async create() {}
+		async create() { }
 	}))
 
 	await incubate().with(gizmoFn()).create()
