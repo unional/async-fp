@@ -1,5 +1,6 @@
 import { a } from 'assertron'
 import { testType } from 'type-plus'
+import { expect, it } from 'vitest'
 import { asyncAssert } from './index.js'
 
 it('throws as the asserter throws', () => {
@@ -19,7 +20,7 @@ it('throws as the promise rejects', () => {
 })
 
 it('returns the value if asserter passes', async () => {
-	const r = await asyncAssert(Promise.resolve({ a: 1 }), () => {})
+	const r = await asyncAssert(Promise.resolve({ a: 1 }), () => { })
 	testType.equal<{ a: number }, typeof r>(true)
 	expect(r).toEqual({ a: 1 })
 })
@@ -31,7 +32,7 @@ it('returns the value from the asserter if provided', async () => {
 })
 
 it('returns the value if async asserter passes', async () => {
-	const r = await asyncAssert(Promise.resolve({ a: 1 }), async () => {})
+	const r = await asyncAssert(Promise.resolve({ a: 1 }), async () => { })
 	testType.equal<typeof r, { a: number }>(true)
 	expect(r).toEqual({ a: 1 })
 })

@@ -19,6 +19,7 @@
     "repobuddy",
     "testname",
     "tsbuildinfo",
+    "vitest",
     "whoami"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"

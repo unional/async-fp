@@ -1,4 +1,5 @@
 import { testType } from 'type-plus'
+import { it } from 'vitest'
 import {
 	LeafGizmo,
 	dynamicBothGizmo,
@@ -60,14 +61,14 @@ it('gets both static and dynamic dependencies', () => {
 	testType.equal<
 		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
-			InferAllGizmo<typeof leafGizmo> &
-			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
+		InferAllGizmo<typeof leafGizmo> &
+		Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 
 	testType.equal<
 		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
-			InferAllGizmo<typeof leafGizmo> &
-			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
+		InferAllGizmo<typeof leafGizmo> &
+		Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 })

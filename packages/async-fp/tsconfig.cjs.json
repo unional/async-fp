@@ -5,6 +5,6 @@
     "outDir": "cjs"
   },
 	"exclude": [
-		"ts/gizmo_testing.ts"
+		"ts/**/*.spec.ts"
 	]
 }

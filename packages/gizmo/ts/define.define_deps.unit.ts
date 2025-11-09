@@ -1,5 +1,5 @@
 import { testType } from 'type-plus'
-import { define } from './index.js'
+import { it } from 'vitest'
 import {
 	LeafGizmo,
 	LeafTupleGizmo,
@@ -10,6 +10,7 @@ import {
 	leafWithStartGizmo,
 	leafWithStartGizmoFn
 } from './fixtures.js'
+import { define } from './index.js'
 import type { ExtractDep, GizmoBase } from './types.js'
 
 it('defines require dependency with type', () => {

@@ -1,25 +1,26 @@
 import { testType } from 'type-plus'
+import { it } from 'vitest'
 import type {
-	StaticBothGizmo,
-	StaticRequiredGizmo,
+	DynamicBothGizmo,
+	DynamicBothGizmoFn,
+	DynamicOptionalGizmo,
+	DynamicOptionalGizmoFn,
 	DynamicRequiredGizmo,
+	DynamicRequiredGizmoFn,
 	LeafGizmo,
 	LeafGizmoFn,
 	LeafTupleGizmo,
 	LeafTupleGizmoFn,
 	LeafWithStartGizmo,
 	LeafWithStartGizmoFn,
-	StaticOptionalGizmo,
-	StaticRequiredGizmoFn,
-	StaticOptionalGizmoFn,
+	StaticBothGizmo,
 	StaticBothGizmoFn,
-	DynamicOptionalGizmo,
-	DynamicBothGizmo,
-	DynamicRequiredGizmoFn,
-	DynamicOptionalGizmoFn,
-	DynamicBothGizmoFn,
 	StaticDynamicBothGizmo,
-	StaticDynamicBothGizmoFn
+	StaticDynamicBothGizmoFn,
+	StaticOptionalGizmo,
+	StaticOptionalGizmoFn,
+	StaticRequiredGizmo,
+	StaticRequiredGizmoFn
 } from './fixtures.js'
 
 it(`gets the result type for leaf gizmo`, () => {
