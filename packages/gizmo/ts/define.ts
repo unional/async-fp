@@ -1,12 +1,4 @@
-import type {
-	DepBuilder,
-	Gizmo,
-	GizmoBase,
-	GizmoBoth,
-	GizmoDynamic,
-	GizmoStatic,
-	InferAllGizmo
-} from './types.js'
+import type { DepBuilder, Gizmo, GizmoBase, GizmoBoth, GizmoDynamic, GizmoStatic, InferAllGizmo } from './types.js'
 
 /**
  * Define a gizmo with both static and dynamic dependencies.
@@ -27,7 +19,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmo: GizmoBoth<Static, Dynamic, Result>): typeof gizmo
 /**
  * Define a gizmo with static dependencies.
@@ -44,7 +36,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmo: GizmoStatic<Static, Result>): typeof gizmo
 /**
  * Define a gizmo with dynamic dependencies.
@@ -66,7 +58,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmo: GizmoDynamic<Dynamic, Result>): typeof gizmo
 /**
  * Define a gizmo with no dependencies.
@@ -81,7 +73,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmo: GizmoBase<Result>): typeof gizmo
 /**
  * Define a gizmo function with both static and dynamic dependencies.
@@ -103,7 +95,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmoFn: (...args: Params) => GizmoBoth<Static, Dynamic, Result>): typeof gizmoFn
 /**
  * Define a gizmo function with static dependencies.
@@ -121,7 +113,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmoFn: (...args: Params) => GizmoStatic<Static, Result>): typeof gizmoFn
 /**
  * Define a gizmo function with dynamic dependencies.
@@ -144,7 +136,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmoFn: (...args: Params) => GizmoDynamic<Dynamic, Result>): typeof gizmoFn
 /**
  * Define a gizmo function with no dependencies.
@@ -160,7 +152,7 @@ export function define<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, any>
-		| void
+		| void,
 >(gizmoFn: (...args: Params) => GizmoBase<Result>): typeof gizmoFn
 export function define(plugin: unknown): typeof plugin {
 	return plugin
@@ -169,7 +161,7 @@ export function define(plugin: unknown): typeof plugin {
 function defineDeps() {
 	return {
 		require: defineDeps,
-		optional: defineDeps
+		optional: defineDeps,
 	}
 }
 

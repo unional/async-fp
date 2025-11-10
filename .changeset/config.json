@@ -1,8 +1,8 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@2.1.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
-  "fixed": [["@unional/async-context", "async-fp"]],
-  "access": "public",
-  "baseBranch": "main"
+	"$schema": "https://unpkg.com/@changesets/config@2.1.1/schema.json",
+	"changelog": "@changesets/cli/changelog",
+	"commit": false,
+	"fixed": [["@unional/async-context", "async-fp"]],
+	"access": "public",
+	"baseBranch": "main"
 }

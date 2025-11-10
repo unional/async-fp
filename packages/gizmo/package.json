@@ -1,105 +1,104 @@
 {
-  "name": "@unional/gizmo",
-  "version": "2.2.0",
-  "description": "Building gizmos",
-  "homepage": "https://github.com/unional/async-fp/tree/main/packages/gizmo#readme",
-  "bugs": {
-    "url": "https://github.com/unional/async-fp/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/unional/async-fp.git",
-    "directory": "packages/gizmo"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Homa Wong (unional)",
-    "email": "homawong@gmail.com"
-  },
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./esm/index.d.ts",
-        "node": "./esm/index.js",
-        "default": "./esm/index.js"
-      },
-      "require": {
-        "types": "./cjs/index.d.ts",
-        "node": "./cjs/index.js",
-        "default": "./cjs/index.js"
-      },
-      "default": "./esm/index.js"
-    },
-    "./testing": {
-      "import": {
-        "types": "./esm/testing.d.ts",
-        "node": "./esm/testing.js",
-        "default": "./esm/testing.js"
-      },
-      "require": {
-        "types": "./cjs/testing.d.ts",
-        "node": "./cjs/testing.js",
-        "default": "./cjs/testing.js"
-      },
-      "default": "./esm/testing.js"
-    }
-  },
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "jsnext:main": "./esm/index.js",
-  "types": "./esm/index.d.ts",
-  "files": [
-    "cjs",
-    "esm",
-    "testing",
-    "ts",
-    "!**/*.{spec,unit,accept,system,perf,stress,test}.*"
-  ],
-  "scripts": {
-    "build": "run-p build:cjs build:esm",
-    "build:cjs": "buddy ts build cjs",
-    "build:esm": "tsc",
-    "clean": "rimraf cjs esm coverage *.tsbuildinfo",
-    "coverage": "vitest run --coverage",
-    "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
-    "nuke": "run-s clean nuke:local",
-    "nuke:local": "rimraf node_modules",
-    "prepublishOnly": "run-s build",
-    "size": "size-limit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "w": "pnpm test:watch",
-    "verify": "npm-run-all -p lint build coverage size"
-  },
-  "dependencies": {
-    "type-plus": "8.0.0-beta.7"
-  },
-  "devDependencies": {
-    "@repobuddy/typescript": "^2.0.0",
-    "@size-limit/preset-small-lib": "^9.0.0",
-    "@vitest/coverage-v8": "^4.0.8",
-    "assertron": "^11.0.1",
-    "cross-env": "^7.0.3",
-    "npm-run-all2": "^6.0.0",
-    "repobuddy": "^1.0.2",
-    "rimraf": "^5.0.0",
-    "size-limit": "^9.0.0",
-    "vitest": "^4.0.8"
-  },
-  "engines": {
-    "node": ">= 14.16"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "size-limit": [
-    {
-      "path": "./cjs/index.js"
-    },
-    {
-      "path": "./esm/index.js"
-    }
-  ]
+	"name": "@unional/gizmo",
+	"version": "2.2.0",
+	"description": "Building gizmos",
+	"homepage": "https://github.com/unional/async-fp/tree/main/packages/gizmo#readme",
+	"bugs": {
+		"url": "https://github.com/unional/async-fp/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/unional/async-fp.git",
+		"directory": "packages/gizmo"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Homa Wong (unional)",
+		"email": "homawong@gmail.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./esm/index.d.ts",
+				"node": "./esm/index.js",
+				"default": "./esm/index.js"
+			},
+			"require": {
+				"types": "./cjs/index.d.ts",
+				"node": "./cjs/index.js",
+				"default": "./cjs/index.js"
+			},
+			"default": "./esm/index.js"
+		},
+		"./testing": {
+			"import": {
+				"types": "./esm/testing.d.ts",
+				"node": "./esm/testing.js",
+				"default": "./esm/testing.js"
+			},
+			"require": {
+				"types": "./cjs/testing.d.ts",
+				"node": "./cjs/testing.js",
+				"default": "./cjs/testing.js"
+			},
+			"default": "./esm/testing.js"
+		}
+	},
+	"main": "./cjs/index.js",
+	"module": "./esm/index.js",
+	"jsnext:main": "./esm/index.js",
+	"types": "./esm/index.d.ts",
+	"files": [
+		"cjs",
+		"esm",
+		"testing",
+		"ts",
+		"!**/*.{spec,unit,accept,system,perf,stress,test}.*"
+	],
+	"scripts": {
+		"build": "run-p build:cjs build:esm",
+		"build:cjs": "buddy ts build cjs",
+		"build:esm": "tsc",
+		"clean": "rimraf cjs esm coverage *.tsbuildinfo",
+		"coverage": "vitest run --coverage",
+		"lint": "biome check .",
+		"nuke": "run-s clean nuke:local",
+		"nuke:local": "rimraf node_modules",
+		"prepublishOnly": "run-s build",
+		"size": "size-limit",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"w": "pnpm test:watch",
+		"verify": "npm-run-all -p lint build coverage size"
+	},
+	"dependencies": {
+		"type-plus": "8.0.0-beta.7"
+	},
+	"devDependencies": {
+		"@repobuddy/typescript": "^2.0.0",
+		"@size-limit/preset-small-lib": "^9.0.0",
+		"@vitest/coverage-v8": "^4.0.8",
+		"assertron": "^11.0.1",
+		"npm-run-all2": "^6.0.0",
+		"repobuddy": "^1.0.2",
+		"rimraf": "^5.0.0",
+		"size-limit": "^9.0.0",
+		"vitest": "^4.0.8"
+	},
+	"engines": {
+		"node": ">= 14.16"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"size-limit": [
+		{
+			"path": "./cjs/index.js"
+		},
+		{
+			"path": "./esm/index.js"
+		}
+	]
 }

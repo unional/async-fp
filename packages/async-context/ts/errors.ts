@@ -8,10 +8,6 @@ export class ContextAlreadyInitialized extends ModuleError {
 
 export class BlockingGetDetected extends ModuleError {
 	constructor(options?: ModuleError.Options) {
-		super(
-			'@unional/async-context',
-			`a blocking get() detected. Are you calling it within extend()?`,
-			options
-		)
+		super('@unional/async-context', 'a blocking get() detected. Are you calling it within extend()?', options)
 	}
 }

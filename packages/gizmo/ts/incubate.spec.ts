@@ -9,7 +9,7 @@ import {
 	leafWithStartGizmo,
 	staticDynamicBothGizmo,
 	staticOptionalGizmo,
-	staticRequiredGizmo
+	staticRequiredGizmo,
 } from './fixtures.js'
 import { define, incubate, type MissingDependency } from './index.js'
 
@@ -28,8 +28,8 @@ it('incubates with an base object', async () => {
 		base: {
 			foo(): string {
 				return 'foo'
-			}
-		}
+			},
+		},
 	}).create()
 
 	testType.equal<typeof r, { base: { foo(): string } }>(true)
@@ -67,7 +67,7 @@ it('incubates gizmo with start function', async () => {
 })
 
 const newLeaf = define({
-	create: async () => ({ leaf: { foo: (): string => 'foo' } })
+	create: async () => ({ leaf: { foo: (): string => 'foo' } }),
 })
 
 it('overrides gizmo', async () => {
@@ -155,18 +155,18 @@ it('calls start at the order of `with()`', async () => {
 	const s1 = define({
 		async create() {
 			return [undefined, () => o.once(1)]
-		}
+		},
 	})
 	const s2 = define({
 		async create() {
 			return [undefined, () => o.once(2)]
-		}
+		},
 	})
 	const s3 = define({
 		async create() {
 			await incubate().with(s2).create()
 			return [undefined, () => o.once(3)]
-		}
+		},
 	})
 
 	await incubate().with(s1).with(s3).create()
@@ -187,7 +187,7 @@ it('can pass in an start handler during create', async () => {
 	const app = await incubate()
 		.with(leafGizmo)
 		.with(staticRequiredGizmo)
-		.create(app => {
+		.create((app) => {
 			expect(app.static_required.foo()).toEqual(1)
 		})
 
@@ -199,7 +199,7 @@ it('can pass in an async start handler during create', async () => {
 	const app = await incubate()
 		.with(leafGizmo)
 		.with(staticRequiredGizmo)
-		.create(async app => {
+		.create(async (app) => {
 			expect(app.static_required.foo()).toEqual(1)
 		})
 
@@ -212,12 +212,12 @@ it('can provide an initializer that calls when the gizmo is created', async () =
 	const incubator = incubate()
 		.with(leafGizmo)
 		.with(staticRequiredGizmo)
-		.init(app => {
+		.init((app) => {
 			o.once(1)
 			expect(app.static_required.foo()).toEqual(1)
 		})
 
-	const app = await incubator.create(app => {
+	const app = await incubator.create((app) => {
 		o.once(2)
 		expect(app.static_required.foo()).toEqual(1)
 	})
@@ -232,13 +232,13 @@ it('can provide an initializer with cleanup', async () => {
 	const incubator = incubate()
 		.with(leafGizmo)
 		.with(staticRequiredGizmo)
-		.init(app => {
+		.init((app) => {
 			o.once(1)
 			expect(app.static_required.foo()).toEqual(1)
 			return () => o.once(3)
 		})
 
-	const app = await incubator.create(app => {
+	const app = await incubator.create((app) => {
 		o.once(2)
 		expect(app.static_required.foo()).toEqual(1)
 		return () => o.once(4)

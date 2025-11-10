@@ -1,17 +1,10 @@
 {
-  "extends": "@repobuddy/typescript/tsconfig/monorepo",
-  "compilerOptions": {
-    "target": "es2022",
-    "lib": [
-      "ES2022",
-      "ESNext.Disposable",
-      "DOM"
-    ],
-    "outDir": "esm",
-    "rootDir": "ts"
-  },
-  "include": [
-    "ts",
-    "types"
-  ]
+	"extends": "@repobuddy/typescript/tsconfig/monorepo",
+	"compilerOptions": {
+		"target": "es2022",
+		"lib": ["ES2022", "ESNext.Disposable", "DOM"],
+		"outDir": "esm",
+		"rootDir": "ts"
+	},
+	"include": ["ts", "types"]
 }

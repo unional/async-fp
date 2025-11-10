@@ -1,14 +1,14 @@
 import { testType } from 'type-plus'
 import { it } from 'vitest'
 import {
-	LeafGizmo,
-	LeafTupleGizmo,
+	type LeafGizmo,
+	type LeafTupleGizmo,
 	leafGizmo,
 	leafGizmoFn,
 	leafTupleGizmo,
 	leafTupleGizmoFn,
 	leafWithStartGizmo,
-	leafWithStartGizmoFn
+	leafWithStartGizmoFn,
 } from './fixtures.js'
 import { define } from './index.js'
 import type { ExtractDep, GizmoBase } from './types.js'
@@ -111,7 +111,7 @@ it('infers gizmo function with optional params', () => {
 	const g = define((options?: { a: number }) => ({
 		async create() {
 			return options
-		}
+		},
 	}))
 
 	g({ a: 1 })

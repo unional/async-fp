@@ -5,7 +5,7 @@ it('can define a gizmo with sync create without start', async () => {
 	const def = define({
 		create() {
 			return { a: 1 }
-		}
+		},
 	})
 	const gizmo = await incubate().with(def).create()
 	expect(gizmo.a).toEqual(1)
@@ -15,7 +15,7 @@ it('can define a gizmo with sync create return array form', async () => {
 	const def = define({
 		create() {
 			return [{ a: 1 }]
-		}
+		},
 	})
 	const gizmo = await incubate().with(def).create()
 	expect(gizmo.a).toEqual(1)
@@ -30,14 +30,14 @@ it('can specify a sync start function', async () => {
 					value: {
 						get() {
 							return value
-						}
-					}
+						},
+					},
 				},
 				() => {
 					value = 'started'
-				}
+				},
 			]
-		}
+		},
 	})
 
 	const app = await incubate().with(gizmo).create()
@@ -54,14 +54,14 @@ it('can specify a async start function', async () => {
 					value: {
 						get() {
 							return value
-						}
-					}
+						},
+					},
 				},
 				async () => {
 					value = 'started'
-				}
+				},
 			]
-		}
+		},
 	})
 
 	const app = await incubate().with(gizmo).create()
@@ -73,7 +73,7 @@ it('needs explicit type when defining a gizmo function with optional params', as
 	// this is a bug in TypeScript introduced in 4.8, fixed in 5.1.0
 
 	const gizmoFn: (a?: number | undefined) => GizmoBase<void> = define((_a?: number) => ({
-		async create() { }
+		async create() {},
 	}))
 
 	await incubate().with(gizmoFn()).create()
@@ -86,7 +86,7 @@ it('can define a cleanup function as the return value of start', async () => {
 	const gizmo = define({
 		async create() {
 			return [{}, () => () => expect(true).toBe(true)]
-		}
+		},
 	})
 
 	const app = await incubate().with(gizmo).create()

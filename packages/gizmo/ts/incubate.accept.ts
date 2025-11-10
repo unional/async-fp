@@ -7,10 +7,10 @@ const baseGizmo = define({
 			base: {
 				foo(): string {
 					return 'foo'
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 
 type BaseGizmo = define.Infer<typeof baseGizmo>
@@ -22,10 +22,10 @@ const baseTestGizmo = define({
 				foo(): string {
 					return 'foo'
 				},
-				test() { }
-			}
+				test() {},
+			},
 		}
-	}
+	},
 })
 
 const depGizmo = define({
@@ -35,17 +35,17 @@ const depGizmo = define({
 			dep: {
 				foo(): string {
 					return 'foo'
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 
 it('use existing type instead of required dep type', async () => {
 	await incubate()
 		.with(baseTestGizmo)
 		.with(depGizmo)
-		.create(app => {
+		.create((app) => {
 			app.base.test()
 		})
 })

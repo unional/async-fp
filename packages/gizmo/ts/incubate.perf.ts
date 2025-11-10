@@ -1,9 +1,5 @@
-/* eslint-disable no-console */
 import { it } from 'vitest'
-import {
-	leafGizmo,
-	staticRequiredGizmo
-} from './fixtures.js'
+import { leafGizmo, staticRequiredGizmo } from './fixtures.js'
 import { incubate } from './index.js'
 
 it.skip('performance comparison', async () => {
@@ -14,7 +10,7 @@ it.skip('performance comparison', async () => {
 	for (let i = 0; i < 100000; i++) {
 		entries.push({
 			leaf: { foo: (): number => 1 },
-			static_required: { foo: (): number => 1 }
+			static_required: { foo: (): number => 1 },
 		})
 	}
 	console.timeEnd('plain object')
@@ -23,10 +19,10 @@ it.skip('performance comparison', async () => {
 	for (let i = 0; i < 100000; i++) {
 		const y = {}
 		Object.assign(y, {
-			leaf: { foo: (): number => 1 }
+			leaf: { foo: (): number => 1 },
 		})
 		Object.assign(y, {
-			static_required: { foo: (): number => 1 }
+			static_required: { foo: (): number => 1 },
 		})
 
 		entries.push(y)

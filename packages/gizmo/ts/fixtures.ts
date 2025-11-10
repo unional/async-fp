@@ -12,10 +12,10 @@ export const leafGizmo = define({
 			leaf: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type LeafGizmo = define.Infer<typeof leafGizmo>
 
@@ -32,11 +32,11 @@ export const leafTupleGizmo = define({
 				leaf_tuple: {
 					foo(): number {
 						return 1
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 })
 export type LeafTupleGizmo = define.Infer<typeof leafTupleGizmo>
 
@@ -57,13 +57,13 @@ export const leafWithStartGizmo = define({
 					},
 					foo() {
 						return value
-					}
-				}
+					},
+				},
 			},
 			// the start function can be sync
-			() => (value = 'started')
+			() => (value = 'started'),
 		]
-	}
+	},
 })
 export type LeafWithStartGizmo = define.Infer<typeof leafWithStartGizmo>
 
@@ -79,13 +79,13 @@ export const leafWithAsyncStartGizmo = define({
 					},
 					foo() {
 						return value
-					}
-				}
+					},
+				},
 			},
 			// the start function can be async
-			() => Promise.resolve((value = 'started'))
+			() => Promise.resolve((value = 'started')),
 		]
-	}
+	},
 })
 export type LeafWithAsyncStartGizmo = define.Infer<typeof leafWithAsyncStartGizmo>
 
@@ -101,10 +101,10 @@ export const leafGizmoFn = define((value: number) => ({
 			leaf_fn: {
 				foo() {
 					return value
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type LeafGizmoFn = define.Infer<typeof leafGizmoFn>
 
@@ -119,11 +119,11 @@ export const leafTupleGizmoFn = define((value: number) => ({
 				leaf_tuple_fn: {
 					foo(): number {
 						return value
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 }))
 export type LeafTupleGizmoFn = define.Infer<typeof leafTupleGizmoFn>
 
@@ -136,11 +136,11 @@ export const leafWithStartGizmoFn = define((value: number) => ({
 			leaf_start_fn: {
 				foo(): number {
 					return value
-				}
-			}
+				},
+			},
 		},
-		() => Promise.resolve()
-	]
+		() => Promise.resolve(),
+	],
 }))
 export type LeafWithStartGizmoFn = define.Infer<typeof leafWithStartGizmoFn>
 
@@ -149,18 +149,18 @@ export type LeafWithStartGizmoFn = define.Infer<typeof leafWithStartGizmoFn>
  */
 export const staticRequiredGizmo = define({
 	static: define.require<LeafGizmo>(),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'with'>, LeafGizmo>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'with'>, LeafGizmo>(true)
 		return [
 			{
 				static_required: {
 					foo(): number {
 						return 1
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 })
 export type StaticRequiredGizmo = define.Infer<typeof staticRequiredGizmo>
 
@@ -169,18 +169,18 @@ export type StaticRequiredGizmo = define.Infer<typeof staticRequiredGizmo>
  */
 export const staticOptionalGizmo = define({
 	static: define.optional<LeafGizmoFn>(),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'with'>, Partial<LeafGizmoFn>>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'with'>, Partial<LeafGizmoFn>>(true)
 		return [
 			{
 				static_optional: {
 					foo(): number {
 						return 1
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 })
 export type StaticOptionalGizmo = define.Infer<typeof staticOptionalGizmo>
 
@@ -189,16 +189,16 @@ export type StaticOptionalGizmo = define.Infer<typeof staticOptionalGizmo>
  */
 export const staticBothGizmo = define({
 	static: define.require<LeafGizmo>().optional<LeafTupleGizmo>(),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'with'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'with'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
 		return {
 			static_both: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type StaticBothGizmo = define.Infer<typeof staticBothGizmo>
 
@@ -207,18 +207,18 @@ export type StaticBothGizmo = define.Infer<typeof staticBothGizmo>
  */
 export const staticRequiredGizmoFn = define(() => ({
 	static: define.require(leafGizmo),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'with'>, LeafGizmo>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'with'>, LeafGizmo>(true)
 		return [
 			{
 				static_required_fn: {
 					foo(): number {
 						return 1
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 }))
 export type StaticRequiredGizmoFn = define.Infer<typeof staticRequiredGizmoFn>
 
@@ -227,18 +227,18 @@ export type StaticRequiredGizmoFn = define.Infer<typeof staticRequiredGizmoFn>
  */
 export const staticOptionalGizmoFn = define(() => ({
 	static: define.optional(leafGizmoFn),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'with'>, Partial<LeafGizmoFn>>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'with'>, Partial<LeafGizmoFn>>(true)
 		return [
 			{
 				static_optional_fn: {
 					foo(): number {
 						return 1
-					}
-				}
-			}
+					},
+				},
+			},
 		]
-	}
+	},
 }))
 export type StaticOptionalGizmoFn = define.Infer<typeof staticOptionalGizmoFn>
 
@@ -247,16 +247,16 @@ export type StaticOptionalGizmoFn = define.Infer<typeof staticOptionalGizmoFn>
  */
 export const staticBothGizmoFn = define(() => ({
 	static: define.require(leafGizmo).optional(leafTupleGizmo),
-	async create(ctx) {
-		testType.equal<Omit<typeof ctx, 'load' | 'with'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
+	async create(_ctx) {
+		testType.equal<Omit<typeof _ctx, 'load' | 'with'>, LeafGizmo & Partial<LeafTupleGizmo>>(true)
 		return {
 			static_both_fn: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type StaticBothGizmoFn = define.Infer<typeof staticBothGizmoFn>
 
@@ -272,10 +272,10 @@ export const dynamicRequiredGizmo = define({
 			dynamic_required: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type DynamicRequiredGizmo = define.Infer<typeof dynamicRequiredGizmo>
 
@@ -284,7 +284,7 @@ export type DynamicRequiredGizmo = define.Infer<typeof dynamicRequiredGizmo>
  */
 export const dynamicOptionalGizmo = define({
 	dynamic: {
-		leaf_tuple_fn: define.optional<LeafTupleGizmoFn>()
+		leaf_tuple_fn: define.optional<LeafTupleGizmoFn>(),
 	},
 	async create(ctx) {
 		const lt = await ctx.load('leaf_tuple_fn')
@@ -293,10 +293,10 @@ export const dynamicOptionalGizmo = define({
 			dynamic_optional: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type DynamicOptionalGizmo = define.Infer<typeof dynamicOptionalGizmo>
 
@@ -306,7 +306,7 @@ export type DynamicOptionalGizmo = define.Infer<typeof dynamicOptionalGizmo>
 export const dynamicBothGizmo = define({
 	dynamic: {
 		leaf: define.require<LeafGizmo>(),
-		leaf_tuple: define.optional<LeafTupleGizmo>()
+		leaf_tuple: define.optional<LeafTupleGizmo>(),
 	},
 	async create(ctx) {
 		const l = await ctx.load('leaf')
@@ -317,10 +317,10 @@ export const dynamicBothGizmo = define({
 			dynamic_both: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type DynamicBothGizmo = define.Infer<typeof dynamicBothGizmo>
 
@@ -336,10 +336,10 @@ export const dynamicRequiredGizmoFn = define((value: number) => ({
 			dynamic_required_fn: {
 				foo(): number {
 					return value
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type DynamicRequiredGizmoFn = define.Infer<typeof dynamicRequiredGizmoFn>
 
@@ -355,10 +355,10 @@ export const dynamicOptionalGizmoFn = define((value: number) => ({
 			dynamic_optional_fn: {
 				foo() {
 					return d.leaf_tuple_fn?.foo() ?? value
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type DynamicOptionalGizmoFn = define.Infer<typeof dynamicOptionalGizmoFn>
 
@@ -368,7 +368,7 @@ export type DynamicOptionalGizmoFn = define.Infer<typeof dynamicOptionalGizmoFn>
 export const dynamicBothGizmoFn = define((value: number) => ({
 	dynamic: {
 		leaf: define.require<LeafTupleGizmoFn>(),
-		leaf_tuple: define.optional<LeafWithStartGizmo>()
+		leaf_tuple: define.optional<LeafWithStartGizmo>(),
 	},
 	async create(ctx) {
 		const d = await ctx.load('leaf')
@@ -379,10 +379,10 @@ export const dynamicBothGizmoFn = define((value: number) => ({
 			dynamic_both_fn: {
 				foo() {
 					return d.leaf_tuple_fn.foo() + (e.leaf_start?.count() ?? value)
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type DynamicBothGizmoFn = define.Infer<typeof dynamicBothGizmoFn>
 
@@ -394,13 +394,10 @@ export const staticDynamicBothGizmo = define({
 	static: define.require(leafWithStartGizmo).optional(dynamicRequiredGizmo),
 	dynamic: {
 		leaf: define.require<LeafGizmo>(),
-		leaf_tuple: define.optional<LeafTupleGizmo>()
+		leaf_tuple: define.optional<LeafTupleGizmo>(),
 	},
 	async create(ctx) {
-		testType.equal<
-			Omit<typeof ctx, 'load' | 'with'>,
-			LeafWithStartGizmo & Partial<DynamicRequiredGizmo>
-		>(true)
+		testType.equal<Omit<typeof ctx, 'load' | 'with'>, LeafWithStartGizmo & Partial<DynamicRequiredGizmo>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<typeof l, LeafGizmo>(true)
 		const lt = await ctx.load('leaf_tuple')
@@ -409,10 +406,10 @@ export const staticDynamicBothGizmo = define({
 			static_dynamic_both: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 })
 export type StaticDynamicBothGizmo = define.Infer<typeof staticDynamicBothGizmo>
 
@@ -424,13 +421,10 @@ export const staticDynamicBothGizmoFn = define(() => ({
 	static: define.require(leafWithStartGizmo).optional(dynamicRequiredGizmo),
 	dynamic: {
 		leaf: define.require<LeafGizmo>(),
-		leaf_tuple: define.optional<LeafTupleGizmo>()
+		leaf_tuple: define.optional<LeafTupleGizmo>(),
 	},
 	async create(ctx) {
-		testType.equal<
-			Omit<typeof ctx, 'load' | 'with'>,
-			LeafWithStartGizmo & Partial<DynamicRequiredGizmo>
-		>(true)
+		testType.equal<Omit<typeof ctx, 'load' | 'with'>, LeafWithStartGizmo & Partial<DynamicRequiredGizmo>>(true)
 		const l = await ctx.load('leaf')
 		testType.equal<typeof l, LeafGizmo>(true)
 		const lt = await ctx.load('leaf_tuple')
@@ -439,10 +433,10 @@ export const staticDynamicBothGizmoFn = define(() => ({
 			static_dynamic_both_fn: {
 				foo(): number {
 					return 1
-				}
-			}
+				},
+			},
 		}
-	}
+	},
 }))
 export type StaticDynamicBothGizmoFn = define.Infer<typeof staticDynamicBothGizmoFn>
 
@@ -454,21 +448,21 @@ export type NavigateContext = {
 
 export const implementGizmo = define(() => ({
 	static: define.require(leafTupleGizmoFn),
-	async create(ctx): Promise<NavigateContext> {
-		testType.equal<Omit<typeof ctx, 'with'>, LeafTupleGizmoFn>(true)
+	async create(_ctx): Promise<NavigateContext> {
+		testType.equal<Omit<typeof _ctx, 'with'>, LeafTupleGizmoFn>(true)
 		return {
 			navigate: {
-				goBack() {}
-			}
+				goBack() {},
+			},
 		}
-	}
+	},
 }))
 
 /**
  * Side effect gizmo is a gizmo that return void for its create function.
  */
 export const sideEffectGizmo = define({
-	async create() {}
+	async create() {},
 })
 
 /**
@@ -480,7 +474,7 @@ export type SideEffectGizmo = define.Infer<typeof sideEffectGizmo>
  * Side effect gizmo in function form.
  */
 export const sideEffectGizmoFn = define(() => ({
-	async create() {}
+	async create() {},
 }))
 
 /**
@@ -493,7 +487,7 @@ export type SideEffectGizmoFn = define.Infer<typeof sideEffectGizmoFn>
  */
 export const requireSideEffectGizmo = define({
 	static: define.require(sideEffectGizmo),
-	async create() {}
+	async create() {},
 })
 
 /**
@@ -518,10 +512,10 @@ export const requireSideEffectGizmo = define({
  */
 export const genericGizmoFn = define(<N>(value: N) => ({
 	static: define.require(leafTupleGizmoFn),
-	async create(ctx: LeafTupleGizmoFn) {
-		testType.equal<typeof ctx, LeafTupleGizmoFn>(true)
+	async create(_ctx: LeafTupleGizmoFn) {
+		testType.equal<typeof _ctx, LeafTupleGizmoFn>(true)
 		return {
-			foo: value
+			foo: value,
 		}
-	}
+	},
 }))
