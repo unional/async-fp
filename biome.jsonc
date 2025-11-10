@@ -1,0 +1,18 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+	"extends": ["@repobuddy/biome"],
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true,
+		"defaultBranch": "main"
+	},
+	"linter": {
+		"rules": {
+			"suspicious": {
+				// https://github.com/biomejs/biome/issues/8055
+				"noConfusingVoidType": "off"
+			}
+		}
+	}
+}

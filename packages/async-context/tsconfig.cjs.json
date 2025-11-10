@@ -1,10 +1,8 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "cjs"
-  },
-  "exclude": [
-    "ts/**/*.spec.ts"
-  ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "CommonJS",
+		"outDir": "cjs"
+	},
+	"exclude": ["ts/**/*.spec.ts"]
 }

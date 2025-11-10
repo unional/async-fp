@@ -1,20 +1,17 @@
 {
 	"extends": "@repobuddy/typescript/tsconfig/monorepo",
-  "compilerOptions": {
-    "outDir": "esm",
-    "lib": ["ES2022", "ESNext.Disposable", "DOM"],
-    "rootDir": "ts"
-  },
-  "references": [
-    {
-      "path": "../async-context"
-    },
+	"compilerOptions": {
+		"outDir": "esm",
+		"lib": ["ES2022", "ESNext.Disposable", "DOM"],
+		"rootDir": "ts"
+	},
+	"references": [
+		{
+			"path": "../async-context"
+		},
 		{
 			"path": "../gizmo"
 		}
-  ],
-  "include": [
-    "ts",
-    "types"
-  ]
+	],
+	"include": ["ts", "types"]
 }

@@ -1,18 +1,13 @@
 import { testType } from 'type-plus'
 import { expect, it } from 'vitest'
-import {
-	LeafGizmo,
-	leafGizmo,
-	leafWithStartGizmo,
-	staticRequiredGizmo
-} from './fixtures.js'
+import { type LeafGizmo, leafGizmo, leafWithStartGizmo, staticRequiredGizmo } from './fixtures.js'
 import { define, incubate } from './index.js'
 
 it('can use incubator within create to instantiate another gizmo', async () => {
 	const gizmo = define({
 		async create() {
 			return await incubate().with(leafGizmo).create()
-		}
+		},
 	})
 
 	const r = await incubate().with(gizmo).create()
@@ -23,7 +18,7 @@ it('can use incubator within create to instantiate another gizmo with start', as
 	const gizmo = define({
 		async create() {
 			return await incubate().with(leafWithStartGizmo).create()
-		}
+		},
 	})
 
 	const r = await incubate().with(gizmo).create()
@@ -37,7 +32,7 @@ it('provides the context available so far for creating additional gizmo with inc
 		static: define.require<LeafGizmo>(),
 		async create(ctx) {
 			return await incubate(ctx).with(staticRequiredGizmo).create()
-		}
+		},
 	})
 
 	const r = await incubate().with(leafGizmo).with(gizmo).create()

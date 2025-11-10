@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"biomejs.biome",
+		"streetsidesoftware.code-spell-checker",
+		"editorconfig.editorconfig",
+		"davidanson.vscode-markdownlint",
+		"unional.vscode-sort-package-json",
+		"aaron-bond.better-comments"
+	]
+}

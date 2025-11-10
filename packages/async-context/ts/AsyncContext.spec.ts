@@ -232,7 +232,7 @@ describe('extend()', () => {
 
 		const orig = new AsyncContext<Orig>({ type: 'a', value: 1 })
 
-		const merged = orig.extend(context => Promise.resolve({ value: String(context.value) }))
+		const merged = orig.extend((context) => Promise.resolve({ value: String(context.value) }))
 		const value = await merged.get()
 		expect(value).toEqual({ type: 'a', value: '1' })
 
@@ -259,7 +259,7 @@ describe('extend()', () => {
 		const gettingOriginal = ctx.get()
 		// make sure `gettingOriginal` is triggered,
 		// and also `extend()` and `gettingNew` are called before resolving
-		ctx.initialize(() => new Promise(a => setTimeout(() => a({ a: 1 }), 100)))
+		ctx.initialize(() => new Promise((a) => setTimeout(() => a({ a: 1 }), 100)))
 
 		const gettingNew = ctx.extend(async () => ({ b: 2 })).get()
 
@@ -271,7 +271,7 @@ describe('extend()', () => {
 		const ctx = new AsyncContext<{ a: number } & { b: number } & { c: number }>({
 			a: 1,
 			b: 1,
-			c: 1
+			c: 1,
 		}).extend(({ a }: { a: number }) => ({ b: String(a) }))
 		const r = await ctx.get()
 
@@ -320,16 +320,14 @@ describe('calling initialize() out of band', () => {
 	})
 
 	it('provides init value to extend fn', async () => {
-		const ctx = new AsyncContext<{ a: number }, { a: number }>().extend(ctx => ({ b: ctx.a + 1 }))
+		const ctx = new AsyncContext<{ a: number }, { a: number }>().extend((ctx) => ({ b: ctx.a + 1 }))
 		setImmediate(() => ctx.initialize({ a: 2 }))
 		const { b } = await ctx.get()
 		expect(b).toBe(3)
 	})
 
 	it('provides init value to extend async fn', async () => {
-		const ctx = new AsyncContext<{ a: number }, { a: number }>().extend(ctx =>
-			Promise.resolve({ b: ctx.a + 1 })
-		)
+		const ctx = new AsyncContext<{ a: number }, { a: number }>().extend((ctx) => Promise.resolve({ b: ctx.a + 1 }))
 		setImmediate(() => ctx.initialize({ a: 2 }))
 		const { b } = await ctx.get()
 		expect(b).toBe(3)

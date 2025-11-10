@@ -1,10 +1,4 @@
-import {
-	isType,
-	type AnyFunction,
-	type KeyTypes,
-	type LeftJoin,
-	type RequiredKeys
-} from 'type-plus'
+import { type AnyFunction, type KeyTypes, type LeftJoin, type RequiredKeys, isType } from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
 
 const closableApps = new Map<Record<KeyTypes, unknown>, CallableFunction[]>()
@@ -38,9 +32,7 @@ export function incubate(): Omit<GizmoIncubator<unknown>, 'create' | 'init'>
  * const gizmo = await incubate(baseObject).with(gizmo2).create()
  * ```
  */
-export function incubate<Base extends Record<string | symbol, unknown>>(
-	base: Base
-): GizmoIncubator<Base>
+export function incubate<Base extends Record<string | symbol, unknown>>(base: Base): GizmoIncubator<Base>
 export function incubate(base?: Record<string | symbol, unknown>) {
 	const dependencies: Array<{ gizmo: Gizmo } | { instance: Record<string | symbol, unknown> }> = []
 	if (base) dependencies.push({ instance: base })
@@ -63,10 +55,10 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 			const result = {
 				async load(_identifier: string) {
 					return result
-				}
+				},
 			} as Record<string | symbol, unknown>
 			for (const dep of dependencies) {
-				if (isType<{ gizmo: Gizmo }>(dep, d => !!d.gizmo)) {
+				if (isType<{ gizmo: Gizmo }>(dep, (d) => !!d.gizmo)) {
 					await injectGizmo(result, dep.gizmo)
 				} else {
 					Object.assign(result, dep.instance)
@@ -78,9 +70,10 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 			if (start) {
 				addCloser(result, await start(result))
 			}
+			// biome-ignore lint/performance/noDelete: specific implementation
 			delete result['load']
 			return result
-		}
+		},
 	} as unknown
 }
 
@@ -98,7 +91,7 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 incubate.cleanup = (app: Record<string | symbol, unknown>) => {
 	const closers = closableApps.get(app)
 	if (closers) {
-		closers.forEach(c => c())
+		closers.forEach((c) => void c())
 	}
 }
 
@@ -111,10 +104,9 @@ async function injectGizmo(result: Record<string | symbol, unknown>, gizmo: Gizm
 		}
 		Object.assign(result, value)
 		return value
-	} else {
-		Object.assign(result, gizmoResult)
-		return gizmoResult
 	}
+	Object.assign(result, gizmoResult)
+	return gizmoResult
 }
 
 export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown> = {
@@ -127,19 +119,19 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	 * This is because TypeScript will perform type inference in the wrong order when inline.
 	 */
 	with<G extends Gizmo>(
-		gizmo: G
+		gizmo: G,
 	): ExtractGizmoDeps<G> extends infer Deps
 		? R extends Deps
 			? InferIncubator<R, G>
 			: Deps extends Record<string | number | symbol, any>
-			? RequiredKeys<Deps> extends keyof R
-				? InferIncubator<R, G>
-				: MissingDependency<Exclude<RequiredKeys<Deps>, keyof R>>
-			: never // @TODO: may be missing some cases here
+				? RequiredKeys<Deps> extends keyof R
+					? InferIncubator<R, G>
+					: MissingDependency<Exclude<RequiredKeys<Deps>, keyof R>>
+				: never // @TODO: may be missing some cases here
 		: never
 
 	merge<G extends Record<string | symbol, unknown>>(
-		gizmoInstance: G
+		gizmoInstance: G,
 	): R extends Record<string | symbol, unknown> ? GizmoIncubator<LeftJoin<R, G>> : GizmoIncubator<G>
 	/**
 	 * Initializes the gizmo.
@@ -191,7 +183,5 @@ type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR
 	: never
 
 export namespace incubate {
-	export type Infer<Incubator extends GizmoIncubator<unknown>> = Awaited<
-		ReturnType<Incubator['create']>
-	>
+	export type Infer<Incubator extends GizmoIncubator<unknown>> = Awaited<ReturnType<Incubator['create']>>
 }

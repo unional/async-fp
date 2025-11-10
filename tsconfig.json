@@ -1,14 +1,14 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "packages/async-context"
-    },
-    {
-      "path": "packages/async-fp"
-    },
+	"files": [],
+	"references": [
+		{
+			"path": "packages/async-context"
+		},
+		{
+			"path": "packages/async-fp"
+		},
 		{
 			"path": "packages/gizmo"
 		}
-  ]
+	]
 }

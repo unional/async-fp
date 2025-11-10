@@ -20,10 +20,10 @@ import type {
 	StaticOptionalGizmo,
 	StaticOptionalGizmoFn,
 	StaticRequiredGizmo,
-	StaticRequiredGizmoFn
+	StaticRequiredGizmoFn,
 } from './fixtures.js'
 
-it(`gets the result type for leaf gizmo`, () => {
+it('gets the result type for leaf gizmo', () => {
 	testType.equal<{ leaf: { foo(): number } }, LeafGizmo>(true)
 	testType.equal<{ leaf_tuple: { foo(): number } }, LeafTupleGizmo>(true)
 	testType.equal<
@@ -41,7 +41,7 @@ it(`gets the result type for leaf gizmo`, () => {
 	testType.equal<{ leaf_start_fn: { foo(): number } }, LeafWithStartGizmoFn>(true)
 })
 
-it(`gets the result type for gizmo with static dependencies`, () => {
+it('gets the result type for gizmo with static dependencies', () => {
 	testType.equal<{ static_required: { foo(): number } }, StaticRequiredGizmo>(true)
 	testType.equal<{ static_optional: { foo(): number } }, StaticOptionalGizmo>(true)
 	testType.equal<{ static_both: { foo(): number } }, StaticBothGizmo>(true)
@@ -51,7 +51,7 @@ it(`gets the result type for gizmo with static dependencies`, () => {
 	testType.equal<{ static_both_fn: { foo(): number } }, StaticBothGizmoFn>(true)
 })
 
-it(`gets the result type for gizmo with dynamic dependencies`, () => {
+it('gets the result type for gizmo with dynamic dependencies', () => {
 	testType.equal<{ dynamic_required: { foo(): number } }, DynamicRequiredGizmo>(true)
 	testType.equal<{ dynamic_optional: { foo(): number } }, DynamicOptionalGizmo>(true)
 	testType.equal<{ dynamic_both: { foo(): number } }, DynamicBothGizmo>(true)
@@ -61,7 +61,7 @@ it(`gets the result type for gizmo with dynamic dependencies`, () => {
 	testType.equal<{ dynamic_both_fn: { foo(): number } }, DynamicBothGizmoFn>(true)
 })
 
-it(`gets the result type for gizmo with both static and dynamic dependencies`, () => {
+it('gets the result type for gizmo with both static and dynamic dependencies', () => {
 	testType.equal<{ static_dynamic_both: { foo(): number } }, StaticDynamicBothGizmo>(true)
 
 	testType.equal<{ static_dynamic_both_fn: { foo(): number } }, StaticDynamicBothGizmoFn>(true)

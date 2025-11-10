@@ -1,13 +1,8 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "CommonJS",
-    "outDir": "cjs"
-  },
-  "exclude": [
-    "ts/**/*.accept.ts",
-    "ts/**/*.unit.ts",
-    "ts/**/*.spec.ts",
-"ts/**/*.perf.ts"
-  ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "CommonJS",
+		"outDir": "cjs"
+	},
+	"exclude": ["ts/**/*.accept.ts", "ts/**/*.unit.ts", "ts/**/*.spec.ts", "ts/**/*.perf.ts"]
 }

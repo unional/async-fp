@@ -1,6 +1,6 @@
 import { testType } from 'type-plus'
 import { it } from 'vitest'
-import {
+import type {
 	LeafGizmo,
 	dynamicBothGizmo,
 	dynamicOptionalGizmo,
@@ -13,7 +13,7 @@ import {
 	staticBothGizmo,
 	staticDynamicBothGizmo,
 	staticOptionalGizmo,
-	staticRequiredGizmo
+	staticRequiredGizmo,
 } from './fixtures.js'
 import type { ExtractGizmoDeps, InferAllGizmo } from './types.js'
 
@@ -26,10 +26,7 @@ it('gets static required dependency', () => {
 })
 
 it('gets static optional dependency', () => {
-	testType.equal<
-		ExtractGizmoDeps<typeof staticOptionalGizmo>,
-		Partial<InferAllGizmo<typeof leafGizmoFn>>
-	>(true)
+	testType.equal<ExtractGizmoDeps<typeof staticOptionalGizmo>, Partial<InferAllGizmo<typeof leafGizmoFn>>>(true)
 })
 
 it('gets static required and optional dependency', () => {
@@ -44,10 +41,7 @@ it('gets dynamic required dependency', () => {
 })
 
 it('gets dynamic optional dependency', () => {
-	testType.equal<
-		ExtractGizmoDeps<typeof dynamicOptionalGizmo>,
-		Partial<InferAllGizmo<typeof leafTupleGizmoFn>>
-	>(true)
+	testType.equal<ExtractGizmoDeps<typeof dynamicOptionalGizmo>, Partial<InferAllGizmo<typeof leafTupleGizmoFn>>>(true)
 })
 
 it('gets dynamic required and optional dependency', () => {
@@ -61,14 +55,14 @@ it('gets both static and dynamic dependencies', () => {
 	testType.equal<
 		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
-		InferAllGizmo<typeof leafGizmo> &
-		Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
+			InferAllGizmo<typeof leafGizmo> &
+			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 
 	testType.equal<
 		ExtractGizmoDeps<typeof staticDynamicBothGizmo>,
 		InferAllGizmo<typeof leafWithStartGizmo> &
-		InferAllGizmo<typeof leafGizmo> &
-		Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
+			InferAllGizmo<typeof leafGizmo> &
+			Partial<InferAllGizmo<typeof dynamicRequiredGizmo> & InferAllGizmo<typeof leafTupleGizmo>>
 	>(true)
 })

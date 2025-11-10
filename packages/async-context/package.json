@@ -1,95 +1,94 @@
 {
-  "name": "@unional/async-context",
-  "version": "9.0.13",
-  "description": "Asynchronous context for functional style programming",
-  "keywords": [
-    "async",
-    "context",
-    "dependency",
-    "functional",
-    "typescript"
-  ],
-  "homepage": "https://github.com/unional/async-fp/tree/main/packages/async-context",
-  "bugs": {
-    "url": "https://github.com/unional/async-fp/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/unional/async-fp.git",
-    "directory": "packages/async-context"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Homa Wong (unional)",
-    "email": "homawong@gmail.com"
-  },
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./esm/index.d.ts",
-        "default": "./esm/index.js"
-      },
-      "require": {
-        "types": "./cjs/index.d.ts",
-        "default": "./cjs/index.js"
-      }
-    }
-  },
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "jsnext:main": "./esm/index.js",
-  "types": "./esm/index.d.ts",
-  "files": [
-    "cjs",
-    "esm",
-    "ts",
-    "!**/*.{spec,test,unit,accept,integrate,system}.*"
-  ],
-  "scripts": {
-    "build": "run-p build:cjs build:esm",
-    "build:cjs": "buddy ts build cjs",
-    "build:esm": "tsc",
-    "clean": "rimraf cjs esm coverage *.tsbuildinfo",
-    "coverage": "vitest run --coverage",
-    "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
-    "nuke": "pnpm clean && rimraf node_modules",
-    "prepublishOnly": "pnpm build",
-    "size": "size-limit",
-    "test": "vitest run",
-    "verify": "npm-run-all -p lint build coverage size"
-  },
-  "dependencies": {
-    "iso-error": "^6.0.2",
-    "type-plus": "8.0.0-beta.7"
-  },
-  "devDependencies": {
-    "@repobuddy/typescript": "^2.0.0",
-    "@size-limit/preset-small-lib": "^9.0.0",
-    "@types/setimmediate": "^1.0.2",
-    "@vitest/coverage-v8": "^4.0.8",
-    "assertron": "^11.0.1",
-    "cross-env": "^7.0.3",
-    "npm-run-all2": "^6.0.0",
-    "repobuddy": "^1.0.2",
-    "rimraf": "^5.0.0",
-    "setimmediate": "^1.0.5",
-    "size-limit": "^9.0.0",
-    "vitest": "^4.0.8"
-  },
-  "engines": {
-    "node": ">= 14.16"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "size-limit": [
-    {
-      "path": "./cjs/index.js"
-    },
-    {
-      "path": "./esm/index.js"
-    }
-  ]
+	"name": "@unional/async-context",
+	"version": "9.0.13",
+	"description": "Asynchronous context for functional style programming",
+	"keywords": [
+		"async",
+		"context",
+		"dependency",
+		"functional",
+		"typescript"
+	],
+	"homepage": "https://github.com/unional/async-fp/tree/main/packages/async-context",
+	"bugs": {
+		"url": "https://github.com/unional/async-fp/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/unional/async-fp.git",
+		"directory": "packages/async-context"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Homa Wong (unional)",
+		"email": "homawong@gmail.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./esm/index.d.ts",
+				"default": "./esm/index.js"
+			},
+			"require": {
+				"types": "./cjs/index.d.ts",
+				"default": "./cjs/index.js"
+			}
+		}
+	},
+	"main": "./cjs/index.js",
+	"module": "./esm/index.js",
+	"jsnext:main": "./esm/index.js",
+	"types": "./esm/index.d.ts",
+	"files": [
+		"cjs",
+		"esm",
+		"ts",
+		"!**/*.{spec,test,unit,accept,integrate,system}.*"
+	],
+	"scripts": {
+		"build": "run-p build:cjs build:esm",
+		"build:cjs": "buddy ts build cjs",
+		"build:esm": "tsc",
+		"clean": "rimraf cjs esm coverage *.tsbuildinfo",
+		"coverage": "vitest run --coverage",
+		"lint": "biome check .",
+		"nuke": "pnpm clean && rimraf node_modules",
+		"prepublishOnly": "pnpm build",
+		"size": "size-limit",
+		"test": "vitest run",
+		"verify": "npm-run-all -p lint build coverage size"
+	},
+	"dependencies": {
+		"iso-error": "^6.0.2",
+		"type-plus": "8.0.0-beta.7"
+	},
+	"devDependencies": {
+		"@repobuddy/typescript": "^2.0.0",
+		"@size-limit/preset-small-lib": "^9.0.0",
+		"@types/setimmediate": "^1.0.2",
+		"@vitest/coverage-v8": "^4.0.8",
+		"assertron": "^11.0.1",
+		"npm-run-all2": "^6.0.0",
+		"repobuddy": "^1.0.2",
+		"rimraf": "^5.0.0",
+		"setimmediate": "^1.0.5",
+		"size-limit": "^9.0.0",
+		"vitest": "^4.0.8"
+	},
+	"engines": {
+		"node": ">= 14.16"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"size-limit": [
+		{
+			"path": "./cjs/index.js"
+		},
+		{
+			"path": "./esm/index.js"
+		}
+	]
 }

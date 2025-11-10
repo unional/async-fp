@@ -8,5 +8,5 @@ export type {
 	GizmoBoth,
 	GizmoDynamic,
 	GizmoStatic,
-	MissingDependency
+	MissingDependency,
 } from './types.js'

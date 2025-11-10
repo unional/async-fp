@@ -6,18 +6,14 @@ export type Gizmo<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void
-> =
-	| GizmoBase<Result>
-	| GizmoStatic<Static, Result>
-	| GizmoDynamic<Dynamic, Result>
-	| GizmoBoth<Static, Dynamic, Result>
+		| void = Record<string | symbol, any> | void,
+> = GizmoBase<Result> | GizmoStatic<Static, Result> | GizmoDynamic<Dynamic, Result> | GizmoBoth<Static, Dynamic, Result>
 
 export type GizmoBase<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void
+		| void = Record<string | symbol, any> | void,
 > = {
 	create(): Result | Promise<Result>
 }
@@ -27,7 +23,7 @@ export type GizmoStatic<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void
+		| void = Record<string | symbol, any> | void,
 > = {
 	readonly static: Static
 	create(ctx: DefineContext<Static, unknown>): Result | Promise<Result>
@@ -38,7 +34,7 @@ export type GizmoDynamic<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void
+		| void = Record<string | symbol, any> | void,
 > = {
 	readonly dynamic: Dynamic
 	create(ctx: DefineContext<unknown, Dynamic>): Result | Promise<Result>
@@ -50,40 +46,38 @@ export type GizmoBoth<
 	Result extends
 		| [result: Record<string | symbol, unknown>, start?: () => unknown]
 		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void
+		| void = Record<string | symbol, any> | void,
 > = {
 	readonly static: Static
 	readonly dynamic: Dynamic
 	create(ctx: DefineContext<Static, Dynamic>): Result | Promise<Result>
 }
 
-export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (
-	...args: any[]
-) => Gizmo
+export type InferAllGizmo<D extends Gizmo | ((...args: any[]) => Gizmo)> = D extends (...args: any[]) => Gizmo
 	? InferGizmo<ReturnType<D>>
 	: D extends Gizmo
-	? InferGizmo<D>
-	: never
+		? InferGizmo<D>
+		: never
 
 export type InferGizmo<D extends Gizmo> = D extends Gizmo
 	? ReturnType<D['create']> extends infer R
 		? R extends Promise<[infer X extends Record<string | symbol, unknown>, unknown]>
 			? Awaited<X>
 			: R extends Promise<[infer X extends Record<string | symbol, unknown>]>
-			? Awaited<X>
-			: R extends [infer X extends Record<string | symbol, unknown>, unknown]
-			? X
-			: R extends [infer X extends Record<string | symbol, unknown>]
-			? X
-			: R extends Record<string | symbol, any>
-			? Awaited<R>
-			: never
+				? Awaited<X>
+				: R extends [infer X extends Record<string | symbol, unknown>, unknown]
+					? X
+					: R extends [infer X extends Record<string | symbol, unknown>]
+						? X
+						: R extends Record<string | symbol, any>
+							? Awaited<R>
+							: never
 		: never
 	: unknown
 
 type DefineContext<
 	Static extends DepBuilder<unknown, unknown> | unknown,
-	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
 	? ExtractDep<Static> & DynamicLoader<Dynamic>
 	: ExtractDep<Static>
@@ -91,10 +85,9 @@ type DefineContext<
 /**
  * Define the `ctx.load` function.
  */
-export type DynamicLoader<Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown> =
-	{
-		load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDep<Dynamic[I]>>
-	}
+export type DynamicLoader<Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown> = {
+	load<I extends keyof Dynamic>(identifier: I): Promise<ExtractDep<Dynamic[I]>>
+}
 
 export type DepBuilder<R, O> = {
 	[_type]: {
@@ -150,17 +143,14 @@ export type DepBuilder<R, O> = {
 /**
  * Extract the dependencies from a dep builder.
  */
-export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<
-	unknown,
-	unknown
->
+export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<unknown, unknown>
 	? unknown extends D[typeof _type]['require']
 		? unknown extends D[typeof _type]['optional']
 			? unknown
 			: Partial<D[typeof _type]['optional']>
 		: unknown extends D[typeof _type]['optional']
-		? D[typeof _type]['require']
-		: D[typeof _type]['require'] & Partial<D[typeof _type]['optional']>
+			? D[typeof _type]['require']
+			: D[typeof _type]['require'] & Partial<D[typeof _type]['optional']>
 	: unknown
 
 /**
@@ -169,16 +159,12 @@ export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D ext
 export type ExtractGizmoDeps<G extends Gizmo> = G extends GizmoBoth<infer S, Record<any, infer D>>
 	? ExtractDep<S> & ExtractDep<UnionToIntersection<D>>
 	: G extends GizmoStatic<infer S>
-	? ExtractDep<S>
-	: G extends GizmoDynamic<Record<any, infer D>>
-	? ExtractDep<UnionToIntersection<D>>
-	: Record<string, unknown>
+		? ExtractDep<S>
+		: G extends GizmoDynamic<Record<any, infer D>>
+			? ExtractDep<UnionToIntersection<D>>
+			: Record<string, unknown>
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-	k: infer I
-) => void
-	? I
-	: never
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
 
 /**
  * Missing some dependencies.

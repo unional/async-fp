@@ -1,115 +1,114 @@
 {
-  "name": "async-fp",
-  "version": "9.0.13",
-  "description": "Utility library for asynchronous functional programming",
-  "keywords": [
-    "async",
-    "context",
-    "dependency",
-    "functional",
-    "typescript"
-  ],
-  "homepage": "https://github.com/unional/async-fp/tree/main/packages/async-fp",
-  "bugs": {
-    "url": "https://github.com/unional/async-fp/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/unional/async-fp.git",
-    "directory": "packages/async-fp"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Homa Wong (unional)",
-    "email": "homawong@gmail.com"
-  },
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./esm/index.d.ts",
-        "default": "./esm/index.js"
-      },
-      "require": {
-        "types": "./cjs/index.d.ts",
-        "default": "./cjs/index.js"
-      }
-    },
-    "./gizmo": {
-      "import": {
-        "types": "./esm/gizmo.d.ts",
-        "default": "./esm/gizmo.js"
-      },
-      "require": {
-        "types": "./cjs/gizmo.d.ts",
-        "default": "./cjs/gizmo.js"
-      }
-    },
-    "./gizmo/testing": {
-      "import": {
-        "types": "./esm/gizmo_testing.d.ts",
-        "default": "./esm/gizmo_testing.js"
-      },
-      "require": {
-        "types": "./cjs/gizmo_testing.d.ts",
-        "default": "./cjs/gizmo_testing.js"
-      }
-    }
-  },
-  "main": "./cjs/index.js",
-  "module": "./esm/index.js",
-  "jsnext:main": "./esm/index.js",
-  "types": "./esm/index.d.ts",
-  "files": [
-    "cjs",
-    "esm",
-    "ts",
-    "!**/*.{spec,test,unit,accept,integrate,system}.*"
-  ],
-  "scripts": {
-    "build": "run-p build:cjs build:esm",
-    "build:cjs": "buddy ts build cjs",
-    "build:esm": "tsc",
-    "clean": "rimraf cjs esm coverage *.tsbuildinfo",
-    "coverage": "vitest run --coverage",
-    "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
-    "nuke": "pnpm clean && rimraf node_modules",
-    "prepublishOnly": "pnpm build",
-    "size": "size-limit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "verify": "npm-run-all -p lint build coverage size"
-  },
-  "dependencies": {
-    "@unional/async-context": "workspace:^",
-    "@unional/gizmo": "workspace:^"
-  },
-  "devDependencies": {
-    "@repobuddy/typescript": "^2.0.0",
-    "@size-limit/preset-small-lib": "^9.0.0",
-    "@vitest/coverage-v8": "^4.0.8",
-    "assertron": "^11.0.1",
-    "cross-env": "^7.0.3",
-    "npm-run-all2": "^6.0.0",
-    "repobuddy": "^1.0.2",
-    "rimraf": "^5.0.0",
-    "size-limit": "^9.0.0",
-    "type-plus": "8.0.0-beta.7",
-    "vitest": "^4.0.8"
-  },
-  "engines": {
-    "node": ">= 14.16"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "size-limit": [
-    {
-      "path": "./cjs/index.js"
-    },
-    {
-      "path": "./esm/index.js"
-    }
-  ]
+	"name": "async-fp",
+	"version": "9.0.13",
+	"description": "Utility library for asynchronous functional programming",
+	"keywords": [
+		"async",
+		"context",
+		"dependency",
+		"functional",
+		"typescript"
+	],
+	"homepage": "https://github.com/unional/async-fp/tree/main/packages/async-fp",
+	"bugs": {
+		"url": "https://github.com/unional/async-fp/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/unional/async-fp.git",
+		"directory": "packages/async-fp"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Homa Wong (unional)",
+		"email": "homawong@gmail.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./esm/index.d.ts",
+				"default": "./esm/index.js"
+			},
+			"require": {
+				"types": "./cjs/index.d.ts",
+				"default": "./cjs/index.js"
+			}
+		},
+		"./gizmo": {
+			"import": {
+				"types": "./esm/gizmo.d.ts",
+				"default": "./esm/gizmo.js"
+			},
+			"require": {
+				"types": "./cjs/gizmo.d.ts",
+				"default": "./cjs/gizmo.js"
+			}
+		},
+		"./gizmo/testing": {
+			"import": {
+				"types": "./esm/gizmo_testing.d.ts",
+				"default": "./esm/gizmo_testing.js"
+			},
+			"require": {
+				"types": "./cjs/gizmo_testing.d.ts",
+				"default": "./cjs/gizmo_testing.js"
+			}
+		}
+	},
+	"main": "./cjs/index.js",
+	"module": "./esm/index.js",
+	"jsnext:main": "./esm/index.js",
+	"types": "./esm/index.d.ts",
+	"files": [
+		"cjs",
+		"esm",
+		"ts",
+		"!**/*.{spec,test,unit,accept,integrate,system}.*"
+	],
+	"scripts": {
+		"build": "run-p build:cjs build:esm",
+		"build:cjs": "buddy ts build cjs",
+		"build:esm": "tsc",
+		"clean": "rimraf cjs esm coverage *.tsbuildinfo",
+		"coverage": "vitest run --coverage",
+		"lint": "biome check .",
+		"nuke": "pnpm clean && rimraf node_modules",
+		"prepublishOnly": "pnpm build",
+		"size": "size-limit",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"verify": "npm-run-all -p lint build coverage size"
+	},
+	"dependencies": {
+		"@unional/async-context": "workspace:^",
+		"@unional/gizmo": "workspace:^"
+	},
+	"devDependencies": {
+		"@repobuddy/typescript": "^2.0.0",
+		"@size-limit/preset-small-lib": "^9.0.0",
+		"@vitest/coverage-v8": "^4.0.8",
+		"assertron": "^11.0.1",
+		"npm-run-all2": "^6.0.0",
+		"repobuddy": "^1.0.2",
+		"rimraf": "^5.0.0",
+		"size-limit": "^9.0.0",
+		"type-plus": "8.0.0-beta.7",
+		"vitest": "^4.0.8"
+	},
+	"engines": {
+		"node": ">= 14.16"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"size-limit": [
+		{
+			"path": "./cjs/index.js"
+		},
+		{
+			"path": "./esm/index.js"
+		}
+	]
 }
