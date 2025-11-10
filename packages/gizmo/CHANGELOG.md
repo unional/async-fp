@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 2.3.0
+
+### Minor Changes
+
+- 1f02393: Remove `DefineContext` and `UnionToIntersection` from exported types.
+
 ## 2.2.0
 
 ### Minor Changes
