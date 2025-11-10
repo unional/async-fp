@@ -1,6 +1,6 @@
 {
 	"name": "@unional/gizmo",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"description": "Building gizmos",
 	"homepage": "https://github.com/unional/async-fp/tree/main/packages/gizmo#readme",
 	"bugs": {
