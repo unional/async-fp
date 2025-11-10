@@ -87,13 +87,13 @@
 	},
 	"devDependencies": {
 		"@repobuddy/typescript": "^2.0.0",
-		"@size-limit/preset-small-lib": "^9.0.0",
+		"@size-limit/preset-small-lib": "^11.2.0",
 		"@vitest/coverage-v8": "^4.0.8",
 		"assertron": "^11.0.1",
 		"npm-run-all2": "^6.0.0",
 		"repobuddy": "^1.0.2",
 		"rimraf": "^6.0.0",
-		"size-limit": "^9.0.0",
+		"size-limit": "^11.2.0",
 		"type-plus": "8.0.0-beta.7",
 		"vitest": "^4.0.8"
 	},
