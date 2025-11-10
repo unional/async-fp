@@ -74,7 +74,7 @@
 		"repobuddy": "^1.0.2",
 		"rimraf": "^6.0.0",
 		"setimmediate": "^1.0.5",
-		"size-limit": "^9.0.0",
+		"size-limit": "^11.0.0",
 		"vitest": "^4.0.8"
 	},
 	"engines": {
