@@ -1,9 +1,0 @@
-ignores:
-  - '@repobuddy/*'
-  - '@size-limit/preset-small-lib'
-  - '@types/node'
-  - '@typescript-eslint/parser'
-  - '@vitest/coverage-v8'
-  - eslint*
-  - repobuddy
-  - rimraf # https://github.com/depcheck/depcheck/issues/776

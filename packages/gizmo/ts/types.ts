@@ -1,5 +1,4 @@
-// istanbul ignore next
-export const _type = Symbol('hidden prop symbol')
+const _type = Symbol('hidden prop symbol')
 
 export type Gizmo<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
@@ -82,7 +81,7 @@ export type InferGizmo<D extends Gizmo> = D extends Gizmo
 		: never
 	: unknown
 
-export type DefineContext<
+type DefineContext<
 	Static extends DepBuilder<unknown, unknown> | unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown
 > = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
@@ -175,7 +174,7 @@ export type ExtractGizmoDeps<G extends Gizmo> = G extends GizmoBoth<infer S, Rec
 	? ExtractDep<UnionToIntersection<D>>
 	: Record<string, unknown>
 
-export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 	k: infer I
 ) => void
 	? I

@@ -28,11 +28,6 @@
         "coverage/**"
       ]
     },
-    "depcheck": {
-      "dependsOn": [
-        "^build"
-      ]
-    },
     "dev": {
       "cache": false
     },
@@ -62,7 +57,6 @@
         "lint",
         "build",
         "coverage",
-        "depcheck",
         "size"
       ]
     }
