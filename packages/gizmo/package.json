@@ -63,7 +63,6 @@
     "build:esm": "tsc",
     "clean": "rimraf cjs esm coverage *.tsbuildinfo",
     "coverage": "vitest run --coverage",
-    "depcheck": "depcheck",
     "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
     "nuke": "run-s clean nuke:local",
     "nuke:local": "rimraf node_modules",
@@ -72,7 +71,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "w": "pnpm test:watch",
-    "verify": "npm-run-all -p lint build coverage -p depcheck size"
+    "verify": "npm-run-all -p lint build coverage size"
   },
   "dependencies": {
     "type-plus": "8.0.0-beta.7"
@@ -83,7 +82,6 @@
     "@vitest/coverage-v8": "^4.0.8",
     "assertron": "^11.0.1",
     "cross-env": "^7.0.3",
-    "depcheck": "^1.4.3",
     "npm-run-all2": "^6.0.0",
     "repobuddy": "^1.0.2",
     "rimraf": "^5.0.0",

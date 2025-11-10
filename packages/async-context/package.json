@@ -53,13 +53,12 @@
     "build:esm": "tsc",
     "clean": "rimraf cjs esm coverage *.tsbuildinfo",
     "coverage": "vitest run --coverage",
-    "depcheck": "depcheck",
     "lint": "cross-env TIMING=1 eslint --ext=ts,js,cjs,mjs .",
     "nuke": "pnpm clean && rimraf node_modules",
     "prepublishOnly": "pnpm build",
     "size": "size-limit",
     "test": "vitest run",
-    "verify": "npm-run-all -p lint build coverage -p depcheck size"
+    "verify": "npm-run-all -p lint build coverage size"
   },
   "dependencies": {
     "iso-error": "^6.0.2",
@@ -72,7 +71,6 @@
     "@vitest/coverage-v8": "^4.0.8",
     "assertron": "^11.0.1",
     "cross-env": "^7.0.3",
-    "depcheck": "^1.4.3",
     "npm-run-all2": "^6.0.0",
     "repobuddy": "^1.0.2",
     "rimraf": "^5.0.0",

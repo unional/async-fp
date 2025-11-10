@@ -1,0 +1,18 @@
+{
+	"$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+	"vitest": {
+		"entry": [
+			"**/*.{spec,unit,accept,system,perf,stress,test}.*"
+		]
+	},
+	"workspaces": {
+		"packages/*": {
+			"project": [
+				"ts/**/*.ts"
+			]
+		}
+	},
+	"ignoreDependencies": [
+		"@typescript-eslint/parser"
+	]
+}
