@@ -62,7 +62,7 @@
 	},
 	"dependencies": {
 		"iso-error": "^6.0.2",
-		"type-plus": "8.0.0-beta.7"
+		"type-plus": "8.0.0-beta.8"
 	},
 	"devDependencies": {
 		"@repobuddy/typescript": "^2.0.0",
