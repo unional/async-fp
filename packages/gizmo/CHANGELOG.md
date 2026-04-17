@@ -1,5 +1,11 @@
 # @unional/gizmo
 
+## 2.3.1
+
+### Patch Changes
+
+- 210192b: Fix TypeScript 6 compatibility when `create()` returns an array of result objects (or a promise of that array). Introduces `GizmoResult` and updates `InferGizmo` so those shapes type-check and infer merged record types correctly.
+
 ## 2.3.0
 
 ### Minor Changes
