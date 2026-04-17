@@ -12,9 +12,7 @@ export type Gizmo<
 	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = GizmoBase<Result> | GizmoStatic<Static, Result> | GizmoDynamic<Dynamic, Result> | GizmoBoth<Static, Dynamic, Result>
 
-export type GizmoBase<
-	Result extends GizmoResult = Record<string | symbol, any> | void,
-> = {
+export type GizmoBase<Result extends GizmoResult = Record<string | symbol, any> | void> = {
 	create(): Result | Promise<Result>
 }
 
