@@ -1,29 +1,26 @@
 const _type = Symbol('hidden prop symbol')
 
+type GizmoResult =
+	| [result: Record<string | symbol, unknown>, start?: () => unknown]
+	| ReadonlyArray<Record<string | symbol, unknown> | ((...args: any[]) => unknown)>
+	| Record<string | symbol, unknown>
+	| void
+
 export type Gizmo<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
-	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => unknown]
-		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void,
+	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = GizmoBase<Result> | GizmoStatic<Static, Result> | GizmoDynamic<Dynamic, Result> | GizmoBoth<Static, Dynamic, Result>
 
 export type GizmoBase<
-	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => unknown]
-		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void,
+	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = {
 	create(): Result | Promise<Result>
 }
 
 export type GizmoStatic<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
-	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => unknown]
-		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void,
+	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = {
 	readonly static: Static
 	create(ctx: DefineContext<Static, unknown>): Result | Promise<Result>
@@ -31,10 +28,7 @@ export type GizmoStatic<
 
 export type GizmoDynamic<
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
-	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => unknown]
-		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void,
+	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = {
 	readonly dynamic: Dynamic
 	create(ctx: DefineContext<unknown, Dynamic>): Result | Promise<Result>
@@ -43,10 +37,7 @@ export type GizmoDynamic<
 export type GizmoBoth<
 	Static extends DepBuilder<unknown, unknown> | unknown = unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown = unknown,
-	Result extends
-		| [result: Record<string | symbol, unknown>, start?: () => unknown]
-		| Record<string | symbol, unknown>
-		| void = Record<string | symbol, any> | void,
+	Result extends GizmoResult = Record<string | symbol, any> | void,
 > = {
 	readonly static: Static
 	readonly dynamic: Dynamic
@@ -69,9 +60,13 @@ export type InferGizmo<D extends Gizmo> = D extends Gizmo
 					? X
 					: R extends [infer X extends Record<string | symbol, unknown>]
 						? X
-						: R extends Record<string | symbol, any>
-							? Awaited<R>
-							: never
+						: R extends Promise<ReadonlyArray<infer X>>
+							? Awaited<Exclude<X, (...args: any[]) => unknown>>
+							: R extends ReadonlyArray<infer X>
+								? Exclude<X, (...args: any[]) => unknown>
+								: R extends Record<string | symbol, any>
+									? Awaited<R>
+									: never
 		: never
 	: unknown
 
