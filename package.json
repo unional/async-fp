@@ -35,7 +35,7 @@
 		"pinst": "^3.0.0",
 		"rimraf": "^6.0.0",
 		"turbo": "^2.6.0",
-		"typescript": "^6.0.0"
+		"typescript": "^7.0.0"
 	},
 	"packageManager": "pnpm@11.11.0"
 }
