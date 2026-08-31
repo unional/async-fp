@@ -429,10 +429,10 @@ It is used to compose objects that are used throughout the application,
 and you typically only need to create one such object.
 
 [@just-web]: https://github.com/justland/just-web
-[@unional/gizmo]: https://github.com/unional/async-fp/tree/main/packages/gizmo
-[async-fp]: https://github.com/unional/async-fp/tree/main/packages/async-fp
-[codecov-image]: https://codecov.io/gh/unional/async-fp/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/unional/async-fp
+[@unional/gizmo]: https://github.com/cyberuni/async-fp/tree/main/packages/gizmo
+[async-fp]: https://github.com/cyberuni/async-fp/tree/main/packages/async-fp
+[codecov-image]: https://codecov.io/gh/cyberuni/async-fp/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/cyberuni/async-fp
 [gizmo-bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/gizmo.svg
 [gizmo-bundlephobia-url]: https://bundlephobia.com/result?p=@unional/gizmo
 [gizmo-downloads-image]: https://img.shields.io/npm/dm/@unional/gizmo.svg?style=flat

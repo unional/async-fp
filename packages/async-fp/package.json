@@ -9,13 +9,13 @@
 		"functional",
 		"typescript"
 	],
-	"homepage": "https://github.com/unional/async-fp/tree/main/packages/async-fp",
+	"homepage": "https://github.com/cyberuni/async-fp/tree/main/packages/async-fp",
 	"bugs": {
-		"url": "https://github.com/unional/async-fp/issues"
+		"url": "https://github.com/cyberuni/async-fp/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/unional/async-fp.git",
+		"url": "https://github.com/cyberuni/async-fp.git",
 		"directory": "packages/async-fp"
 	},
 	"license": "MIT",

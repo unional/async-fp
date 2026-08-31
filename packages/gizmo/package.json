@@ -2,13 +2,13 @@
 	"name": "@unional/gizmo",
 	"version": "2.3.1",
 	"description": "Building gizmos",
-	"homepage": "https://github.com/unional/async-fp/tree/main/packages/gizmo#readme",
+	"homepage": "https://github.com/cyberuni/async-fp/tree/main/packages/gizmo#readme",
 	"bugs": {
-		"url": "https://github.com/unional/async-fp/issues"
+		"url": "https://github.com/cyberuni/async-fp/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/unional/async-fp.git",
+		"url": "https://github.com/cyberuni/async-fp.git",
 		"directory": "packages/gizmo"
 	},
 	"license": "MIT",
