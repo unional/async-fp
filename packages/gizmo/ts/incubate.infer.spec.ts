@@ -1,6 +1,6 @@
 import { testType } from 'type-plus'
 import { it } from 'vitest'
-import { leafGizmo, type LeafGizmo } from './fixtures.js'
+import { type LeafGizmo, leafGizmo } from './fixtures.js'
 import { incubate } from './index.js'
 
 it('infers the type of the resulting gizmo', () => {

@@ -1,4 +1,4 @@
-import { type AnyFunction, type KeyTypes, type LeftJoin, type RequiredKeys, isType } from 'type-plus'
+import { type AnyFunction, isType, type KeyTypes, type LeftJoin, type RequiredKeys } from 'type-plus'
 import type { ExtractGizmoDeps, Gizmo, InferGizmo, MissingDependency } from './types.js'
 
 const closableApps = new Map<Record<KeyTypes, unknown>, CallableFunction[]>()
@@ -70,7 +70,6 @@ export function incubate(base?: Record<string | symbol, unknown>) {
 			if (start) {
 				addCloser(result, await start(result))
 			}
-			// biome-ignore lint/performance/noDelete: specific implementation
 			delete result['load']
 			return result
 		},
@@ -174,13 +173,14 @@ export type GizmoIncubator<R extends Record<string | symbol, unknown> | unknown>
 	create(start?: (gizmo: R) => unknown): Promise<R>
 }
 
-type InferIncubator<R, G extends Gizmo> = InferGizmo<G> extends infer GR
-	? GR extends Record<string | symbol, unknown>
-		? R extends Record<string | symbol, unknown>
-			? GizmoIncubator<LeftJoin<R, GR>>
-			: GizmoIncubator<GR>
-		: GizmoIncubator<R>
-	: never
+type InferIncubator<R, G extends Gizmo> =
+	InferGizmo<G> extends infer GR
+		? GR extends Record<string | symbol, unknown>
+			? R extends Record<string | symbol, unknown>
+				? GizmoIncubator<LeftJoin<R, GR>>
+				: GizmoIncubator<GR>
+			: GizmoIncubator<R>
+		: never
 
 export namespace incubate {
 	export type Infer<Incubator extends GizmoIncubator<unknown>> = Awaited<ReturnType<Incubator['create']>>

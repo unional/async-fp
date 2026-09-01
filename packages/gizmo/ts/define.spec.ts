@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { define, incubate, type GizmoBase } from './index.js'
+import { define, type GizmoBase, incubate } from './index.js'
 
 it('can define a gizmo with sync create without start', async () => {
 	const def = define({
