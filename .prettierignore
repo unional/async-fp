@@ -1,7 +1,0 @@
-cjs/
-coverage/
-esm/
-*.md
-*.mdx
-*.yml
-*.yaml
