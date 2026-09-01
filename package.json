@@ -14,9 +14,7 @@
 		"gz": "pnpm --filter=@unional/gizmo",
 		"lint": "turbo run lint",
 		"nuke": "pnpm clean && turbo run nuke && rimraf node_modules",
-		"prepack": "pinst --disable",
-		"postpack": "pinst --enable",
-		"postinstall": "husky install",
+		"prepare": "husky",
 		"release": "changeset publish",
 		"size": "turbo run size",
 		"test": "turbo run test",
@@ -32,7 +30,6 @@
 		"@types/node": "^24.10.0",
 		"husky": "^9.0.0",
 		"knip": "^6.0.0",
-		"pinst": "^3.0.0",
 		"rimraf": "^6.0.0",
 		"turbo": "^2.6.0",
 		"typescript": "^7.0.0"

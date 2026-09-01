@@ -1,5 +1,14 @@
 packages:
   - packages/*
+# Supply-chain soak. `minimumReleaseAge` must live here rather than in `.npmrc`:
+# pnpm only auto-enables `minimumReleaseAgeStrict` for values set in
+# pnpm-workspace.yaml, config.yaml, the CLI or `pnpm_config_*` env vars. Set from
+# `.npmrc` the soak stays in LOOSE mode, where an immature package is not rejected —
+# pnpm appends it to `minimumReleaseAgeExclude` and installs it anyway.
+# `minimumReleaseAgeStrict` is stated explicitly so the control cannot silently
+# weaken if that defaulting ever changes.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
 allowBuilds:
   esbuild: true
   fsevents: true
