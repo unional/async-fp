@@ -23,15 +23,16 @@
 		"nuke": {
 			"cache": false
 		},
-		"size": {
-			"dependsOn": ["build"]
-		},
 		"test": {
 			"dependsOn": ["^build"],
 			"inputs": ["ts/**/*.ts"]
 		},
+		"typecheck": {
+			"dependsOn": ["^build"],
+			"inputs": ["ts/**/*.ts"]
+		},
 		"verify": {
-			"dependsOn": ["lint", "build", "coverage", "size"]
+			"dependsOn": ["lint", "typecheck", "build", "coverage"]
 		}
 	}
 }

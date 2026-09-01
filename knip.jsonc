@@ -1,10 +1,22 @@
 {
-	"$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
+	"$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
 	"vitest": {
 		"entry": ["**/*.{spec,unit,accept,system,perf,stress,test}.*"]
 	},
 	"workspaces": {
-		"packages/*": {
+		// Entries are named explicitly: the packages build with tsdown and their
+		// `exports` point at built output, so knip cannot infer the source entry from
+		// `package.json` alone.
+		"packages/async-context": {
+			"entry": ["ts/index.ts"],
+			"project": ["ts/**/*.ts"]
+		},
+		"packages/async-fp": {
+			"entry": ["ts/index.ts", "ts/gizmo.ts", "ts/gizmo_testing.ts"],
+			"project": ["ts/**/*.ts"]
+		},
+		"packages/gizmo": {
+			"entry": ["ts/index.ts", "ts/testing.ts", "ts/fixtures.ts"],
 			"project": ["ts/**/*.ts"]
 		}
 	}
