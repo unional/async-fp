@@ -1,3 +1,14 @@
 {
-	"extends": ["github>unional/renovate-preset"]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["github>unional/renovate-preset", ":semanticCommits"],
+	"automerge": true,
+	"automergeType": "pr",
+	"platformAutomerge": true,
+	"packageRules": [
+		{
+			"description": "Majors are a human decision: they break builds in ways CI catches but a person should choose to absorb.",
+			"matchUpdateTypes": ["major"],
+			"automerge": false
+		}
+	]
 }
