@@ -1,5 +1,21 @@
 # Change Log
 
+## 9.0.15
+
+### Patch Changes
+
+- defa0ac: Build with tsdown instead of `tsc` + `buddy ts build cjs`.
+  
+  Every path named in `exports` keeps its location and contents. Two differences in the
+  tarball are worth naming: modules that are pure re-exports (`index`, `testing`,
+  `gizmo_testing`) no longer ship `.js.map` / `.d.ts.map`, and the type-only `types`
+  module no longer emits an empty `types.js`. `@unional/async-context` also gains small
+  `_virtual/` runtime helper files, which is how the ES2020 target now downlevels its
+  private class fields.
+- Updated dependencies [defa0ac]
+  - @unional/async-context@9.0.15
+  - @unional/gizmo@2.3.3
+
 ## 9.0.14
 
 ### Patch Changes
