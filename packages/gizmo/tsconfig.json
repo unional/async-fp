@@ -4,8 +4,9 @@
 		"skipLibCheck": true,
 		"target": "es2022",
 		"lib": ["ES2022", "ESNext.Disposable", "DOM"],
-		"outDir": "esm",
-		"rootDir": "ts"
+		"rootDir": "ts",
+		"composite": false,
+		"noEmit": true
 	},
-	"include": ["ts", "types"]
+	"include": ["ts"]
 }

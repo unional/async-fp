@@ -48,17 +48,15 @@
 		"!**/*.{spec,test,unit,accept,integrate,system}.*"
 	],
 	"scripts": {
-		"build": "run-p build:cjs build:esm",
-		"build:cjs": "buddy ts build cjs",
-		"build:esm": "tsc",
+		"build": "tsdown",
 		"clean": "rimraf cjs esm coverage *.tsbuildinfo",
 		"coverage": "vitest run --coverage",
 		"lint": "biome check .",
 		"nuke": "pnpm clean && rimraf node_modules",
 		"prepublishOnly": "pnpm build",
-		"size": "size-limit",
 		"test": "vitest run",
-		"verify": "npm-run-all -p lint build coverage size"
+		"typecheck": "tsc",
+		"verify": "pnpm run lint && pnpm run typecheck && pnpm run build && pnpm run coverage"
 	},
 	"dependencies": {
 		"iso-error": "^6.0.2",
@@ -66,15 +64,12 @@
 	},
 	"devDependencies": {
 		"@repobuddy/typescript": "^2.0.0",
-		"@size-limit/preset-small-lib": "^13.0.0",
 		"@types/setimmediate": "^1.0.2",
 		"@vitest/coverage-v8": "^4.1.11",
 		"assertron": "^11.0.1",
-		"npm-run-all2": "^9.0.0",
-		"repobuddy": "^1.0.2",
 		"rimraf": "^6.0.0",
 		"setimmediate": "^1.0.5",
-		"size-limit": "^13.0.0",
+		"tsdown": "^0.22.14",
 		"vitest": "^4.1.11"
 	},
 	"engines": {
@@ -82,13 +77,5 @@
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"size-limit": [
-		{
-			"path": "./cjs/index.js"
-		},
-		{
-			"path": "./esm/index.js"
-		}
-	]
+	}
 }
