@@ -1,6 +1,7 @@
 {
 	"extends": "@repobuddy/typescript/tsconfig/monorepo",
 	"compilerOptions": {
+		"skipLibCheck": true,
 		"outDir": "esm",
 		"lib": ["ES2022", "ESNext.Disposable", "DOM"],
 		"rootDir": "ts"

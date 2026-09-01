@@ -68,14 +68,14 @@
 		"@repobuddy/typescript": "^2.0.0",
 		"@size-limit/preset-small-lib": "^13.0.0",
 		"@types/setimmediate": "^1.0.2",
-		"@vitest/coverage-v8": "^4.0.8",
+		"@vitest/coverage-v8": "^4.1.11",
 		"assertron": "^11.0.1",
 		"npm-run-all2": "^9.0.0",
 		"repobuddy": "^1.0.2",
 		"rimraf": "^6.0.0",
 		"setimmediate": "^1.0.5",
 		"size-limit": "^13.0.0",
-		"vitest": "^4.0.8"
+		"vitest": "^4.1.11"
 	},
 	"engines": {
 		"node": ">= 14.16"
