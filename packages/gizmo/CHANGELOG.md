@@ -1,5 +1,14 @@
 # @unional/gizmo
 
+## 2.3.2
+
+### Patch Changes
+
+- cf5324f: Point repository metadata at `cyberuni/async-fp` following the org transfer, and release
+  through GitHub OIDC / npm trusted publishing instead of a stored `NPM_TOKEN`.
+  
+  No runtime change.
+
 ## 2.3.1
 
 ### Patch Changes

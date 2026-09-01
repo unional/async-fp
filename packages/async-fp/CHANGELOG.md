@@ -1,5 +1,17 @@
 # Change Log
 
+## 9.0.14
+
+### Patch Changes
+
+- cf5324f: Point repository metadata at `cyberuni/async-fp` following the org transfer, and release
+  through GitHub OIDC / npm trusted publishing instead of a stored `NPM_TOKEN`.
+  
+  No runtime change.
+- Updated dependencies [cf5324f]
+  - @unional/async-context@9.0.14
+  - @unional/gizmo@2.3.2
+
 ## 9.0.13
 
 ### Patch Changes
