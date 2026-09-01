@@ -210,8 +210,8 @@ configure({ ... })
 
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/@unional/async-context.svg
 [bundlephobia-url]: https://bundlephobia.com/result?p=@unional/async-context
-[codecov-image]: https://codecov.io/gh/unional/async-fp/branch/main/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/unional/async-fp
+[codecov-image]: https://codecov.io/gh/cyberuni/async-fp/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/cyberuni/async-fp
 [downloads-image]: https://img.shields.io/npm/dm/@unional/async-context.svg?style=flat
 [downloads-url]: https://npmjs.org/package/@unional/async-context
 [introduction_video]: https://youtu.be/9EnrSJdvP48
