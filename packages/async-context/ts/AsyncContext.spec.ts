@@ -1,4 +1,4 @@
-import { a, AssertOrder } from 'assertron'
+import { AssertOrder, a } from 'assertron'
 import 'setimmediate'
 import { assertType, testType } from 'type-plus'
 import { describe, expect, it, test } from 'vitest'

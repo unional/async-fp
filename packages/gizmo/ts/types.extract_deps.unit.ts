@@ -1,10 +1,10 @@
 import { testType } from 'type-plus'
 import { it } from 'vitest'
 import type {
-	LeafGizmo,
 	dynamicBothGizmo,
 	dynamicOptionalGizmo,
 	dynamicRequiredGizmo,
+	LeafGizmo,
 	leafGizmo,
 	leafGizmoFn,
 	leafTupleGizmo,

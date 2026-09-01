@@ -71,9 +71,10 @@ export type InferGizmo<D extends Gizmo> = D extends Gizmo
 type DefineContext<
 	Static extends DepBuilder<unknown, unknown> | unknown,
 	Dynamic extends Record<string, DepBuilder<unknown, unknown>> | unknown,
-> = Dynamic extends Record<string, DepBuilder<unknown, unknown>>
-	? ExtractDep<Static> & DynamicLoader<Dynamic>
-	: ExtractDep<Static>
+> =
+	Dynamic extends Record<string, DepBuilder<unknown, unknown>>
+		? ExtractDep<Static> & DynamicLoader<Dynamic>
+		: ExtractDep<Static>
 
 /**
  * Define the `ctx.load` function.
@@ -136,26 +137,28 @@ export type DepBuilder<R, O> = {
 /**
  * Extract the dependencies from a dep builder.
  */
-export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> = D extends DepBuilder<unknown, unknown>
-	? unknown extends D[typeof _type]['require']
-		? unknown extends D[typeof _type]['optional']
-			? unknown
-			: Partial<D[typeof _type]['optional']>
-		: unknown extends D[typeof _type]['optional']
-			? D[typeof _type]['require']
-			: D[typeof _type]['require'] & Partial<D[typeof _type]['optional']>
-	: unknown
+export type ExtractDep<D extends DepBuilder<unknown, unknown> | unknown> =
+	D extends DepBuilder<unknown, unknown>
+		? unknown extends D[typeof _type]['require']
+			? unknown extends D[typeof _type]['optional']
+				? unknown
+				: Partial<D[typeof _type]['optional']>
+			: unknown extends D[typeof _type]['optional']
+				? D[typeof _type]['require']
+				: D[typeof _type]['require'] & Partial<D[typeof _type]['optional']>
+		: unknown
 
 /**
  * Extract dependencies of a gizmo.
  */
-export type ExtractGizmoDeps<G extends Gizmo> = G extends GizmoBoth<infer S, Record<any, infer D>>
-	? ExtractDep<S> & ExtractDep<UnionToIntersection<D>>
-	: G extends GizmoStatic<infer S>
-		? ExtractDep<S>
-		: G extends GizmoDynamic<Record<any, infer D>>
-			? ExtractDep<UnionToIntersection<D>>
-			: Record<string, unknown>
+export type ExtractGizmoDeps<G extends Gizmo> =
+	G extends GizmoBoth<infer S, Record<any, infer D>>
+		? ExtractDep<S> & ExtractDep<UnionToIntersection<D>>
+		: G extends GizmoStatic<infer S>
+			? ExtractDep<S>
+			: G extends GizmoDynamic<Record<any, infer D>>
+				? ExtractDep<UnionToIntersection<D>>
+				: Record<string, unknown>
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
 

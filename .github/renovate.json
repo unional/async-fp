@@ -1,34 +1,21 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"description": "unional baseline, inlined: single updater, GitHub-native automerge, release-age soak. Mirrors apply-repo-baseline's canonical preset until github>unional/renovate-preset carries it.",
-	"extends": [
-		"config:recommended",
-		":preserveSemverRanges",
-		":semanticCommits"
-	],
+	"extends": ["config:recommended", ":preserveSemverRanges", ":semanticCommits"],
 	"minimumReleaseAge": "3 days",
 	"platformAutomerge": true,
 	"rebaseWhen": "behind-base-branch",
 	"packageRules": [
 		{
-			"matchUpdateTypes": [
-				"minor",
-				"patch",
-				"pin",
-				"digest"
-			],
+			"matchUpdateTypes": ["minor", "patch", "pin", "digest"],
 			"automerge": true
 		},
 		{
-			"matchDepTypes": [
-				"devDependencies"
-			],
+			"matchDepTypes": ["devDependencies"],
 			"automerge": true
 		},
 		{
-			"matchUpdateTypes": [
-				"major"
-			],
+			"matchUpdateTypes": ["major"],
 			"automerge": false,
 			"additionalBranchPrefix": "major-"
 		}
