@@ -48,8 +48,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.3
       type-plus:
-        specifier: ^7.6.2
-        version: 7.6.2
+        specifier: ^8.0.0-beta.10
+        version: 8.0.0-beta.10(typescript@7.0.2)
     devDependencies:
       '@repobuddy/typescript':
         specifier: ^2.1.0
@@ -101,8 +101,8 @@ importers:
         specifier: ^0.22.14
         version: 0.22.14(oxc-resolver@11.24.2)(typescript@7.0.2)
       type-plus:
-        specifier: ^7.6.2
-        version: 7.6.2
+        specifier: ^8.0.0-beta.10
+        version: 8.0.0-beta.10(typescript@7.0.2)
       vitest:
         specifier: ^4.1.11
         version: 4.1.11(@types/node@24.13.3)(@vitest/coverage-v8@4.1.11)(vite@7.2.2(@types/node@24.13.3)(jiti@2.7.0)(yaml@2.9.0))
@@ -110,8 +110,8 @@ importers:
   packages/gizmo:
     dependencies:
       type-plus:
-        specifier: ^7.6.2
-        version: 7.6.2
+        specifier: ^8.0.0-beta.10
+        version: 8.0.0-beta.10(typescript@7.0.2)
     devDependencies:
       '@repobuddy/typescript':
         specifier: ^2.1.0
@@ -2044,6 +2044,9 @@ packages:
   tersify@4.0.3:
     resolution: {integrity: sha512-u7h3PUL/kMDivCcBEHG1vIbbGxwCYN2yQKxP9GzMRFKItyncimI0RGpZLlUhdW7MkCYirku2QDvEWC7hpzPebw==}
 
+  tersify@4.0.6:
+    resolution: {integrity: sha512-+z2dTeRvbPyI7qiAmBY+VgWnhhN9IuaGjgrPfeF33hI4A/Yd9KT11tbc4l8vfIA3L/5EWiE0swvxOfAckGRuzA==}
+
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
 
@@ -2114,6 +2117,11 @@ packages:
   type-plus@7.6.2:
     resolution: {integrity: sha512-qUlXv9Y0/W56pg38m275IMD3WA03QbVoqNY16S3kmwtuA4gOT2iheyUdOp8NWrmXWpf7om98hzr7AZD/eW2jLA==}
 
+  type-plus@8.0.0-beta.10:
+    resolution: {integrity: sha512-ZdhzmQg7f8oxt5Cbivslk8o3zef8L3ibpKIeGH1ESf73y8ZEY1z9fe4Z3fTxcjmFOb8ESE1TbW/MCgEvpeLC4w==}
+    peerDependencies:
+      typescript: '>= 5.6.0'
+
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
     engines: {node: '>=16.20.0'}
@@ -2136,6 +2144,10 @@ packages:
   unpartial@1.0.6:
     resolution: {integrity: sha512-wY7h80NSwbITWPXBzd2SSEz0lltFzx5e0mH+M4u0TPebaCwJgujdsZd86oMp5oNIlYBg5RXzMn64/JOxwpFf3w==}
     engines: {node: '>=6'}
+
+  unpartial@1.0.7:
+    resolution: {integrity: sha512-DeyxEI3KSlmDihGAk3Js/p/Ca886ymIz39pWH3VVV/LZ36MsRETylFS37fdzWBWDjMlzB63Rdy2KLCdetOMPig==}
+    engines: {node: '>= 20'}
 
   upper-case@2.0.2:
     resolution: {integrity: sha512-KgdgDGJt2TpuwBUIjgG6lzw2GWFRCW9Qkfkiv0DxqHHLYJHmtmdUIKcZd8rHgFSjopVTlw6ggzCm1b8MFQwikg==}
@@ -3885,6 +3897,11 @@ snapshots:
       is-buffer: 2.0.5
       unpartial: 1.0.6
 
+  tersify@4.0.6:
+    dependencies:
+      acorn: 8.18.0
+      unpartial: 1.0.7
+
   tinybench@2.9.0: {}
 
   tinyexec@1.3.0: {}
@@ -3946,6 +3963,12 @@ snapshots:
       tersify: 3.12.1
       unpartial: 1.0.6
 
+  type-plus@8.0.0-beta.10(typescript@7.0.2):
+    dependencies:
+      tersify: 4.0.6
+      typescript: 7.0.2
+      unpartial: 1.0.7
+
   typescript@7.0.2:
     optionalDependencies:
       '@typescript/typescript-aix-ppc64': 7.0.2
@@ -3981,6 +4004,8 @@ snapshots:
   unicorn-magic@0.3.0: {}
 
   unpartial@1.0.6: {}
+
+  unpartial@1.0.7: {}
 
   upper-case@2.0.2:
     dependencies:

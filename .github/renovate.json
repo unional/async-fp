@@ -15,11 +15,6 @@
 			"automerge": true
 		},
 		{
-			"description": "type-plus 8.x is an in-progress major rewrite published only on the `beta` tag; `latest` is 7.6.2. `ignoreUnstable` only blocks stable-to-unstable, so once a prerelease is pinned every new beta reads as a patch and automerges. Pin the line to <8.0.0 until the 8.x promotion is an explicit owner decision.",
-			"matchPackageNames": ["type-plus"],
-			"allowedVersions": "<8.0.0-0"
-		},
-		{
 			"matchUpdateTypes": ["major"],
 			"automerge": false,
 			"additionalBranchPrefix": "major-"
